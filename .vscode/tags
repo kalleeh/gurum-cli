@@ -1,0 +1,297 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACTIVE	../gureume/lib/awslogs.py	/^    ACTIVE = 1$/;"	kind:variable	line:28
+ALL_WILDCARD	../gureume/lib/awslogs.py	/^    ALL_WILDCARD = 'ALL'$/;"	kind:variable	line:34
+AWSLogs	../gureume/apps/commands/logs.py	/^from gureume.lib.awslogs import AWSLogs$/;"	kind:namespace	line:12
+AWSLogs	../gureume/lib/awslogs.py	/^class AWSLogs(object):$/;"	kind:class	line:26
+AppsCommands	../gureume/apps/cli.py	/^class AppsCommands(click.MultiCommand):$/;"	kind:class	line:8
+BaseAWSLogsException	../gureume/lib/awslogs.py	/^from .exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError$/;"	kind:namespace	line:18
+BaseAWSLogsException	../gureume/lib/exceptions.py	/^class BaseAWSLogsException(Exception):$/;"	kind:class	line:1
+CONTEXT_SETTINGS	../gureume/cli.py	/^CONTEXT_SETTINGS = dict(auto_envvar_prefix='GUREUME')$/;"	kind:variable	line:11
+ClientError	../gureume/apps/commands/logs.py	/^from botocore.client import ClientError$/;"	kind:namespace	line:9
+Cognito	../gureume/main/commands/login.py	/^from warrant import Cognito, exceptions$/;"	kind:namespace	line:8
+Cognito	../gureume/main/commands/signout.py	/^from warrant import Cognito$/;"	kind:namespace	line:6
+Cognito	../gureume/users/commands/change-password.py	/^from warrant import Cognito$/;"	kind:namespace	line:6
+Cognito	../gureume/users/commands/confirm-signup.py	/^from warrant import Cognito$/;"	kind:namespace	line:6
+Cognito	../gureume/users/commands/forgot-password.py	/^from warrant import Cognito$/;"	kind:namespace	line:6
+Context	../gureume/cli.py	/^class Context(object):$/;"	kind:class	line:14
+EXHAUSTED	../gureume/lib/awslogs.py	/^    EXHAUSTED = 2$/;"	kind:variable	line:29
+FILTER_LOG_EVENTS_STREAMS_LIMIT	../gureume/lib/awslogs.py	/^    FILTER_LOG_EVENTS_STREAMS_LIMIT = 100$/;"	kind:variable	line:32
+GitCommandError	../gureume/apps/commands/create.py	/^from git import Repo, InvalidGitRepositoryError, GitCommandError$/;"	kind:namespace	line:8
+InvalidGitRepositoryError	../gureume/apps/commands/create.py	/^from git import Repo, InvalidGitRepositoryError, GitCommandError$/;"	kind:namespace	line:8
+LoadCommands	../gureume/lib/loadcommand.py	/^class LoadCommands(click.MultiCommand):$/;"	kind:class	line:5
+LoadCommands	../gureume/pipelines/cli.py	/^from gureume.lib.loadcommand import LoadCommands $/;"	kind:namespace	line:5
+MAX_EVENTS_PER_CALL	../gureume/lib/awslogs.py	/^    MAX_EVENTS_PER_CALL = 10000$/;"	kind:variable	line:33
+MainCommands	../gureume/main/cli.py	/^class MainCommands(click.MultiCommand):$/;"	kind:class	line:8
+NoStreamsFilteredError	../gureume/lib/awslogs.py	/^from .exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError$/;"	kind:namespace	line:18
+NoStreamsFilteredError	../gureume/lib/exceptions.py	/^class NoStreamsFilteredError(BaseAWSLogsException):$/;"	kind:class	line:28
+PipelinesCommands	../gureume/pipelines/cli.py	/^class PipelinesCommands(click.MultiCommand):$/;"	kind:class	line:10
+PrettyTable	../gureume/lib/util.py	/^from prettytable import PrettyTable$/;"	kind:namespace	line:4
+Repo	../gureume/apps/commands/create.py	/^from git import Repo, InvalidGitRepositoryError, GitCommandError$/;"	kind:namespace	line:8
+TooManyStreamsFilteredError	../gureume/lib/awslogs.py	/^from .exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError$/;"	kind:namespace	line:18
+TooManyStreamsFilteredError	../gureume/lib/exceptions.py	/^class TooManyStreamsFilteredError(BaseAWSLogsException):$/;"	kind:class	line:17
+UnknownDateError	../gureume/lib/awslogs.py	/^from .exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError$/;"	kind:namespace	line:18
+UnknownDateError	../gureume/lib/exceptions.py	/^class UnknownDateError(BaseAWSLogsException):$/;"	kind:class	line:9
+UsersCommands	../gureume/users/cli.py	/^class UsersCommands(click.MultiCommand):$/;"	kind:class	line:8
+WATCH_SLEEP	../gureume/lib/awslogs.py	/^    WATCH_SLEEP = 2$/;"	kind:variable	line:30
+__init__	../gureume/cli.py	/^    def __init__(self):$/;"	kind:member	line:31
+__init__	../gureume/lib/awslogs.py	/^    def __init__(self, **kwargs):$/;"	kind:member	line:36
+__init__	../gureume/lib/loadcommand.py	/^    def __init__(self):$/;"	kind:member	line:6
+__init__.py	../gureume/__init__.py	1;"	kind:file	line:1
+__init__.py	../gureume/apps/__init__.py	1;"	kind:file	line:1
+__init__.py	../gureume/main/__init__.py	1;"	kind:file	line:1
+__init__.py	../gureume/pipelines/__init__.py	1;"	kind:file	line:1
+__init__.py	../gureume/users/__init__.py	1;"	kind:file	line:1
+_get_streams_from_pattern	../gureume/lib/awslogs.py	/^    def _get_streams_from_pattern(self, group, pattern):$/;"	kind:member	line:65
+app_name	../gureume/cli.py	/^    app_name = 'gureume'$/;"	kind:variable	line:15
+apps	../gureume/apps/cli.py	/^def apps():$/;"	kind:function	line:30
+apps	../gureume/cli.py	/^from .apps.cli import apps$/;"	kind:namespace	line:6
+awslogs.py	../gureume/lib/awslogs.py	1;"	kind:file	line:1
+boto3	../gureume/apps/commands/logs.py	/^import boto3$/;"	kind:namespace	line:7
+boto3	../gureume/lib/awslogs.py	/^import boto3$/;"	kind:namespace	line:9
+boto3	../gureume/main/commands/login.py	/^import boto3$/;"	kind:namespace	line:4
+botocore	../gureume/main/commands/login.py	/^import botocore$/;"	kind:namespace	line:5
+cfg_name	../gureume/cli.py	/^    cfg_name = os.path.join(cfg_path, '.gureume')$/;"	kind:variable	line:20
+cfg_path	../gureume/cli.py	/^    cfg_path = click.get_app_dir(app_name)$/;"	kind:variable	line:16
+change-password.py	../gureume/users/commands/change-password.py	1;"	kind:file	line:1
+cli	../gureume/apps/commands/create.py	/^def cli(ctx, name):$/;"	kind:function	line:17
+cli	../gureume/apps/commands/describe.py	/^def cli(ctx, name):$/;"	kind:function	line:13
+cli	../gureume/apps/commands/destroy.py	/^def cli(ctx, name, confirm):$/;"	kind:function	line:17
+cli	../gureume/apps/commands/logs.py	/^def cli(ctx, name, start, end, filter_pattern, watch):$/;"	kind:function	line:22
+cli	../gureume/apps/commands/ls.py	/^def cli(ctx):$/;"	kind:function	line:12
+cli	../gureume/apps/commands/update.py	/^def cli(ctx, name, tasks):$/;"	kind:function	line:15
+cli	../gureume/cli.py	/^cli = click.CommandCollection(sources=[cli, main])$/;"	kind:variable	line:61
+cli	../gureume/cli.py	/^def cli(ctx, verbose):$/;"	kind:function	line:54
+cli	../gureume/main/commands/login.py	/^def cli(ctx, user, password):$/;"	kind:function	line:15
+cli	../gureume/main/commands/signout.py	/^def cli(ctx):$/;"	kind:function	line:11
+cli	../gureume/pipelines/commands/create.py	/^def cli(ctx, name, app, dev, test, repo, branch, token, user):$/;"	kind:function	line:22
+cli	../gureume/pipelines/commands/describe.py	/^def cli(ctx, name):$/;"	kind:function	line:13
+cli	../gureume/pipelines/commands/destroy.py	/^def cli(ctx, name, confirm):$/;"	kind:function	line:16
+cli	../gureume/pipelines/commands/ls.py	/^def cli(ctx):$/;"	kind:function	line:11
+cli	../gureume/pipelines/commands/update.py	/^def cli(ctx, name, app, dev, test, repo, branch, token, user):$/;"	kind:function	line:22
+cli	../gureume/users/commands/change-password.py	/^def cli(ctx, password, new_password, confirm_password):$/;"	kind:function	line:14
+cli	../gureume/users/commands/confirm-signup.py	/^def cli(ctx, user, confirmation_code):$/;"	kind:function	line:13
+cli	../gureume/users/commands/forgot-password.py	/^def cli(ctx, user):$/;"	kind:function	line:12
+cli.py	../gureume/apps/cli.py	1;"	kind:file	line:1
+cli.py	../gureume/cli.py	1;"	kind:file	line:1
+cli.py	../gureume/main/cli.py	1;"	kind:file	line:1
+cli.py	../gureume/pipelines/cli.py	1;"	kind:file	line:1
+cli.py	../gureume/users/cli.py	1;"	kind:file	line:1
+click	../gureume/apps/cli.py	/^import click$/;"	kind:namespace	line:3
+click	../gureume/apps/commands/create.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/apps/commands/describe.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/apps/commands/destroy.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/apps/commands/logs.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/apps/commands/ls.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/apps/commands/update.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/cli.py	/^import click$/;"	kind:namespace	line:3
+click	../gureume/lib/loadcommand.py	/^import click$/;"	kind:namespace	line:2
+click	../gureume/main/cli.py	/^import click$/;"	kind:namespace	line:3
+click	../gureume/main/commands/login.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/main/commands/signout.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/pipelines/cli.py	/^import click$/;"	kind:namespace	line:3
+click	../gureume/pipelines/commands/create.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/pipelines/commands/describe.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/pipelines/commands/destroy.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/pipelines/commands/ls.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/pipelines/commands/update.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/users/cli.py	/^import click$/;"	kind:namespace	line:3
+click	../gureume/users/commands/change-password.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/users/commands/confirm-signup.py	/^import click$/;"	kind:namespace	line:1
+click	../gureume/users/commands/forgot-password.py	/^import click$/;"	kind:namespace	line:1
+click_spinner	../gureume/apps/commands/create.py	/^import click_spinner$/;"	kind:namespace	line:2
+click_spinner	../gureume/apps/commands/destroy.py	/^import click_spinner$/;"	kind:namespace	line:2
+click_spinner	../gureume/apps/commands/update.py	/^import click_spinner$/;"	kind:namespace	line:2
+click_spinner	../gureume/pipelines/commands/create.py	/^import click_spinner$/;"	kind:namespace	line:2
+click_spinner	../gureume/pipelines/commands/destroy.py	/^import click_spinner$/;"	kind:namespace	line:2
+click_spinner	../gureume/pipelines/commands/update.py	/^import click_spinner$/;"	kind:namespace	line:2
+code	../gureume/lib/exceptions.py	/^    code = 1$/;"	kind:variable	line:3
+code	../gureume/lib/exceptions.py	/^    code = 3$/;"	kind:variable	line:11
+code	../gureume/lib/exceptions.py	/^    code = 6$/;"	kind:variable	line:19
+code	../gureume/lib/exceptions.py	/^    code = 7$/;"	kind:variable	line:30
+color	../gureume/lib/awslogs.py	/^    def color(self, text, color):$/;"	kind:member	line:239
+colored	../gureume/apps/commands/logs.py	/^from termcolor import colored$/;"	kind:namespace	line:10
+colored	../gureume/lib/awslogs.py	/^from termcolor import colored$/;"	kind:namespace	line:14
+config	../gureume/cli.py	/^    config = configparser.ConfigParser()$/;"	kind:variable	line:28
+configparser	../gureume/cli.py	/^import configparser$/;"	kind:namespace	line:4
+confirm-signup.py	../gureume/users/commands/confirm-signup.py	1;"	kind:file	line:1
+consumer	../gureume/lib/awslogs.py	/^        def consumer():$/;"	kind:function	line:136
+create.py	../gureume/apps/commands/create.py	1;"	kind:file	line:1
+create.py	../gureume/pipelines/commands/create.py	1;"	kind:file	line:1
+datetime	../gureume/lib/awslogs.py	/^from datetime import datetime, timedelta$/;"	kind:namespace	line:6
+deque	../gureume/lib/awslogs.py	/^from collections import deque$/;"	kind:namespace	line:7
+describe.py	../gureume/apps/commands/describe.py	1;"	kind:file	line:1
+describe.py	../gureume/pipelines/commands/describe.py	1;"	kind:file	line:1
+destroy.py	../gureume/apps/commands/destroy.py	1;"	kind:file	line:1
+destroy.py	../gureume/pipelines/commands/destroy.py	1;"	kind:file	line:1
+errno	../gureume/lib/awslogs.py	/^import errno$/;"	kind:namespace	line:5
+exceptions	../gureume/apps/commands/logs.py	/^import gureume.lib.exceptions as exceptions$/;"	kind:namespace	line:13
+exceptions	../gureume/main/commands/login.py	/^from warrant import Cognito, exceptions$/;"	kind:namespace	line:8
+exceptions.py	../gureume/lib/exceptions.py	1;"	kind:file	line:1
+find_packages	../setup.py	/^from setuptools import setup, find_packages$/;"	kind:namespace	line:1
+forgot-password.py	../gureume/users/commands/forgot-password.py	1;"	kind:file	line:1
+generator	../gureume/lib/awslogs.py	/^        def generator():$/;"	kind:function	line:93
+get_command	../gureume/apps/cli.py	/^    def get_command(self, ctx, name):$/;"	kind:member	line:17
+get_command	../gureume/lib/loadcommand.py	/^    def get_command(self, ctx, name):$/;"	kind:member	line:17
+get_command	../gureume/main/cli.py	/^    def get_command(self, ctx, name):$/;"	kind:member	line:17
+get_command	../gureume/pipelines/cli.py	/^    def get_command(self, ctx, name):$/;"	kind:member	line:19
+get_command	../gureume/users/cli.py	/^    def get_command(self, ctx, name):$/;"	kind:member	line:17
+get_events	../gureume/pipelines/commands/create.py	/^from gureume.lib.util import get_events$/;"	kind:namespace	line:9
+get_events	../gureume/pipelines/commands/destroy.py	/^from gureume.lib.util import get_events$/;"	kind:namespace	line:9
+get_events	../gureume/pipelines/commands/update.py	/^from gureume.lib.util import get_events$/;"	kind:namespace	line:9
+get_groups	../gureume/lib/awslogs.py	/^    def get_groups(self):$/;"	kind:member	line:211
+get_streams	../gureume/lib/awslogs.py	/^    def get_streams(self, log_group_name=None):$/;"	kind:member	line:221
+gureume	../gureume/apps/commands/logs.py	/^import gureume.lib.exceptions as exceptions$/;"	kind:namespace	line:13
+hint	../gureume/lib/exceptions.py	/^    def hint(self):$/;"	kind:member	line:13
+hint	../gureume/lib/exceptions.py	/^    def hint(self):$/;"	kind:member	line:21
+hint	../gureume/lib/exceptions.py	/^    def hint(self):$/;"	kind:member	line:32
+hint	../gureume/lib/exceptions.py	/^    def hint(self):$/;"	kind:member	line:5
+include_package_data	../setup.py	/^    include_package_data=True,$/;"	kind:variable	line:7
+install_requires	../setup.py	/^    install_requires=[$/;"	kind:variable	line:8
+jmespath	../gureume/lib/awslogs.py	/^import jmespath$/;"	kind:namespace	line:12
+json	../gureume/apps/commands/create.py	/^import json$/;"	kind:namespace	line:5
+json	../gureume/apps/commands/describe.py	/^import json$/;"	kind:namespace	line:4
+json	../gureume/apps/commands/destroy.py	/^import json$/;"	kind:namespace	line:5
+json	../gureume/apps/commands/logs.py	/^import json$/;"	kind:namespace	line:4
+json	../gureume/apps/commands/ls.py	/^import json$/;"	kind:namespace	line:4
+json	../gureume/apps/commands/update.py	/^import json$/;"	kind:namespace	line:5
+json	../gureume/lib/awslogs.py	/^from botocore.compat import json, six, total_seconds$/;"	kind:namespace	line:10
+json	../gureume/lib/util.py	/^import json$/;"	kind:namespace	line:2
+json	../gureume/pipelines/commands/create.py	/^import json$/;"	kind:namespace	line:5
+json	../gureume/pipelines/commands/describe.py	/^import json$/;"	kind:namespace	line:4
+json	../gureume/pipelines/commands/destroy.py	/^import json$/;"	kind:namespace	line:5
+json	../gureume/pipelines/commands/ls.py	/^import json$/;"	kind:namespace	line:4
+json	../gureume/pipelines/commands/update.py	/^import json$/;"	kind:namespace	line:5
+json_to_table	../gureume/apps/commands/describe.py	/^from gureume.lib.util import request, json_to_table$/;"	kind:namespace	line:7
+json_to_table	../gureume/apps/commands/ls.py	/^from gureume.lib.util import request, json_to_table$/;"	kind:namespace	line:7
+json_to_table	../gureume/lib/util.py	/^def json_to_table(events):$/;"	kind:function	line:36
+lib	../gureume/apps/commands/logs.py	/^import gureume.lib.exceptions as exceptions$/;"	kind:namespace	line:13
+list_commands	../gureume/apps/cli.py	/^    def list_commands(self, ctx):$/;"	kind:member	line:9
+list_commands	../gureume/lib/loadcommand.py	/^    def list_commands(self, ctx):$/;"	kind:member	line:9
+list_commands	../gureume/main/cli.py	/^    def list_commands(self, ctx):$/;"	kind:member	line:9
+list_commands	../gureume/pipelines/cli.py	/^    def list_commands(self, ctx):$/;"	kind:member	line:11
+list_commands	../gureume/users/cli.py	/^    def list_commands(self, ctx):$/;"	kind:member	line:9
+list_groups	../gureume/lib/awslogs.py	/^    def list_groups(self):$/;"	kind:member	line:201
+list_logs	../gureume/lib/awslogs.py	/^    def list_logs(self):$/;"	kind:member	line:73
+list_streams	../gureume/lib/awslogs.py	/^    def list_streams(self):$/;"	kind:member	line:206
+loadcommand.py	../gureume/lib/loadcommand.py	1;"	kind:file	line:1
+log	../gureume/cli.py	/^    def log(self, msg, *args):$/;"	kind:member	line:35
+login.py	../gureume/main/commands/login.py	1;"	kind:file	line:1
+logs.py	../gureume/apps/commands/logs.py	1;"	kind:file	line:1
+ls.py	../gureume/apps/commands/ls.py	1;"	kind:file	line:1
+ls.py	../gureume/pipelines/commands/ls.py	1;"	kind:file	line:1
+main	../gureume/cli.py	/^from .main.cli import main$/;"	kind:namespace	line:9
+main	../gureume/main/cli.py	/^def main():$/;"	kind:function	line:30
+milis2iso	../gureume/lib/awslogs.py	/^def milis2iso(milis):$/;"	kind:function	line:21
+name	../setup.py	/^    name='gureume',$/;"	kind:variable	line:4
+os	../gureume/apps/cli.py	/^import os$/;"	kind:namespace	line:1
+os	../gureume/apps/commands/create.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/apps/commands/describe.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/apps/commands/destroy.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/apps/commands/logs.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/apps/commands/ls.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/apps/commands/update.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/cli.py	/^import os$/;"	kind:namespace	line:1
+os	../gureume/lib/awslogs.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/lib/loadcommand.py	/^import os$/;"	kind:namespace	line:1
+os	../gureume/main/cli.py	/^import os$/;"	kind:namespace	line:1
+os	../gureume/main/commands/login.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/main/commands/signout.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/pipelines/cli.py	/^import os$/;"	kind:namespace	line:1
+os	../gureume/pipelines/commands/create.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/pipelines/commands/describe.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/pipelines/commands/destroy.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/pipelines/commands/ls.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/pipelines/commands/update.py	/^import os$/;"	kind:namespace	line:3
+os	../gureume/users/cli.py	/^import os$/;"	kind:namespace	line:1
+os	../gureume/users/commands/change-password.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/users/commands/confirm-signup.py	/^import os$/;"	kind:namespace	line:2
+os	../gureume/users/commands/forgot-password.py	/^import os$/;"	kind:namespace	line:2
+packages	../setup.py	/^    packages=find_packages(),$/;"	kind:variable	line:6
+parse	../gureume/lib/awslogs.py	/^from dateutil.parser import parse$/;"	kind:namespace	line:15
+parse_datetime	../gureume/lib/awslogs.py	/^    def parse_datetime(self, datetime_text):$/;"	kind:member	line:245
+pass_context	../gureume/apps/commands/create.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:10
+pass_context	../gureume/apps/commands/describe.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:6
+pass_context	../gureume/apps/commands/destroy.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:9
+pass_context	../gureume/apps/commands/logs.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:11
+pass_context	../gureume/apps/commands/ls.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:6
+pass_context	../gureume/apps/commands/update.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:8
+pass_context	../gureume/cli.py	/^pass_context = click.make_pass_decorator(Context, ensure=True)$/;"	kind:variable	line:47
+pass_context	../gureume/main/commands/login.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:7
+pass_context	../gureume/main/commands/signout.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:5
+pass_context	../gureume/pipelines/commands/create.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:8
+pass_context	../gureume/pipelines/commands/describe.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:6
+pass_context	../gureume/pipelines/commands/destroy.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:8
+pass_context	../gureume/pipelines/commands/ls.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:6
+pass_context	../gureume/pipelines/commands/update.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:8
+pass_context	../gureume/users/commands/change-password.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:5
+pass_context	../gureume/users/commands/confirm-signup.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:5
+pass_context	../gureume/users/commands/forgot-password.py	/^from gureume.cli import pass_context$/;"	kind:namespace	line:5
+pipelines	../gureume/cli.py	/^from .pipelines.cli import pipelines$/;"	kind:namespace	line:7
+pipelines	../gureume/pipelines/cli.py	/^def pipelines():$/;"	kind:function	line:32
+plugin_folder	../gureume/apps/cli.py	/^plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')$/;"	kind:variable	line:5
+plugin_folder	../gureume/main/cli.py	/^plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')$/;"	kind:variable	line:5
+plugin_folder	../gureume/pipelines/cli.py	/^plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')$/;"	kind:variable	line:7
+plugin_folder	../gureume/users/cli.py	/^plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')$/;"	kind:variable	line:5
+pretty_events	../gureume/apps/commands/create.py	/^from gureume.lib.util import request, pretty_events$/;"	kind:namespace	line:11
+pretty_events	../gureume/apps/commands/destroy.py	/^from gureume.lib.util import request, pretty_events$/;"	kind:namespace	line:10
+pretty_events	../gureume/apps/commands/update.py	/^from gureume.lib.util import request, pretty_events$/;"	kind:namespace	line:9
+pretty_events	../gureume/pipelines/commands/describe.py	/^from gureume.lib.util import pretty_events, request$/;"	kind:namespace	line:7
+re	../gureume/lib/awslogs.py	/^import re$/;"	kind:namespace	line:1
+request	../gureume/apps/commands/create.py	/^from gureume.lib.util import request, pretty_events$/;"	kind:namespace	line:11
+request	../gureume/apps/commands/describe.py	/^from gureume.lib.util import request, json_to_table$/;"	kind:namespace	line:7
+request	../gureume/apps/commands/destroy.py	/^from gureume.lib.util import request, pretty_events$/;"	kind:namespace	line:10
+request	../gureume/apps/commands/ls.py	/^from gureume.lib.util import request, json_to_table$/;"	kind:namespace	line:7
+request	../gureume/apps/commands/update.py	/^from gureume.lib.util import request, pretty_events$/;"	kind:namespace	line:9
+request	../gureume/lib/util.py	/^def request(method, url, headers, *payload):$/;"	kind:function	line:7
+request	../gureume/pipelines/commands/describe.py	/^from gureume.lib.util import pretty_events, request$/;"	kind:namespace	line:7
+requests	../gureume/apps/commands/create.py	/^import requests$/;"	kind:namespace	line:4
+requests	../gureume/apps/commands/describe.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/apps/commands/destroy.py	/^import requests$/;"	kind:namespace	line:4
+requests	../gureume/apps/commands/logs.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/apps/commands/ls.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/apps/commands/update.py	/^import requests$/;"	kind:namespace	line:4
+requests	../gureume/lib/util.py	/^import requests$/;"	kind:namespace	line:1
+requests	../gureume/main/commands/login.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/main/commands/signout.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/pipelines/commands/create.py	/^import requests$/;"	kind:namespace	line:4
+requests	../gureume/pipelines/commands/describe.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/pipelines/commands/destroy.py	/^import requests$/;"	kind:namespace	line:4
+requests	../gureume/pipelines/commands/ls.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/pipelines/commands/update.py	/^import requests$/;"	kind:namespace	line:4
+requests	../gureume/users/commands/change-password.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/users/commands/confirm-signup.py	/^import requests$/;"	kind:namespace	line:3
+requests	../gureume/users/commands/forgot-password.py	/^import requests$/;"	kind:namespace	line:3
+setup	../setup.py	/^from setuptools import setup, find_packages$/;"	kind:namespace	line:1
+setup.py	../setup.py	1;"	kind:file	line:1
+signout.py	../gureume/main/commands/signout.py	1;"	kind:file	line:1
+six	../gureume/lib/awslogs.py	/^from botocore.compat import json, six, total_seconds$/;"	kind:namespace	line:10
+sys	../gureume/apps/cli.py	/^import sys$/;"	kind:namespace	line:2
+sys	../gureume/apps/commands/logs.py	/^import sys$/;"	kind:namespace	line:5
+sys	../gureume/cli.py	/^import sys$/;"	kind:namespace	line:2
+sys	../gureume/lib/awslogs.py	/^import sys$/;"	kind:namespace	line:2
+sys	../gureume/main/cli.py	/^import sys$/;"	kind:namespace	line:2
+sys	../gureume/pipelines/cli.py	/^import sys$/;"	kind:namespace	line:2
+sys	../gureume/users/cli.py	/^import sys$/;"	kind:namespace	line:2
+time	../gureume/apps/commands/create.py	/^import time$/;"	kind:namespace	line:6
+time	../gureume/apps/commands/destroy.py	/^import time$/;"	kind:namespace	line:6
+time	../gureume/apps/commands/update.py	/^import time$/;"	kind:namespace	line:6
+time	../gureume/lib/awslogs.py	/^import time$/;"	kind:namespace	line:4
+time	../gureume/pipelines/commands/create.py	/^import time$/;"	kind:namespace	line:6
+time	../gureume/pipelines/commands/destroy.py	/^import time$/;"	kind:namespace	line:6
+time	../gureume/pipelines/commands/update.py	/^import time$/;"	kind:namespace	line:6
+timedelta	../gureume/lib/awslogs.py	/^from datetime import datetime, timedelta$/;"	kind:namespace	line:6
+total_seconds	../gureume/lib/awslogs.py	/^from botocore.compat import json, six, total_seconds$/;"	kind:namespace	line:10
+traceback	../gureume/apps/commands/logs.py	/^        import traceback$/;"	kind:namespace	line:63
+tzutc	../gureume/lib/awslogs.py	/^from dateutil.tz import tzutc$/;"	kind:namespace	line:16
+update.py	../gureume/apps/commands/update.py	1;"	kind:file	line:1
+update.py	../gureume/pipelines/commands/update.py	1;"	kind:file	line:1
+users	../gureume/cli.py	/^from .users.cli import users$/;"	kind:namespace	line:8
+users	../gureume/users/cli.py	/^def users():$/;"	kind:function	line:30
+util.py	../gureume/lib/util.py	1;"	kind:file	line:1
+version	../setup.py	/^    version='0.2',$/;"	kind:variable	line:5
+vlog	../gureume/cli.py	/^    def vlog(self, msg, *args):$/;"	kind:member	line:41

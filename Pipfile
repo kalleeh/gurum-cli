@@ -1,0 +1,30 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+requests = "*"
+click = "*"
+botocore = "*"
+"boto3" = "*"
+warrant = "*"
+"e1839a8" = {path = ".", editable = true}
+click-spinner = "*"
+tox-pipenv = "*"
+gitpython = "*"
+termcolor = "*"
+prettytable = "*"
+pylint = "*"
+
+
+[dev-packages]
+
+
+
+[requires]
+
+python_version = "3.6"
