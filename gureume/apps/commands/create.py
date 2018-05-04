@@ -13,8 +13,11 @@ from gureume.lib.util import request, json_to_table
 
 @click.command('create', short_help='Create a new app')
 @click.argument('name')
+@click.option('--tasks', prompt=False, default='1', help='Number of tasks to run')
+@click.option('--health-check-path', prompt=False, default='/health', help='Path that is queried for health checks')
+@click.option('--image', prompt=False, default='nginx:latest', help='Docker image to run')
 @pass_context
-def cli(ctx, name):
+def cli(ctx, name, **kwargs):
     """Create a new application."""
     id_token = ""
     apps = {}
@@ -25,12 +28,9 @@ def cli(ctx, name):
 
     url = api_uri + '/apps'
     headers = {'Authorization': id_token}
-        
-    payload = {
-        'name': name,
-        'tasks': '1',
-        'health_check_path': '/'
-    }
+    
+    # Dynamically get options and remove undefined options
+    payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
     r = request('post', url, headers, payload)
     apps = json.loads(r.text)

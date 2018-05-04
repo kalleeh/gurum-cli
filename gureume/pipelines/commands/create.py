@@ -11,16 +11,16 @@ from gureume.lib.util import request, json_to_table
 
 @click.command('create', short_help='Create a new pipeline')
 @click.argument('name')
-@click.option('--app', prompt=True, help="App to link pipeline to")
-@click.option('--dev', prompt=False, default='', required=False, help="Add a development stage to the pipeline")
-@click.option('--test', prompt=False, default='', required=False, help="Add a test stage to the pipeline")
-@click.option('--repo', prompt=True, help="GitHub repo to pull source from")
-@click.option('--branch', prompt=True, default='master', help="Branch to deploy")
-@click.option('--token', prompt=True, help="OAuth Token for access")
-@click.option('--user', prompt=True, help="GitHub user name")
+@click.option('--app-name', prompt=True, help="App to link pipeline to")
+@click.option('--app-dev', prompt=False, required=False, help="Add a development stage to the pipeline")
+@click.option('--app-test', prompt=False, required=False, help="Add a test stage to the pipeline")
+@click.option('--github-repo', prompt=True, help="GitHub repo to pull source from")
+@click.option('--github-branch', prompt=True, default='master', help="Branch to deploy")
+@click.option('--github-token', prompt=True, help="OAuth Token for access")
+@click.option('--github-user', prompt=True, help="GitHub user name")
 @pass_context
-def cli(ctx, name, app, dev, test, repo, branch, token, user):
-    """Create a new application."""
+def cli(ctx, name, **kwargs):
+    """Create a new pipeline."""
     id_token = ""
     apps = {}
 
@@ -29,32 +29,12 @@ def cli(ctx, name, app, dev, test, repo, branch, token, user):
 
     url = api_uri + '/pipelines/' + name
     headers = {'Authorization': id_token}
-    payload = {
-        "app_name": app,
-        "app_dev": dev,
-        "app_test": test,
-        "github_repo": repo,
-        "github_branch": branch,
-        "github_token": token,
-        "github_user": user
-    }
-
-    try:
-        r = requests.post(url, json=payload, headers=headers)
-        r.raise_for_status()  # throw exception if request does not return 2xx
-    except requests.exceptions.HTTPError as e:
-        if r.status_code == 422:  # Unprocessable Entity
-            json_response = json.loads(r.text)
-            if json_response['errors'][0]['code'] == 'error_code':
-                print('error explanation')
-
-        # Unprocessable for some other reason or other HTTP error != 422
-        print(r.text)
-        print('HTTP Error: {}'.format(e))
-        return -1
-    except requests.exceptions.RequestException as e:
-        print('Connection error: {}'.format(e))
-        return -1
+    
+    # Dynamically get options and remove undefined options
+    payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
+    
+    r = request('post', url, headers, payload)
+    apps = json.loads(r.text)
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -63,24 +43,14 @@ def cli(ctx, name, app, dev, test, repo, branch, token, user):
             url = api_uri + '/pipelines/' + name
             headers = {'Authorization': id_token}
 
-            try:
-                r = requests.get(url, headers=headers)
-                r.raise_for_status()  # throw exception if request does not return 2xx
-            except requests.exceptions.HTTPError as e:
-                if r.status_code == 422:  # Unprocessable Entity
-                    json_response = json.loads(r.text)
-                    if json_response['errors'][0]['code'] == 'error_code':
-                        print('error explanation')
-
-                # Unprocessable for some other reason or other HTTP error != 422
-                print(r.text)
-                print('HTTP Error: {}'.format(e))
-                return -1
-            except requests.exceptions.RequestException as e:
-                print('Connection error: {}'.format(e))
-                return -1
-
+            r = request('get', url, headers)
             apps = json.loads(r.text)
+
+            # Get CloudFormation Events
+            url = api_uri + '/events/' + name
+
+            r = request('get', url, headers)
+            events = json.loads(r.text)
 
             click.clear()
 

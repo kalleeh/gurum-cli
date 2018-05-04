@@ -11,58 +11,21 @@ from gureume.lib.util import request, json_to_table
 
 @click.command('destroy', short_help='Delete app')
 @click.argument('name')
-@click.option('--confirm', is_flag=True, help='Silence confirmation question.')
+@click.option('--yes', is_flag=True, callback=abort_if_false,
+              expose_value=False,
+              prompt='Are you sure you want to destroy the pipeline?')
 @pass_context
-def cli(ctx, name, confirm):
-    """Deletes the application."""
+def cli(ctx, name):
+    """Deletes the pipeline."""
     id_token = ctx.config.get('default', 'id_token')
     api_uri = ctx.config.get('default', 'api_uri')
 
-    # Check if app exists
+    click.echo('Deleting pipeline...')
+
     url = api_uri + '/pipelines/' + name
     headers = {'Authorization': id_token}
 
-    try:
-        r = requests.get(url, headers=headers)
-        r.raise_for_status()  # throw exception if request does not return 2xx
-    except requests.exceptions.HTTPError as e:
-        if r.status_code == 422:  # Unprocessable Entity
-            json_response = json.loads(r.text)
-            if json_response['errors'][0]['code'] == 'error_code':
-                print('error explanation')
-
-        # Unprocessable for some other reason or other HTTP error != 422
-        print(r.text)
-        print('HTTP Error: {}'.format(e))
-        return -1
-    except requests.exceptions.RequestException as e:
-        print('Connection error: {}'.format(e))
-        return -1
-
-    if not confirm:
-        if click.confirm('Are you sure you want to delete pipeline: ' + name + '?', abort=True):
-            confirm = True
-
-    if confirm:
-        click.echo('Deleting app...')
-
-        url = api_uri + '/pipelines/' + name
-        headers = {'Authorization': id_token}
-        try:
-            r = requests.delete(url, headers=headers)
-            r.raise_for_status()  # throw exception if request does not return 2xx
-        except requests.exceptions.HTTPError as e:
-            if r.status_code == 422:  # Unprocessable Entity
-                json_response = json.loads(r.text)
-                if json_response['errors'][0]['code'] == 'error_code':
-                    print('error explanation')
-
-            # Unprocessable for some other reason or other HTTP error != 422
-            print('HTTP Error: {}'.format(e))
-            return -1
-        except requests.exceptions.RequestException as e:
-            print('Connection error: {}'.format(e))
-            return -1
+    r = request('delete', url, headers)
 
     with click_spinner.spinner():
         while True:
@@ -70,24 +33,14 @@ def cli(ctx, name, confirm):
             url = api_uri + '/pipelines/' + name
             headers = {'Authorization': id_token}
 
-            try:
-                r = requests.get(url, headers=headers)
-                r.raise_for_status()  # throw exception if request does not return 2xx
-            except requests.exceptions.HTTPError as e:
-                if r.status_code == 422:  # Unprocessable Entity
-                    json_response = json.loads(r.text)
-                    if json_response['errors'][0]['code'] == 'error_code':
-                        print('error explanation')
-
-                # Unprocessable for some other reason or other HTTP error != 422
-                print(r.text)
-                print('HTTP Error: {}'.format(e))
-                return -1
-            except requests.exceptions.RequestException as e:
-                print('Connection error: {}'.format(e))
-                return -1
-
+            r = request('get', url, headers)
             apps = json.loads(r.text)
+
+            # Get CloudFormation Events
+            url = api_uri + '/events/' + name
+
+            r = request('get', url, headers)
+            events = json.loads(r.text)
 
             click.clear()
 

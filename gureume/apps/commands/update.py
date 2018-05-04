@@ -11,9 +11,11 @@ from gureume.lib.util import request, json_to_table
 
 @click.command('update', short_help='Update the app')
 @click.argument('name')
-@click.option('--tasks', prompt=True, help='Scale to the number of tasks to run')
+@click.option('--tasks', prompt=False, help='Number of tasks to run')
+@click.option('--health-check-path', prompt=False, help='Path that is queried for health checks')
+@click.option('--image', prompt=False, help='Docker image to run')
 @pass_context
-def cli(ctx, name, tasks):
+def cli(ctx, name, **kwargs):
     """Create a new application."""
     id_token = ""
     apps = {}
@@ -23,9 +25,9 @@ def cli(ctx, name, tasks):
 
     url = api_uri + '/apps/' + name
     headers = {'Authorization': id_token}
-    payload = {
-        'tasks': tasks
-    }
+
+    # Dynamically get options and remove undefined options
+    payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
     
     try:
         r = request('patch', url, headers, payload)

@@ -11,15 +11,15 @@ from gureume.lib.util import request, json_to_table
 
 @click.command('update', short_help='Update the pipeline')
 @click.argument('name')
-@click.option('--app', prompt=True, help="App to link pipeline to")
-@click.option('--dev', prompt=False, default='', required=False, help="Add a development stage to the pipeline")
-@click.option('--test', prompt=False, default='', required=False, help="Add a test stage to the pipeline")
-@click.option('--repo', prompt=True, default='2048', help="GitHub repo to pull source from")
-@click.option('--branch', prompt=True, default='master', help="Branch to deploy")
-@click.option('--token', prompt=True, default='b248f1e73603d95c33e12d4bca375fc965c96ad8', help="OAuth Token for access")
-@click.option('--user', prompt=True, default='kalleeh', help="GitHub user name")
+@click.option('--app-name', prompt=True, help="App to link pipeline to")
+@click.option('--app-dev', prompt=False, required=False, help="Add a development stage to the pipeline")
+@click.option('--app-test', prompt=False, required=False, help="Add a test stage to the pipeline")
+@click.option('--github-repo', prompt=True, help="GitHub repo to pull source from")
+@click.option('--github-branch', prompt=True, default='master', help="Branch to deploy")
+@click.option('--github-token', prompt=True, help="OAuth Token for access")
+@click.option('--github-user', prompt=True, help="GitHub user name")
 @pass_context
-def cli(ctx, name, app, dev, test, repo, branch, token, user):
+def cli(ctx, name, **kwargs):
     """Update pipeline configuration."""
     id_token = ""
     pipelines = {}
@@ -29,15 +29,9 @@ def cli(ctx, name, app, dev, test, repo, branch, token, user):
 
     url = api_uri + '/pipelines/' + name
     headers = {'Authorization': id_token}
-    payload = {
-        'app_name': app,
-        'app_dev': dev,
-        'app_test': test,
-        'github_repo': repo,
-        'github_branch': branch,
-        'github_token': token,
-        'github_user': user
-    }
+
+    # Dynamically get options and remove undefined options
+    payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
     try:
         r = request('patch', url, headers, payload)

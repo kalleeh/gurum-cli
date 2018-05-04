@@ -14,26 +14,20 @@ import gureume.lib.exceptions as exceptions
 
 @click.command('logs', short_help='Displays logs about your app')
 @click.argument('name')
-@click.option('--start', help='Filter starting date/time to get logs')
+@click.option('--start', default='5m', help='Filter starting date/time to get logs')
 @click.option('--end', help='Filter end date/time to get logs')
 @click.option('--filter-pattern', help='Filter logs matching a filter pattern')
 @click.option('--watch', is_flag=True, help='Follow logs')
 @pass_context
-def cli(ctx, name, start, end, filter_pattern, watch):
+def cli(ctx, name, **kwargs):
     """View logs for your app"""
     options = {}
     log_group_name = name
-
+    
+    # Dynamically get options and remove undefined options
+    options = {k: v for k, v in kwargs.items() if v is not None}
     options['log_group_name'] = 'platform-app-{}'.format(log_group_name)
     options['log_stream_name'] = 'ALL'
-    if 'start' in locals():
-        options['start'] = start
-    if 'end' in locals():
-        options['end'] = end
-    if 'watch' in locals():
-        options['watch'] = watch
-    if 'filter_pattern' in locals():
-        options['filter_pattern'] = filter_pattern
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
     options['output_timestamp_enabled'] = 'true'
