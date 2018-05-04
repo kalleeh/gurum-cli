@@ -10,6 +10,10 @@ from gureume.cli import pass_context
 from gureume.lib.util import request, json_to_table
 
 
+def abort_if_false(ctx, param, value):
+    if not value:
+        ctx.abort()
+
 @click.command('destroy', short_help='Delete app')
 @click.argument('name')
 @click.option('--yes', is_flag=True, callback=abort_if_false,
