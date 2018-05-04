@@ -19,6 +19,7 @@ gitpython = "*"
 termcolor = "*"
 prettytable = "*"
 pylint = "*"
+haikunator = "*"
 
 
 [dev-packages]

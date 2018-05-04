@@ -6,7 +6,7 @@ import json
 import time
 
 from gureume.cli import pass_context
-from gureume.lib.util import request, json_to_table
+from gureume.lib.util import request, json_to_table, haikunate
 
 
 @click.command('create', short_help='Create a new pipeline')

@@ -2,7 +2,11 @@ import requests
 import json
 
 from prettytable import PrettyTable
+from haikunator import Haikunator
 
+def haikunate():
+    haikunator = Haikunator()
+    return haikunator.haikunate()
 
 def request(method, url, headers, *payload):
     try:

@@ -8,16 +8,16 @@ import time
 from git import Repo, InvalidGitRepositoryError, GitCommandError
 
 from gureume.cli import pass_context
-from gureume.lib.util import request, json_to_table
+from gureume.lib.util import request, json_to_table, haikunate
 
 
 @click.command('create', short_help='Create a new app')
-@click.argument('name')
+@click.option('--name', prompt=True, default=haikunate(), help='Name of the app')
 @click.option('--tasks', prompt=False, default='1', help='Number of tasks to run')
 @click.option('--health-check-path', prompt=False, default='/health', help='Path that is queried for health checks')
 @click.option('--image', prompt=False, default='nginx:latest', help='Docker image to run')
 @pass_context
-def cli(ctx, name, **kwargs):
+def cli(ctx, **kwargs):
     """Create a new application."""
     id_token = ""
     apps = {}
@@ -39,14 +39,14 @@ def cli(ctx, name, **kwargs):
     with click_spinner.spinner():
         while True:
             # Update creation status
-            url = api_uri + '/apps/' + name
+            url = api_uri + '/apps/' + kwargs['name']
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
             apps = json.loads(r.text)
 
             # Get CloudFormation Events
-            url = api_uri + '/events/' + name
+            url = api_uri + '/events/' + kwargs['name']
 
             r = request('get', url, headers)
             events = json.loads(r.text)
@@ -74,7 +74,7 @@ def cli(ctx, name, **kwargs):
             for key, val in apps['tags'].items():
                 click.secho("- {}: {}".format(key, val))
 
-            click.echo('Creating app: {}\nThis usually takes around 5 minutes...'.format(name))
+            click.echo('Creating app: {}\nThis usually takes around 5 minutes...'.format(kwargs['name']))
 
             click.echo(json_to_table(events))
 
