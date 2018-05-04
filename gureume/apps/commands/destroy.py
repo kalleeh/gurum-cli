@@ -12,30 +12,21 @@ from gureume.lib.util import request, json_to_table
 
 @click.command('destroy', short_help='Delete app')
 @click.argument('name')
-@click.option('--confirm', is_flag=True, help='Silence confirmation question.')
+@click.option('--yes', is_flag=True, callback=abort_if_false,
+              expose_value=False,
+              prompt='Are you sure you want to destroy the app?')
 @pass_context
-def cli(ctx, name, confirm):
+def cli(ctx, name):
     """Deletes the application."""
     id_token = ctx.config.get('default', 'id_token')
     api_uri = ctx.config.get('default', 'api_uri')
 
-    # Check if app exists
+    click.echo('Deleting app...')
+
     url = api_uri + '/apps/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-
-    if not confirm:
-        if click.confirm('Are you sure you want to delete application: ' + name + '?', abort=True):
-            confirm = True
-
-    if confirm:
-        click.echo('Deleting app...')
-
-        url = api_uri + '/apps/' + name
-        headers = {'Authorization': id_token}
-
-        r = request('delete', url, headers)
+    r = request('delete', url, headers)
 
     with click_spinner.spinner():
         while True:

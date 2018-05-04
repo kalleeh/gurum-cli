@@ -54,8 +54,11 @@ pass_context = click.make_pass_decorator(Context, ensure=True)
 def cli(ctx, verbose):
     ctx.verbose = verbose
 
-
 cli.add_command(apps)
 cli.add_command(pipelines)
 cli.add_command(users)
 cli = click.CommandCollection(sources=[cli, main])
+
+# If Frozen
+if getattr(sys, 'frozen', False):
+    cli(sys.argv[1:])

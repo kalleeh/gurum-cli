@@ -24,7 +24,7 @@ def cli(ctx, name, start, end, filter_pattern, watch):
     options = {}
     log_group_name = name
 
-    options['log_group_name'] = log_group_name
+    options['log_group_name'] = 'platform-app-{}'.format(log_group_name)
     options['log_stream_name'] = 'ALL'
     if 'start' in locals():
         options['start'] = start

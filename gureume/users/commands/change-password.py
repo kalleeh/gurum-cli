@@ -8,16 +8,12 @@ from warrant import Cognito
 
 @click.command('change-password', short_help='Change password for current user')
 @click.option('--password', prompt=True, hide_input=True)
-@click.option('--new-password', prompt=True, hide_input=True)
-@click.option('--confirm-password', prompt=True, hide_input=True)
+@click.option('--new-password', prompt=True, hide_input=True, confirmation_prompt=True)
 @pass_context
 def cli(ctx, password, new_password, confirm_password):
     """Change password."""
     user = ctx.config.get('default', 'user')
     click.echo('Changing password for {}...'.format(user), nl=True)
-
-    if new_password != confirm_password:
-        raise click.UsageError('Passwords does not match. Please try again')
 
     id_token = ""
     refresh_token = ""

@@ -39,9 +39,6 @@ def cli(ctx, name, app, dev, test, repo, branch, token, user):
         "github_user": user
     }
 
-    # Convert dict to JSON
-    payload = json.dumps(payload)
-
     try:
         r = requests.post(url, json=payload, headers=headers)
         r.raise_for_status()  # throw exception if request does not return 2xx
