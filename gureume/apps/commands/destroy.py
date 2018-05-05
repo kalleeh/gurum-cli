@@ -70,9 +70,12 @@ def cli(ctx, name):
             for key, val in apps['tags'].items():
                 click.secho("- {}: {}".format(key, val))
 
-            click.echo('Deleting app: {}.\nThis usually takes around 5 minutes...'.format(name))
-
             click.echo(json_to_table(events))
+
+            click.echo('Working on: {}'.format(name))
+            click.echo('This usually takes a couple of minutes...')
+            click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
+                        'anytime and it will continue running in background.')
 
             # Stop loop if task is complete
             if apps['status'].endswith('_COMPLETE'):

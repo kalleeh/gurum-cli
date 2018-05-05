@@ -69,7 +69,7 @@ def cli(ctx, name):
             for key, val in apps['tags'].items():
                 click.secho("- {}: {}".format(key, val))
 
-            click.echo('Deleting pipeline: {}.\nThis usually takes around 5 minutes...'.format(name))
+            click.echo('Deleting pipeline: {}\nThis usually takes around 5 minutes...'.format(name))
             
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
@@ -78,6 +78,11 @@ def cli(ctx, name):
             events = json.loads(r.text)
 
             click.echo(json_to_table(events))
+
+            click.echo('Working on: {}'.format(name))
+            click.echo('This usually takes a couple of minutes...')
+            click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
+                        'anytime and it will continue running in background.')
 
             if apps['status'].endswith('_COMPLETE'):
                 break
