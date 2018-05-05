@@ -1,8 +1,10 @@
 import requests
 import json
+import sys
 
 from prettytable import PrettyTable
 from haikunator import Haikunator
+
 
 def haikunate():
     haikunator = Haikunator()
@@ -18,23 +20,29 @@ def request(method, url, headers, *payload):
             response = requests.delete(url, headers=headers)
         elif method == 'patch':
             response = requests.patch(url, json=payload, headers=headers)
-        # Throw exception if request does not return 2xx
+
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
-        if response.status_code == 422:
-            # Unprocessable Entity
-            json_response = json.loads(response.text)
-            if json_response['errors'][0]['code'] == 'error_code':
-                print('Error!')
-
-        # Unprocessable for some other reason or other HTTP error != 422
-        print('HTTP Error: {}'.format(e))
-        raise
+        if response.status_code >= 500:
+            print('[{0}] Server Error'.format(response.status_code))
+            sys.exit(1)
+        elif response.status_code == 404:
+            print('[{0}] URL not found: [{1}]'.format(response.status_code, url))
+            sys.exit(1)
+        elif response.status_code == 401:
+            print('[{0}] Authentication Failed. Please login first.'.format(response.status_code))
+            sys.exit(1)
+        elif response.status_code == 400:
+            print('[{0}] Bad Request'.format(response.status_code))
+            sys.exit(1)
+        elif response.status_code >= 300:
+            print('[{0}] Unexpected Redirect'.format(response.status_code))
+            sys.exit(1)
     except requests.exceptions.RequestException as e:
-        print('Connection error: {}'.format(e))
-        raise
-    
-    return response
+        print('Unexpected Error: [HTTP {0}]: Content: {1}'.format(response.status_code, response.content))
+        sys.exit(1)
+    else:
+        return response
 
 
 def json_to_table(events):
