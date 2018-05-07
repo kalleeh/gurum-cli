@@ -85,7 +85,7 @@ def cli(ctx, user, password):
             ctx.config.add_section('default')
         if not ctx.config.has_option('default', 'api_uri'):
             ctx.config.set('default', 'api_uri', 'https://api.gureu.me')
-        ctx.config.set('default', 'user', '')
+        ctx.config.set('default', 'user', user)
         ctx.config.set('default', 'id_token', credentials['id_token'])
         ctx.config.set('default', 'refresh_token', credentials['refresh_token'])
         ctx.config.set('default', 'access_token', credentials['access_token'])
