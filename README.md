@@ -37,7 +37,7 @@ When you have pipenv installed you can just run the following command in the fol
 
 ```bash
 pipenv install -e .
-````
+```
 
 Then enter the venv shell to start using the CLI.
 
