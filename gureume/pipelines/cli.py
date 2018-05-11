@@ -2,8 +2,6 @@ import os
 import sys
 import click
 
-from gureume.lib.loadcommand import LoadCommands 
-
 plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')
 
 
