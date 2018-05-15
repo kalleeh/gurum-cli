@@ -45,6 +45,8 @@ def cli(ctx, name):
         click.secho("Endpoint: " + apps['endpoint'], fg='yellow')
     if 'repository' in apps:
         click.secho("Repository: " + apps['repository'], fg='yellow')
+    if 'service_role' in apps:
+        click.secho("Service Role: " + apps['service_role'], fg='yellow')
 
     # iterate over and print tags
     click.secho("Tags: ")
