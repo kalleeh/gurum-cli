@@ -49,7 +49,7 @@ def cli(ctx, name):
 
             click.clear()
             
-            click.secho("=== " + apps['name'], fg='yellow')
+            click.secho("=== " + apps['name'], fg='blue')
             click.secho("Description: " + apps['description'])
 
             # print status yellow if in progress, completed is green
@@ -61,9 +61,11 @@ def cli(ctx, name):
                 click.secho("Status: " + apps['status'], fg='red')
 
             if 'endpoint' in apps:
-                click.secho("Endpoint: " + apps['endpoint'], fg='yellow')
+                click.secho("Endpoint: " + apps['endpoint'], fg='green')
             if 'repository' in apps:
-                click.secho("Repository: " + apps['repository'], fg='yellow')
+                click.secho("Repository: " + apps['repository'], fg='green')
+            if 'service_role' in apps:
+                click.secho("Service Role: " + apps['service_role'], fg='green')
 
             # iterate over and print tags
             click.secho("Tags: ")

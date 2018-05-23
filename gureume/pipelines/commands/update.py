@@ -56,7 +56,7 @@ def cli(ctx, name, **kwargs):
 
                 click.clear()
                 
-                click.secho("=== " + pipelines['name'], fg='yellow')
+                click.secho("=== " + pipelines['name'], fg='blue')
                 click.secho("Description: " + pipelines['description'])
 
                 # print status yellow if in progress, completed is green
@@ -68,9 +68,9 @@ def cli(ctx, name, **kwargs):
                     click.secho("Status: " + pipelines['status'], fg='red')
 
                 if 'endpoint' in pipelines:
-                    click.secho("Endpoint: " + pipelines['endpoint'], fg='yellow')
+                    click.secho("Endpoint: " + pipelines['endpoint'], fg='green')
                 if 'repository' in pipelines:
-                    click.secho("Repository: " + pipelines['repository'], fg='yellow')
+                    click.secho("Repository: " + pipelines['repository'], fg='green')
 
                 # iterate over and print tags
                 click.secho("Tags: ")

@@ -38,7 +38,7 @@ def cli(ctx, name):
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
-            apps = json.loads(r.text)
+            pipelines = json.loads(r.text)
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
@@ -48,25 +48,25 @@ def cli(ctx, name):
 
             click.clear()
 
-            click.secho("=== " + apps['name'], fg='yellow')
-            click.secho("Description: " + apps['description'])
+            click.secho("=== " + pipelines['name'], fg='blue')
+            click.secho("Description: " + pipelines['description'])
 
             # print status yellow if in progress, completed is green
-            if(apps['status'].endswith('_IN_PROGRESS')):
-                click.secho("Status: " + apps['status'], fg='yellow')
-            elif(apps['status'].endswith('_COMPLETE')):
-                click.secho("Status: " + apps['status'], fg='green')
+            if(pipelines['status'].endswith('_IN_PROGRESS')):
+                click.secho("Status: " + pipelines['status'], fg='yellow')
+            elif(pipelines['status'].endswith('_COMPLETE')):
+                click.secho("Status: " + pipelines['status'], fg='green')
             else:
-                click.secho("Status: " + apps['status'], fg='red')
+                click.secho("Status: " + pipelines['status'], fg='red')
 
-            if 'endpoint' in apps:
-                click.secho("Endpoint: " + apps['endpoint'], fg='yellow')
-            if 'repository' in apps:
-                click.secho("Repository: " + apps['repository'], fg='yellow')
+            if 'endpoint' in pipelines:
+                click.secho("Endpoint: " + pipelines['endpoint'], fg='green')
+            if 'repository' in pipelines:
+                click.secho("Repository: " + pipelines['repository'], fg='green')
 
             # iterate over and print tags
             click.secho("Tags: ")
-            for key, val in apps['tags'].items():
+            for key, val in pipelines['tags'].items():
                 click.secho("- {}: {}".format(key, val))
 
             click.echo('Deleting pipeline: {}\nThis usually takes around 5 minutes...'.format(name))
@@ -84,7 +84,7 @@ def cli(ctx, name):
             click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
                         'anytime and it will continue running in background.')
 
-            if apps['status'].endswith('_COMPLETE'):
+            if pipelines['status'].endswith('_COMPLETE'):
                 break
 
             # refresh every 5 seconds

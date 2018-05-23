@@ -22,7 +22,7 @@ from gureume.lib.util import request, json_to_table, haikunate
 def cli(ctx, name, **kwargs):
     """Create a new pipeline."""
     id_token = ""
-    apps = {}
+    pipelines = {}
 
     id_token = ctx.config.get('default', 'id_token')
     api_uri = ctx.config.get('default', 'api_uri')
@@ -34,7 +34,7 @@ def cli(ctx, name, **kwargs):
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
     
     r = request('post', url, headers, payload)
-    apps = json.loads(r.text)
+    pipelines = json.loads(r.text)
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -44,7 +44,7 @@ def cli(ctx, name, **kwargs):
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
-            apps = json.loads(r.text)
+            pipelines = json.loads(r.text)
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
@@ -54,25 +54,25 @@ def cli(ctx, name, **kwargs):
 
             click.clear()
 
-            click.secho("=== " + apps['name'], fg='yellow')
-            click.secho("Description: " + apps['description'])
+            click.secho("=== " + pipelines['name'], fg='blue')
+            click.secho("Description: " + pipelines['description'])
 
             # print status yellow if in progress, completed is green
-            if(apps['status'] == 'CREATE_IN_PROGRESS'):
-                click.secho("Status: " + apps['status'], fg='yellow')
-            elif(apps['status'] == 'CREATE_COMPLETE'):
-                click.secho("Status: " + apps['status'], fg='green')
+            if(pipelines['status'] == 'CREATE_IN_PROGRESS'):
+                click.secho("Status: " + pipelines['status'], fg='yellow')
+            elif(pipelines['status'] == 'CREATE_COMPLETE'):
+                click.secho("Status: " + pipelines['status'], fg='green')
             else:
-                click.secho("Status: " + apps['status'], fg='red')
+                click.secho("Status: " + pipelines['status'], fg='red')
 
-            if 'endpoint' in apps:
-                click.secho("Endpoint: " + apps['endpoint'], fg='yellow')
-            if 'repository' in apps:
-                click.secho("Repository: " + apps['repository'], fg='yellow')
+            if 'endpoint' in pipelines:
+                click.secho("Endpoint: " + pipelines['endpoint'], fg='green')
+            if 'repository' in pipelines:
+                click.secho("Repository: " + pipelines['repository'], fg='green')
 
             # iterate over and print tags
             click.secho("Tags: ")
-            for key, val in apps['tags'].items():
+            for key, val in pipelines['tags'].items():
                 click.secho("- {}: {}".format(key, val))
 
             # Get CloudFormation Events
@@ -88,7 +88,7 @@ def cli(ctx, name, **kwargs):
             click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
                         'anytime and it will continue running in background.')
 
-            if apps['status'] == 'CREATE_COMPLETE':
+            if pipelines['status'] == 'CREATE_COMPLETE':
                 break
 
             # refresh every 5 seconds
