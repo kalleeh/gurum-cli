@@ -8,7 +8,7 @@ from gureume.cli import pass_context
 from warrant import Cognito, exceptions
 
 
-@click.command('login', short_help='Log out of the platform')
+@click.command('login', short_help='Login to the platform')
 @click.option('--user', prompt=True, help='Username (email)')
 @click.option('--password', prompt=True, hide_input=True)
 @pass_context

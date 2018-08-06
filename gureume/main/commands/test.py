@@ -4,7 +4,7 @@ import json
 from gureume.cli import pass_context
 
 
-@click.command('test', short_help='Log out of the platform')
+@click.command('test', short_help='Test command for CLI')
 @click.argument('name')
 @click.option('--tasks', prompt=False, default='1', help='Number of tasks to run')
 @click.option('--health-check-path', prompt=False, help='Path that is queried for health checks')
