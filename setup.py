@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='gureume',
-    version='0.2',
-    packages=find_packages(),
+    version='0.3',
+    packages=find_packages(exclude=['__pycache__']),
     include_package_data=True,
     install_requires=[
         'click',
