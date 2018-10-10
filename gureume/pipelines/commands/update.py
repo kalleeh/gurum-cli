@@ -14,10 +14,10 @@ from gureume.lib.util import request, json_to_table
 @click.option('--app-name', prompt=True, help="App to link pipeline to")
 @click.option('--app-dev', prompt=False, required=False, help="Add a development stage to the pipeline")
 @click.option('--app-test', prompt=False, required=False, help="Add a test stage to the pipeline")
-@click.option('--github-repo', prompt=True, help="GitHub repo to pull source from")
-@click.option('--github-branch', prompt=True, default='master', help="Branch to deploy")
-@click.option('--github-token', prompt=True, help="OAuth Token for access")
-@click.option('--github-user', prompt=True, help="GitHub user name")
+@click.option('--github-repo', prompt=False, required=False, help="GitHub repo to pull source from")
+@click.option('--github-branch', prompt=False, required=False, default='master', help="Branch to deploy")
+@click.option('--github-token', prompt=False, required=False, help="OAuth Token for access")
+@click.option('--github-user', prompt=False, required=False, help="GitHub user name")
 @pass_context
 def cli(ctx, name, **kwargs):
     """Update pipeline configuration."""
