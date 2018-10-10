@@ -1,12 +1,10 @@
-Gureume CLI
-==============================================
+# Gureume CLI
 
 This CLI provides the main developer interface for the Gureume Container Platform.
 It provides capabilities for basic app management, creation of pipelines and user management.
 Basic log viewing and filtering can exist for troubleshooting.
 
-What's Here
------------
+## What's Here
 
 * README.md - this file
 * Pipfile - requrements file for usage with Pipenv
@@ -14,8 +12,7 @@ What's Here
 * gureume/ - this directory contains the Click CLI files and entrypoint referenced from setup.py
 * tests/ - this directory contains unit tests for your application
 
-Installation
-------------
+## Installation
 
 It is recommended to use pipenv to install and edit the CLI.
 It automatically creates and manages a virtualenv for your projects, as well as adds/removes packages from your Pipfile as you install/uninstall packages. It also generates the ever–important Pipfile.lock, which is used to produce deterministic builds.
@@ -45,8 +42,7 @@ Then enter the venv shell to start using the CLI.
 pipenv shell
 ```
 
-Quickstart Guide
------------
+## Quickstart Guide
 
 ### Logging in
 
@@ -108,8 +104,7 @@ To view the logs of your running containers you can use the logs command. By def
 gureume apps logs my-app --start '30m' --watch
 ```
 
-Usage Guide
------------
+## Usage Guide
 
 ### Commands
 
@@ -130,3 +125,36 @@ gureume
   * destroy
   * ls
   * update
+
+### Sample Deploy
+
+```bash
+gureume apps create
+> portal
+gureume pipelines create
+> Name: portal-pipeline
+> App name: portal
+> Github repo: portal
+> Github branch: master
+> Github token: TOKEN
+> Github user: kalleeh
+
+gureume apps create
+> weather
+gureume pipelines create
+> Name: weather-pipeline
+> App name: weather
+> Github repo: weather
+> Github branch: master
+> Github token: TOKEN
+> Github user: kalleeh
+
+gureume apps create
+> stocks
+gureume pipelines create
+> Name: stocks-pipeline
+> App name: stocks
+> Github repo: stocks
+> Github branch: master
+> Github token: TOKEN
+> Github user: kalleeh
