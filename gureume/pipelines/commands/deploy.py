@@ -32,6 +32,7 @@ def cli(ctx, **kwargs):
 
     r = request('post', url, headers, payload)
     apps = json.loads(r.text)
+    apps = json.loads(apps['body'])
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -42,12 +43,14 @@ def cli(ctx, **kwargs):
 
             r = request('get', url, headers)
             apps = json.loads(r.text)
+            apps = json.loads(apps['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + kwargs['name']
 
             r = request('get', url, headers)
             events = json.loads(r.text)
+            events = json.loads(events['body'])
 
             click.clear()
 

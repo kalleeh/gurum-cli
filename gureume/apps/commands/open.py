@@ -24,6 +24,7 @@ def cli(ctx, name):
 
     r = request('get', url, headers)
     apps = json.loads(r.text)
+    apps = json.loads(apps['body'])
 
     click.secho("=== " + apps['name'], fg='blue')
     click.secho("Description: " + apps['description'])

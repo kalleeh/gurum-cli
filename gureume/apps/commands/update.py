@@ -32,6 +32,7 @@ def cli(ctx, name, **kwargs):
     try:
         r = request('patch', url, headers, payload)
         apps = json.loads(r.text)
+        apps = json.loads(apps['body'])
     except Exception:
         pass
     else:
