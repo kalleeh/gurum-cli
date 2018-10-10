@@ -8,6 +8,11 @@ from gureume.cli import pass_context
 from warrant import Cognito, exceptions
 
 
+user_pool_id = os.environ['COGNITO_USER_POOL_ID']
+identity_pool_id = os.environ['COGNITO_IDENTITY_POOL_ID']
+app_client_id = os.environ['COGNITO_APP_CLIENT_ID']
+region = os.environ['REGION']
+
 @click.command('login', short_help='Login to the platform')
 @click.option('--user', prompt=True, help='Username (email)')
 @click.option('--password', prompt=True, hide_input=True)
@@ -18,14 +23,14 @@ def cli(ctx, user, password):
     credentials = {}
 
     u = Cognito(
-        'eu-west-1_MkM8NwiuN',
-        '1ts0lglioorltjrs0j3k3bniv5',
+        user_pool_id,
+        app_client_id,
         username=user)
     
     # Patch for clients without a ~./aws/credentials file or unconfigured AWS credentials
     u.client = boto3.client(
         'cognito-idp',
-        region_name='eu-west-1',
+        region_name=region,
         config=botocore.config.Config(
             signature_version=botocore.UNSIGNED
         )
@@ -55,9 +60,9 @@ def cli(ctx, user, password):
 
         try:
             response = client.get_id(
-                IdentityPoolId='eu-west-1:b56abbdb-9b9b-4fa0-a7fd-538e3fff97e7',
+                IdentityPoolId='{}:{}'.format(region, identity_pool_id),
                 Logins={
-                    'cognito-idp.eu-west-1.amazonaws.com/eu-west-1_MkM8NwiuN': credentials['id_token']
+                    'cognito-idp.{}.amazonaws.com/{}'.format(region, user_pool_id): credentials['id_token']
                 }
             )
 
@@ -69,7 +74,7 @@ def cli(ctx, user, password):
             response = client.get_credentials_for_identity(
                 IdentityId=user_identity_id,
                 Logins={
-                    'cognito-idp.eu-west-1.amazonaws.com/eu-west-1_MkM8NwiuN': credentials['id_token']
+                    'cognito-idp.{}.amazonaws.com/{}'.format(region, user_pool_id): credentials['id_token']
                 }
             )
 
