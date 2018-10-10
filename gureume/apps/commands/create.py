@@ -31,9 +31,10 @@ def cli(ctx, **kwargs):
     
     # Dynamically get options and remove undefined options
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
-
+    
     r = request('post', url, headers, payload)
     apps = json.loads(r.text)
+    apps = json.loads(apps['body'])
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
