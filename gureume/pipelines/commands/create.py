@@ -45,12 +45,14 @@ def cli(ctx, name, **kwargs):
 
             r = request('get', url, headers)
             pipelines = json.loads(r.text)
+            pipelines = json.loads(pipelines['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
             r = request('get', url, headers)
             events = json.loads(r.text)
+            events = json.loads(events['body'])
 
             click.clear()
 
@@ -80,6 +82,7 @@ def cli(ctx, name, **kwargs):
 
             r = request('get', url, headers)
             events = json.loads(r.text)
+            events = json.loads(events['body'])
 
             click.echo(json_to_table(events))
 

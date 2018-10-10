@@ -22,6 +22,7 @@ def cli(ctx, name):
 
     r = request('get', url, headers)
     pipelines = json.loads(r.text)
+    pipelines = json.loads(pipelines['body'])
 
     click.secho("=== " + pipelines['name'], fg='blue')
     click.secho("Description: " + pipelines['description'])
@@ -48,16 +49,13 @@ def cli(ctx, name):
     click.secho("Tags: ")
     for key, val in pipelines['tags'].items():
         click.secho("- {}: {}".format(key, val))
-    
-    url = api_uri + '/events/' + name
-    headers = {'Authorization': id_token}
-    r = request('get', url, headers)
-    events = json.loads(r.text)
 
     # Get CloudFormation Events
     url = api_uri + '/events/' + name
+    headers = {'Authorization': id_token}
 
     r = request('get', url, headers)
     events = json.loads(r.text)
+    events = json.loads(events['body'])
 
     click.echo(json_to_table(events))

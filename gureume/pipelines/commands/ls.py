@@ -18,7 +18,8 @@ def cli(ctx):
     headers = {'Authorization': id_token}
 
     r = request('get', url, headers)
-    apps = json.loads(r.text)
+    pipelines = json.loads(r.text)
+    pipelines = json.loads(pipelines['body'])
 
     click.echo("=== Pipelines:")
-    click.echo(json_to_table(apps))
+    click.echo(json_to_table(pipelines))

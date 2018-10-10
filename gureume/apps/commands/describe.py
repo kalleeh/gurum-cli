@@ -29,12 +29,15 @@ def cli(ctx, name, watch):
             
             r = request('get', url, headers)
             apps = json.loads(r.text)
+            apps = json.loads(apps['body'])
+            print(apps['name'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
             r = request('get', url, headers)
             events = json.loads(r.text)
+            events = json.loads(events['body'])
 
             if watch:
                 click.clear()
