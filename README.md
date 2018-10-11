@@ -129,22 +129,14 @@ gureume
 ### Sample Deploy
 
 ```bash
+gureume apps create --image alexwhen/docker-2048 --health-check-path '/'
+
 gureume apps create
 > portal
 gureume pipelines create
 > Name: portal-pipeline
 > App name: portal
 > Github repo: portal
-> Github branch: master
-> Github token: TOKEN
-> Github user: kalleeh
-
-gureume apps create
-> weather
-gureume pipelines create
-> Name: weather-pipeline
-> App name: weather
-> Github repo: weather
 > Github branch: master
 > Github token: TOKEN
 > Github user: kalleeh
