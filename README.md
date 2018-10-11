@@ -150,3 +150,6 @@ gureume pipelines create
 > Github branch: master
 > Github token: TOKEN
 > Github user: kalleeh
+
+# Watch the logs for the stocks service and filter out health checks
+gureume apps logs stocks --watch | grep -v "/health"
