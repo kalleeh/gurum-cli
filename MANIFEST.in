@@ -1,1 +1,2 @@
-recursive-include gureume *
+include LICENSE
+prune tests

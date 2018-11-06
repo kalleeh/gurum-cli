@@ -12,7 +12,6 @@ click = "*"
 botocore = "*"
 "boto3" = "*"
 warrant = "*"
-"e1839a8" = {path = ".", editable = true}
 click-spinner = "*"
 tox-pipenv = "*"
 gitpython = "*"
@@ -28,4 +27,4 @@ haikunator = "*"
 
 [requires]
 
-python_version = "3.6"
+python_version = "3.7"

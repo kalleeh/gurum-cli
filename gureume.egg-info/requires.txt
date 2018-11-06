@@ -1,9 +1,0 @@
-click
-click-spinner
-colorama
-termcolor
-requests
-botocore
-boto3
-warrant
-GitPython
