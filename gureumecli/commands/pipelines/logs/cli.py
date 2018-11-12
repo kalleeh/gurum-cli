@@ -31,10 +31,10 @@ def cli(ctx, name, **kwargs):
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
     options['output_timestamp_enabled'] = 'true'
-    options['aws_access_key_id'] = ctx.config.get('default', 'aws_access_key_id')
-    options['aws_secret_access_key'] = ctx.config.get('default', 'aws_secret_access_key')
-    options['aws_session_token'] = ctx.config.get('default', 'aws_session_token')
-    options['aws_region'] = ctx.config.get('default', 'aws_region')
+    options['aws_access_key_id'] = ctx._config.get('default', 'aws_access_key_id')
+    options['aws_secret_access_key'] = ctx._config.get('default', 'aws_secret_access_key')
+    options['aws_session_token'] = ctx._config.get('default', 'aws_session_token')
+    options['aws_region'] = ctx._config.get('default', 'aws_region')
 
     try:
         logs = AWSLogs(**options)

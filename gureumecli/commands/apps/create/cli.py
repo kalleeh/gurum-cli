@@ -18,13 +18,29 @@ from gureumecli.lib.utils.util import request, json_to_table, haikunate
 @click.option('--image', prompt=False, default='nginx:latest', help='Docker image to run')
 @pass_context
 def cli(ctx, **kwargs):
+    """ \b
+        Create a new application.
+
+    \b
+    Common usage:
+
+        \b
+        Display detailed information about an application.
+        \b
+        $ gureume apps create myApp
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, **kwargs)  # pragma: no cover
+
+
+def do_cli(ctx, **kwargs):
     """Create a new application."""
     id_token = ""
     apps = {}
     payload = {}
 
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
 
     url = api_uri + '/apps'
     headers = {'Authorization': id_token}

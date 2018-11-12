@@ -21,8 +21,8 @@ def abort_if_false(ctx, param, value):
 @pass_context
 def cli(ctx, name):
     """Deletes the pipeline."""
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
 
     click.echo('Deleting pipeline...')
 

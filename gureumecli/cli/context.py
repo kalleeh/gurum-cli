@@ -31,6 +31,10 @@ class Context(object):
         self._aws_region = None
         self._aws_profile = None
         self._config = None
+        self._cfg_name = None
+        self._cfg_path = None
+        self._id_token = None
+        self._api_uri = None
 
     @property
     def debug(self):
@@ -91,18 +95,24 @@ class Context(object):
         """
         Manage configuration file
         """
+        self._config = value
+        self._refresh_config()
 
-        cfg_path = click.get_app_dir(self._app_name)
+    def _refresh_config(self):
+        """
+        Update the configuration properties read from configuration file based on values set in the context.
+        """
+        self._cfg_path = click.get_app_dir(self._app_name)
 
-        if not os.path.exists(cfg_path):
-            os.makedirs(cfg_path)
-        cfg_name = os.path.join(cfg_path, '.', self._app_name)
-        if not os.path.exists(cfg_name):
-            with open(cfg_name, 'a') as f:
+        if not os.path.exists(self._cfg_path):
+            os.makedirs(self._cfg_path)
+        self._cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
+        if not os.path.exists(self._cfg_name):
+            with open(self._cfg_name, 'a') as f:
                 f.write(' \
                     [default] \
                     user = \
                 ')
-
+        
         self._config = configparser.ConfigParser()
-        self._config.read(cfg_name)
+        self._config.read(self._cfg_name)

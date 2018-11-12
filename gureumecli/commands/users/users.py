@@ -1,5 +1,5 @@
 """
-Command group for "local" suite for commands. It provides common CLI arguments, template parsing capabilities,
+Command group for "users" suite for commands. It provides common CLI arguments, template parsing capabilities,
 setting up stdin/stdout etc
 """
 

@@ -6,7 +6,7 @@ import logging
 import click
 
 from gureumecli import __version__
-from .options import debug_option, region_option, profile_option
+from .options import debug_option, config_option, region_option, profile_option
 from .context import Context
 from .command import BaseCommand
 
@@ -24,6 +24,7 @@ def common_options(f):
     :return: Callback function
     """
     f = debug_option(f)
+    f = config_option(f)
     return f
 
 
@@ -42,11 +43,11 @@ def aws_creds_options(f):
 @pass_context
 def cli(ctx):
     """
-    AWS Serverless Application Model (GUREUME) CLI
+    AWS Gureume Platform (GUREUME) CLI
 
-    The AWS Serverless Application Model extends AWS CloudFormation to provide a simplified way of defining the
-    Amazon API Gateway APIs, AWS Lambda functions, and Amazon DynamoDB tables needed by your serverless application.
+    The AWS Gureume Platform extends AWS Container Services to provide a simplified way of managing container
+    applications on Elastic Container Service, AWS CodePipeline, and other services needed by your container application.
     You can find more in-depth guide about the GUREUME specification here:
-    https://github.com/awslabs/serverless-application-model.
+    https://github.com/kalleeh/gureume-platform.
     """
     pass

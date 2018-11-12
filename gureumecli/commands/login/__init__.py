@@ -31,43 +31,17 @@ region = os.environ['REGION']
 @pass_context
 def cli(ctx, user, password):
     """ \b
-        Initialize a serverless application with a GUREUME template, folder
-        structure for your Lambda functions, connected to an event source such as APIs,
-        S3 Buckets or DynamoDB Tables. This application includes everything you need to
-        get started with serverless and eventually grow into a production scale application.
-        \b
-        This command can initialize a boilerplate serverless app. If you want to create your own
-        template as well as use a custom location please take a look at our official documentation.
+        Login to the GUREUME platform using your Cognito credentials.
+        This will populate your temporary session tokens in your configuration file.
+        Usually this is located with the application data directory.
 
     \b
     Common usage:
 
         \b
-        Initializes a new GUREUME project using Python 3.6 default template runtime
+        Logs in to the platform.
         \b
-        $ sam init --runtime python3.6
-        \b
-        Initializes a new GUREUME project using custom template in a Git/Mercurial repository
-        \b
-        # gh being expanded to github url
-        $ sam init --location gh:aws-samples/cookiecutter-aws-sam-python
-        \b
-        $ sam init --location git+ssh://git@github.com/aws-samples/cookiecutter-aws-sam-python.git
-        \b
-        $ sam init --location hg+ssh://hg@bitbucket.org/repo/template-name
-
-        \b
-        Initializes a new GUREUME project using custom template in a Zipfile
-        \b
-        $ sam init --location /path/to/template.zip
-        \b
-        $ sam init --location https://example.com/path/to/template.zip
-
-        \b
-        Initializes a new GUREUME project using custom template in a local path
-        \b
-        $ sam init --location /path/to/template/folder
-
+        $ gureume login
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx, user, password)  # pragma: no cover
@@ -142,20 +116,22 @@ def do_cli(ctx, user, password):
             click.echo(ex)
 
         # Configure the config file with API URI and temporary credentials
-        if not ctx.config.has_section('default'):
-            ctx.config.add_section('default')
-        if not ctx.config.has_option('default', 'api_uri'):
-            ctx.config.set('default', 'api_uri', 'https://api.gureu.me')
-        ctx.config.set('default', 'user', user)
-        ctx.config.set('default', 'id_token', credentials['id_token'])
-        ctx.config.set('default', 'refresh_token', credentials['refresh_token'])
-        ctx.config.set('default', 'access_token', credentials['access_token'])
-        ctx.config.set('default', 'aws_access_key_id', credentials['aws_access_key_id'])
-        ctx.config.set('default', 'aws_secret_access_key', credentials['aws_secret_access_key'])
-        ctx.config.set('default', 'aws_session_token', credentials['aws_session_token'])
-        ctx.config.set('default', 'aws_region', 'eu-west-1')
-        cfgfile = open(ctx.cfg_name, 'w+')
-        ctx.config.write(cfgfile)
+        if not ctx._config.has_section('default'):
+            ctx._config.add_section('default')
+        if not ctx._config.has_option('default', 'api_uri'):
+            ctx._config.set('default', 'api_uri', 'https://api.gureu.me')
+        ctx._api_uri = 'https://api.gureu.me'
+        ctx._config.set('default', 'user', user)
+        ctx._config.set('default', 'id_token', credentials['id_token'])
+        ctx._id_token = credentials['id_token']
+        ctx._config.set('default', 'refresh_token', credentials['refresh_token'])
+        ctx._config.set('default', 'access_token', credentials['access_token'])
+        ctx._config.set('default', 'aws_access_key_id', credentials['aws_access_key_id'])
+        ctx._config.set('default', 'aws_secret_access_key', credentials['aws_secret_access_key'])
+        ctx._config.set('default', 'aws_session_token', credentials['aws_session_token'])
+        ctx._config.set('default', 'aws_region', 'eu-west-1')
+        cfgfile = open(ctx._cfg_name, 'w+')
+        ctx._config.write(cfgfile)
         cfgfile.close()
 
         click.echo('Logged in!')

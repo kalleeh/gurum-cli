@@ -13,12 +13,29 @@ from gureumecli.lib.utils.util import request, json_to_table
 @click.argument('name')
 @click.option('--watch', is_flag=True, help='Automatically update the stauts every 5s')
 @pass_context
+@common_options
 def cli(ctx, name, watch):
+    """ \b
+        Display detailed information about the application
+
+    \b
+    Common usage:
+
+        \b
+        Display detailed information about an application.
+        \b
+        $ gureume apps describe myApp
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, name, watch)  # pragma: no cover
+
+
+def do_cli(ctx, name, watch):
     """Display detailed information about the application."""
     apps = {}
 
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -30,7 +47,6 @@ def cli(ctx, name, watch):
             r = request('get', url, headers)
             apps = json.loads(r.text)
             apps = json.loads(apps['body'])
-            print(apps['name'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name

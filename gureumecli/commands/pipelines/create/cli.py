@@ -24,8 +24,8 @@ def cli(ctx, **kwargs):
     id_token = ""
     pipelines = {}
 
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
 
     url = api_uri + '/pipelines'
     headers = {'Authorization': id_token}

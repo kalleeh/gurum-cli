@@ -27,6 +27,24 @@ def debug_option(f):
                         callback=callback)(f)
 
 
+def config_option(f):
+    """
+    Configures --config option for CLI
+
+    :param f: Callback Function to be passed to Click
+    """
+    def callback(ctx, param, value):
+        state = ctx.ensure_object(Context)
+        state.config = value
+        return value
+
+    return click.option('--config',
+                        expose_value=False,
+                        envvar="GUREUME_CONFIG",
+                        help='Specify configuration file to be used for the GUREUME CLI.',
+                        callback=callback)(f)
+
+
 def region_option(f):
     """
     Configures --region option for CLI

@@ -24,10 +24,10 @@ def cli(ctx, args):
 
 def do_cli(ctx, args):
     """Authenticates to the platform to access your apps."""
-    user = ctx.config.get('default', 'user')
-    id_token = ctx.config.get('default', 'id_token')
-    refresh_token = ctx.config.get('default', 'refresh_token')
-    access_token = ctx.config.get('default', 'access_token')
+    user = ctx._config.get('default', 'user')
+    id_token = ctx._config.get('default', 'id_token')
+    refresh_token = ctx._config.get('default', 'refresh_token')
+    access_token = ctx._config.get('default', 'access_token')
 
     click.echo('Signing out {}...'.format(user), nl=True)
 
@@ -45,12 +45,12 @@ def do_cli(ctx, args):
         click.echo(ex)
 
     # Configure the config file with API URI and temporary credentials
-    if not ctx.config.has_section('default'):
-        ctx.config.add_section('default')
-    if not ctx.config.has_option('default', 'api_uri'):
-        ctx.config.set('default', 'api_uri', 'https://api.gureu.me')
-    ctx.config.set('default', 'user', '')
-    ctx.config.set('default', 'access_token', '')
+    if not ctx._config.has_section('default'):
+        ctx._config.add_section('default')
+    if not ctx._config.has_option('default', 'api_uri'):
+        ctx._config.set('default', 'api_uri', 'https://api.gureu.me')
+    ctx._config.set('default', 'user', '')
+    ctx._config.set('default', 'access_token', '')
     cfgfile = open(ctx.cfg_name, 'w+')
-    ctx.config.write(cfgfile)
+    ctx._config.write(cfgfile)
     cfgfile.close()

@@ -8,15 +8,32 @@ from gureumecli.cli.main import pass_context, common_options
 from gureumecli.lib.utils.util import request, json_to_table
 
 
-@click.command('describe', short_help='Displays details about app')
+@click.command('open', short_help='Opens the app endpoint')
 @click.argument('name')
 @pass_context
+@common_options
 def cli(ctx, name):
-    """Display detailed information about the application."""
+    """ \b
+        Open the application.
+
+    \b
+    Common usage:
+
+        \b
+        Fetches the application endpoint and opens it in a browser.
+        \b
+        $ gureume apps open myApp
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, name)  # pragma: no cover
+
+
+def do_cli(ctx, name):
+    """Open the application."""
     apps = {}
 
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
 
     # Get app status
     url = api_uri + '/apps/' + name

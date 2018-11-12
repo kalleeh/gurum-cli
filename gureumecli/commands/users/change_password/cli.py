@@ -12,15 +12,15 @@ from warrant import Cognito
 @pass_context
 def cli(ctx, password, new_password, confirm_password):
     """Change password."""
-    user = ctx.config.get('default', 'user')
+    user = ctx._config.get('default', 'user')
     click.echo('Changing password for {}...'.format(user), nl=True)
 
     id_token = ""
     refresh_token = ""
     access_token = ""
-    id_token = ctx.config.get('default', 'id_token')
-    refresh_token = ctx.config.get('default', 'refresh_token')
-    access_token = ctx.config.get('default', 'access_token')
+    id_token = ctx._config.get('default', 'id_token')
+    refresh_token = ctx._config.get('default', 'refresh_token')
+    access_token = ctx._config.get('default', 'access_token')
 
     u = Cognito(
         'eu-west-1_MkM8NwiuN',

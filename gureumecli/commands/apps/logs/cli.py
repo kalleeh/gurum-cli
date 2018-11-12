@@ -12,6 +12,7 @@ from gureumecli.cli.main import pass_context, common_options
 from gureumecli.lib.logs.awslogs import AWSLogs
 import gureumecli.commands.exceptions as exceptions
 
+
 @click.command('logs', short_help='Displays logs about your app')
 @click.argument('name')
 @click.option('--start', default='5m', help='Filter starting date/time to get logs')
@@ -19,7 +20,82 @@ import gureumecli.commands.exceptions as exceptions
 @click.option('--filter-pattern', help='Filter logs matching a filter pattern')
 @click.option('--watch', is_flag=True, help='Follow logs')
 @pass_context
+@common_options
 def cli(ctx, name, **kwargs):
+    """ \b
+        View logs for your application. Supports multiple options for watching logs, filtering patterns and time options.
+        Wrapper for https://github.com/jorgebastida/awslogs
+
+    \b
+    Common usage:
+
+        \b
+        Logs in to the platform.
+        \b
+        $ gureume apps logs myApp
+
+    \b
+    Filter options:
+
+        \b
+        You can use --filter-pattern if you want to only retrieve logs which match one CloudWatch Logs Filter pattern.
+        This is helpful if you know precisely what you are looking for, and don't want to download the entire stream.
+
+        \b
+        $ gureume apps logs myApp --filter-pattern="[r=REPORT,...]"
+        Full documentation of how to write patterns: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/FilterAndPatternSyntax.html
+
+    \b
+    Time options:
+
+        \b
+        While querying for logs you can filter events by --start -s and --end -e date.
+
+        \b
+        By minute:
+
+        \b
+        --start='2m' Events generated two minutes ago.
+        --start='1 minute' Events generated one minute ago.
+        --start='5 minutes' Events generated five minutes ago.
+
+        \b
+        By hours:
+
+        \b
+        --start='2h' Events generated two hours ago.
+        --start='1 hour' Events generated one hour ago.
+        --start='5 hours' Events generated five hours ago.
+
+        \b
+        By days:
+
+        \b
+        --start='2d' Events generated two days ago.
+        --start='1 day' Events generated one day ago.
+        --start='5 days' Events generated five days ago.
+
+        \b
+        By weeks:
+
+        \b
+        --start='2w' Events generated two week ago.
+        --start='1 week' Events generated one weeks ago.
+        --start='5 weeks' Events generated five week ago.
+
+        \b
+        Using specific dates:
+
+        \b
+        --start='23/1/2015 12:00' Events generated after midday on the 23th of January 2015.
+        --start='1/1/2015' Events generated after midnight on the 1st of January 2015.
+        --start='Sat Oct 11 17:13:46 UTC 2003' You can use detailed dates too.
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, name, **kwargs)  # pragma: no cover
+
+
+def do_cli(ctx, name, **kwargs):
     """View logs for your app"""
     options = {}
     log_group_name = name
@@ -31,10 +107,10 @@ def cli(ctx, name, **kwargs):
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
     options['output_timestamp_enabled'] = 'true'
-    options['aws_access_key_id'] = ctx.config.get('default', 'aws_access_key_id')
-    options['aws_secret_access_key'] = ctx.config.get('default', 'aws_secret_access_key')
-    options['aws_session_token'] = ctx.config.get('default', 'aws_session_token')
-    options['aws_region'] = ctx.config.get('default', 'aws_region')
+    options['aws_access_key_id'] = ctx._config.get('default', 'aws_access_key_id')
+    options['aws_secret_access_key'] = ctx._config.get('default', 'aws_secret_access_key')
+    options['aws_session_token'] = ctx._config.get('default', 'aws_session_token')
+    options['aws_region'] = ctx._config.get('default', 'aws_region')
 
     try:
         logs = AWSLogs(**options)

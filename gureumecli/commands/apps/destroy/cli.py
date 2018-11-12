@@ -5,7 +5,6 @@ import requests
 import json
 import time
 
-
 from gureumecli.cli.main import pass_context, common_options
 from gureumecli.lib.utils.util import request, json_to_table
 
@@ -20,10 +19,27 @@ def abort_if_false(ctx, param, value):
               expose_value=False,
               prompt='Are you sure you want to destroy the app?')
 @pass_context
+@common_options
 def cli(ctx, name):
+    """ \b
+        Delete an application.
+
+    \b
+    Common usage:
+
+        \b
+        Delete an application.
+        \b
+        $ gureume apps destroy myApp
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, name)  # pragma: no cover
+
+
+def do_cli(ctx, name):
     """Deletes the application."""
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
 
     click.echo('Deleting app...')
 
