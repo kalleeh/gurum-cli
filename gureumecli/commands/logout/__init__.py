@@ -11,18 +11,23 @@ from warrant import Cognito
 
 SHORT_HELP = "Log out from the GUREUME platform."
 
+user_pool_id = os.environ['COGNITO_USER_POOL_ID']
+identity_pool_id = os.environ['COGNITO_IDENTITY_POOL_ID']
+app_client_id = os.environ['COGNITO_APP_CLIENT_ID']
+region = os.environ['REGION']
+
 
 @click.command("logout", short_help=SHORT_HELP, context_settings={"ignore_unknown_options": True})
 @common_options
 @pass_context
-def cli(ctx, args):
+def cli(ctx):
 
     # All logic must be implemented in the ``do_cli`` method. This helps with easy unit testing
 
-    do_cli(ctx, args)  # pragma: no cover
+    do_cli(ctx)  # pragma: no cover
 
 
-def do_cli(ctx, args):
+def do_cli(ctx):
     """Authenticates to the platform to access your apps."""
     user = ctx._config.get('default', 'user')
     id_token = ctx._config.get('default', 'id_token')
@@ -32,8 +37,8 @@ def do_cli(ctx, args):
     click.echo('Signing out {}...'.format(user), nl=True)
 
     u = Cognito(
-        'eu-west-1_MkM8NwiuN',
-        '1ts0lglioorltjrs0j3k3bniv5',
+        user_pool_id,
+        app_client_id,
         id_token=id_token,
         refresh_token=refresh_token,
         access_token=access_token)
@@ -51,6 +56,6 @@ def do_cli(ctx, args):
         ctx._config.set('default', 'api_uri', 'https://api.gureu.me')
     ctx._config.set('default', 'user', '')
     ctx._config.set('default', 'access_token', '')
-    cfgfile = open(ctx.cfg_name, 'w+')
+    cfgfile = open(ctx._cfg_name, 'w+')
     ctx._config.write(cfgfile)
     cfgfile.close()
