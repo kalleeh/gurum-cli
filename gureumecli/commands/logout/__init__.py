@@ -11,11 +11,6 @@ from warrant import Cognito
 
 SHORT_HELP = "Log out from the GUREUME platform."
 
-user_pool_id = os.environ['COGNITO_USER_POOL_ID']
-identity_pool_id = os.environ['COGNITO_IDENTITY_POOL_ID']
-app_client_id = os.environ['COGNITO_APP_CLIENT_ID']
-region = os.environ['REGION']
-
 
 @click.command("logout", short_help=SHORT_HELP, context_settings={"ignore_unknown_options": True})
 @common_options
@@ -28,7 +23,12 @@ def cli(ctx):
 
 
 def do_cli(ctx):
-    """Authenticates to the platform to access your apps."""
+    """Logs the user out from the platform."""
+    user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
+    identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
+    app_client_id = ctx._config.get('default', 'cognito_app_client_id')
+    region = ctx._config.get('default', 'region')
+    
     user = ctx._config.get('default', 'user')
     id_token = ctx._config.get('default', 'id_token')
     refresh_token = ctx._config.get('default', 'refresh_token')

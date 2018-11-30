@@ -50,7 +50,6 @@ def do_cli(ctx, **kwargs):
     
     r = request('post', url, headers, payload)
     apps = json.loads(r.text)
-    print(apps)
     apps = json.loads(apps['body'])
 
     # Start a loop that checks for stack creation status

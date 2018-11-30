@@ -39,15 +39,17 @@ setup(
         ]
     },
     install_requires=[
+        'boto3',
+        'botocore',
         'click',
         'click-spinner',
         'colorama',
+        'gitpython',
+        'haikunator',
+        'prettytable',
         'termcolor',
         'requests',
-        'botocore',
-        'boto3',
-        'warrant',
-        'GitPython'
+        'warrant'
     ],
     include_package_data=True
 )

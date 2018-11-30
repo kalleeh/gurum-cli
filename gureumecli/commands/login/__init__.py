@@ -19,11 +19,6 @@ LOG = logging.getLogger(__name__)
 # export COGNITO_IDENTITY_POOL_ID="b5bbdabdb-9b9b-4fa0-a7fd-533222aeSAMPLE"
 # export COGNITO_APP_CLIENT_ID="1ts042gliofewaadsas0j3k3bbrwSAMPLE"
 
-user_pool_id = os.environ['COGNITO_USER_POOL_ID']
-identity_pool_id = os.environ['COGNITO_IDENTITY_POOL_ID']
-app_client_id = os.environ['COGNITO_APP_CLIENT_ID']
-region = os.environ['REGION']
-
 @click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.option('--user', prompt=True, help='Username (email)')
 @click.option('--password', prompt=True, hide_input=True)
@@ -48,6 +43,30 @@ def cli(ctx, user, password):
 
 
 def do_cli(ctx, user, password):
+    if not ctx._config.has_option('default', 'cognito_user_pool_id'):
+        user_pool_id = click.prompt('No user pool configured. Enter Cognito User Pool ID:')
+        ctx._config.set('default', 'cognito_user_pool_id', user_pool_id)
+    else:
+        user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
+    
+    if not ctx._config.has_option('default', 'cognito_identity_pool_id'):
+        identity_pool_id = click.prompt('No identity pool configured. Enter Cognito Identity Pool ID:')
+        ctx._config.set('default', 'cognito_identity_pool_id', identity_pool_id)
+    else:
+        identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
+    
+    if not ctx._config.has_option('default', 'cognito_app_client_id'):
+        app_client_id = click.prompt('No user pool configured. Enter Cognito App Client ID:')
+        ctx._config.set('default', 'cognito_app_client_id', app_client_id)
+    else:
+        app_client_id = ctx._config.get('default', 'cognito_app_client_id')
+    
+    if not ctx._config.has_option('default', 'region'):
+        region = click.prompt('No region configured. Enter region (eu-west-1):')
+        ctx._config.set('default', 'region', region)
+    else:
+        region = ctx._config.get('default', 'region')
+
     """Authenticates to the platform to access your apps."""
     click.echo('Logging in {}...'.format(user), nl=True)
     credentials = {}
