@@ -11,6 +11,7 @@ from termcolor import colored
 from gureumecli.cli.main import pass_context, common_options
 from gureumecli.lib.logs.awslogs import AWSLogs
 import gureumecli.commands.exceptions as exceptions
+from gureumecli.lib.utils.util import request, json_to_table
 
 
 @click.command('logs', short_help='Displays logs about your app')
@@ -99,10 +100,27 @@ def do_cli(ctx, name, **kwargs):
     """View logs for your app"""
     options = {}
     log_group_name = name
+    apps = {}
+
+    id_token = ctx._config.get('default', 'id_token')
+    api_uri = ctx._config.get('default', 'api_uri')
+
+    # Get app status
+    url = api_uri + '/apps/' + name
+    headers = {'Authorization': id_token}
+
+    r = request('get', url, headers)
+    apps = json.loads(r.text)
+    apps = json.loads(apps['body'])
+
+    # iterate over and print tags
+    for key, val in apps['tags'].items():
+        if key == 'gureume-groups':
+            group = val
     
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
-    options['log_group_name'] = 'platform-app-{}'.format(log_group_name)
+    options['log_group_name'] = 'app-{}-{}'.format(group, log_group_name)
     options['log_stream_name'] = 'ALL'
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
