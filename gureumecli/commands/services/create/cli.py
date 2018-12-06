@@ -11,13 +11,9 @@ from gureumecli.lib.utils.util import request, json_to_table, haikunate
 
 @click.command('create', short_help='Create a new service')
 @click.option('--name', prompt=True, default=haikunate(), help='Name of the service')
-@click.option('--app-name', prompt=True, help="App to link service to")
-@click.option('--app-dev', prompt=False, required=False, help="Add a development stage to the service")
-@click.option('--app-test', prompt=False, required=False, help="Add a test stage to the service")
-@click.option('--github-repo', prompt=True, help="GitHub repo to pull source from")
-@click.option('--github-branch', prompt=True, default='master', help="Branch to deploy")
-@click.option('--github-token', prompt=True, help="OAuth Token for access")
-@click.option('--github-user', prompt=True, help="GitHub user name")
+@click.option('--service-type', type=click.Choice(['s3', 'dynamodb']), prompt=True, help="The type of backing service")
+@click.option('--service-bindings', prompt=True, required=True, help="Comma-separated string of applications to bind the service to")
+@click.option('--service-version', prompt=False, required=False, help="Add a test stage to the service")
 @pass_context
 def cli(ctx, **kwargs):
     """Create a new service."""
