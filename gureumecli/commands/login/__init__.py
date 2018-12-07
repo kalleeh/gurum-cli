@@ -66,6 +66,9 @@ def do_cli(ctx, user, password):
         ctx._config.set('default', 'region', region)
     else:
         region = ctx._config.get('default', 'region')
+    cfgfile = open(ctx._cfg_name, 'w+')
+    ctx._config.write(cfgfile)
+    cfgfile.close()
 
     """Authenticates to the platform to access your apps."""
     click.echo('Logging in {}...'.format(user), nl=True)
