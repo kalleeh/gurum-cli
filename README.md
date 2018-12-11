@@ -9,7 +9,7 @@ Basic log viewing and filtering can exist for troubleshooting.
 * README.md - this file
 * Pipfile - requrements file for usage with Pipenv
 * setup.py - module/package definition for Distutils
-* gureume/ - this directory contains the Click CLI files and entrypoint referenced from setup.py
+* gureumecli/ - this directory contains the Click CLI files and entrypoint referenced from setup.py
 * tests/ - this directory contains unit tests for your application
 
 ## Installation
@@ -44,6 +44,19 @@ pipenv shell
 
 ## Quickstart Guide
 
+### First Run
+
+If you haven't run the CLI before you will be prompted to configure the Cognito configuration to login to the platform. Ask your platform administrator for the correct settings, they should look similar to this;
+
+```yaml
+COGNITO_USER_POOL_ID = "eu-west-1_ZaPg126AbSAMPLE"
+COGNITO_IDENTITY_POOL_ID = "b3df4e00-4548-4e69-8b60-85ec387feaw1SAMPLE"
+COGNITO_APP_CLIENT_ID = "7o5p3h44bba6u9pfewaaf7ldf9kk"
+REGION = "eu-west-1"
+```
+
+After you've entered the settings they should be saved in the configuration file for future use. If you ever need to switch the platform you need to manually edit the configuration file with the updated properties.
+
 ### Logging in
 
 The CLI has two main functions to enable you to interact with the platform.
@@ -67,7 +80,7 @@ The CLI allows you to create an app using an existing container image that will 
 *Currently this only supports unauthenticated Docker registries*
 
 ```bash
-gureume apps create [--name <app-name>] [--cpu <cpu-units>] [--memory <MiB>]
+gureume apps create [--name <app-name>]
                     [--image <docker-image>] [--health-check-path <path>]
                     [--tasks <number-tasks>] [--env <key=value>]
 ```
@@ -125,6 +138,17 @@ gureume
   * destroy
   * ls
   * update
+* services
+  * create
+  * describe
+  * destroy
+  * logs
+  * ls
+  * update
+* users
+  * change_password
+  * confirm_signup
+  * forgot_password
 
 ### Sample Deploy
 
