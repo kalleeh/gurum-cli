@@ -40,8 +40,7 @@ def do_cli(ctx, name):
     headers = {'Authorization': id_token}
 
     r = request('get', url, headers)
-    apps = json.loads(r.text)
-    apps = json.loads(apps['body'])
+    apps = json.loads(r['body'])
 
     click.secho("=== " + apps['name'], fg='blue')
     click.secho("Description: " + apps['description'])

@@ -31,8 +31,7 @@ def cli(ctx, **kwargs):
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
     r = request('post', url, headers, payload)
-    apps = json.loads(r.text)
-    apps = json.loads(apps['body'])
+    apps = json.loads(r['body'])
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -43,7 +42,7 @@ def cli(ctx, **kwargs):
 
             r = request('get', url, headers)
             apps = json.loads(r.text)
-            apps = json.loads(apps['body'])
+            apps = json.loads(r['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + kwargs['name']

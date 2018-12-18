@@ -35,8 +35,7 @@ def do_cli(ctx):
     headers = {'Authorization': id_token}
 
     r = request('get', url, headers)
-    apps = json.loads(r.text)
-    apps = json.loads(apps['body'])
+    apps = json.loads(r['body'])
 
     click.echo("=== Apps:")
     click.echo(json_to_table(apps))

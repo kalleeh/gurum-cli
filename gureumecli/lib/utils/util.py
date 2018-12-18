@@ -56,7 +56,13 @@ def request(method, url, headers, *payload):
         click.echo('Unexpected Error: [HTTP {0}]: Content: {1}'.format(response.status_code, response.content))
         sys.exit(1)
     else:
-        return response
+        response = json.loads(response.text)
+        if response['statusCode'] == '200':
+            return response
+        else:
+            click.echo('[{0}] Server Error'.format(response['statusCode']))
+            click.echo('{0}'.format(response['body']))
+            sys.exit(1)
 
 
 def json_to_table(events):

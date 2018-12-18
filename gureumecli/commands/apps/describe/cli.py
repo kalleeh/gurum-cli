@@ -46,7 +46,7 @@ def do_cli(ctx, name, watch):
             
             r = request('get', url, headers)
             apps = json.loads(r.text)
-            apps = json.loads(apps['body'])
+            apps = json.loads(r['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
