@@ -6,7 +6,7 @@ import json
 import time
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 def abort_if_false(ctx, param, value):
@@ -55,41 +55,16 @@ def do_cli(ctx, name):
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
-            apps = json.loads(r.text)
             apps = json.loads(r['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
             r = request('get', url, headers)
-            events = json.loads(r.text)
-            events = json.loads(events['body'])
+            events = json.loads(r['body'])
 
             click.clear()
-            
-            click.secho("=== " + apps['name'], fg='blue')
-            click.secho("Description: " + apps['description'])
-
-            # print status yellow if in progress, completed is green
-            if(apps['status'].endswith('_IN_PROGRESS')):
-                click.secho("Status: " + apps['status'], fg='yellow')
-            elif(apps['status'].endswith('_COMPLETE')):
-                click.secho("Status: " + apps['status'], fg='green')
-            else:
-                click.secho("Status: " + apps['status'], fg='red')
-
-            if 'endpoint' in apps:
-                click.secho("Endpoint: " + apps['endpoint'], fg='green')
-            if 'repository' in apps:
-                click.secho("Repository: " + apps['repository'], fg='green')
-            if 'service_role' in apps:
-                click.secho("Service Role: " + apps['service_role'], fg='green')
-
-            # iterate over and print tags
-            click.secho("Tags: ")
-            for key, val in apps['tags'].items():
-                click.secho("- {}: {}".format(key, val))
-
+            prettyprint(apps)
             click.echo(json_to_table(events))
 
             click.echo('Working on: {}'.format(name))

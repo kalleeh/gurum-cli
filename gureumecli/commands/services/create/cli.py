@@ -6,7 +6,7 @@ import json
 import time
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, haikunate
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint, prettyprint, haikunate
 
 
 @click.command('create', short_help='Create a new service')
@@ -30,8 +30,7 @@ def cli(ctx, **kwargs):
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
     r = request('post', url, headers, payload)
-    services = json.loads(r.text)
-    services = json.loads(services['body'])
+    services = json.loads(r['body'])
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -41,46 +40,15 @@ def cli(ctx, **kwargs):
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
-            services = json.loads(r.text)
-            services = json.loads(services['body'])
+            services = json.loads(r['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + kwargs['name']
 
             r = request('get', url, headers)
-            events = json.loads(r.text)
-            events = json.loads(events['body'])
+            events = json.loads(r['body'])
 
-            click.clear()
-
-            click.secho("=== " + services['name'], fg='blue')
-            click.secho("Description: " + services['description'])
-
-            # print status yellow if in progress, completed is green
-            if(services['status'] == 'CREATE_IN_PROGRESS'):
-                click.secho("Status: " + services['status'], fg='yellow')
-            elif(services['status'] == 'CREATE_COMPLETE'):
-                click.secho("Status: " + services['status'], fg='green')
-            else:
-                click.secho("Status: " + services['status'], fg='red')
-
-            if 'endpoint' in services:
-                click.secho("Endpoint: " + services['endpoint'], fg='green')
-            if 'repository' in services:
-                click.secho("Repository: " + services['repository'], fg='green')
-
-            # iterate over and print tags
-            click.secho("Tags: ")
-            for key, val in services['tags'].items():
-                click.secho("- {}: {}".format(key, val))
-
-            # Get CloudFormation Events
-            url = api_uri + '/events/' + kwargs['name']
-
-            r = request('get', url, headers)
-            events = json.loads(r.text)
-            events = json.loads(events['body'])
-
+            prettyprint(services)
             click.echo(json_to_table(events))
 
             click.echo('Working on: {}'.format(kwargs['name']))

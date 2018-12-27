@@ -4,7 +4,7 @@ import requests
 import json
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('ls', short_help='List your apps')

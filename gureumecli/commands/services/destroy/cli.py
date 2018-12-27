@@ -6,7 +6,7 @@ import json
 import time
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 def abort_if_false(ctx, param, value):
@@ -38,48 +38,16 @@ def cli(ctx, name):
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
-            services = json.loads(r.text)
-            services = json.loads(services['body'])
+            services = json.loads(r['body'])
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
             r = request('get', url, headers)
-            events = json.loads(r.text)
-            events = json.loads(events['body'])
+            events = json.loads(r['body'])
 
             click.clear()
-
-            click.secho("=== " + services['name'], fg='blue')
-            click.secho("Description: " + services['description'])
-
-            # print status yellow if in progress, completed is green
-            if(services['status'].endswith('_IN_PROGRESS')):
-                click.secho("Status: " + services['status'], fg='yellow')
-            elif(services['status'].endswith('_COMPLETE')):
-                click.secho("Status: " + services['status'], fg='green')
-            else:
-                click.secho("Status: " + services['status'], fg='red')
-
-            if 'endpoint' in services:
-                click.secho("Endpoint: " + services['endpoint'], fg='green')
-            if 'repository' in services:
-                click.secho("Repository: " + services['repository'], fg='green')
-
-            # iterate over and print tags
-            click.secho("Tags: ")
-            for key, val in services['tags'].items():
-                click.secho("- {}: {}".format(key, val))
-
-            click.echo('Deleting service: {}\nThis usually takes around 5 minutes...'.format(name))
-            
-            # Get CloudFormation Events
-            url = api_uri + '/events/' + name
-
-            r = request('get', url, headers)
-            events = json.loads(r.text)
-            events = json.loads(events['body'])
-
+            prettyprint(services)
             click.echo(json_to_table(events))
 
             click.echo('Working on: {}'.format(name))

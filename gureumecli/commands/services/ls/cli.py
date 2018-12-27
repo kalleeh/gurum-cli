@@ -4,7 +4,7 @@ import requests
 import json
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('ls', short_help='List your services')
@@ -18,8 +18,7 @@ def cli(ctx):
     headers = {'Authorization': id_token}
 
     r = request('get', url, headers)
-    services = json.loads(r.text)
-    services = json.loads(services['body'])
+    services = json.loads(r['body'])
 
     click.echo("=== Services:")
     click.echo(json_to_table(services))

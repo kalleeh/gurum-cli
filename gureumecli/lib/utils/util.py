@@ -84,3 +84,33 @@ def json_to_table(events):
         table.add_row(row)
     
     return table
+
+
+def prettyprint(data):
+    click.secho("=== " + data['name'], fg='blue')
+    click.secho("Description: " + data['description'])
+
+    # print status yellow if in progress, completed is green
+    if(data['status'].endswith('_IN_PROGRESS')):
+        click.secho("Status: " + data['status'], fg='yellow')
+    elif(data['status'].endswith('_COMPLETE')):
+        click.secho("Status: " + data['status'], fg='green')
+    else:
+        click.secho("Status: " + data['status'], fg='red')
+
+    if 'endpoint' in data:
+        click.secho("Endpoint: " + data['endpoint'], fg='green')
+    if 'repository' in data:
+        click.secho("Repository: " + data['repository'], fg='green')
+
+    # iterate over and print outputs
+    if 'outputs' in data:
+        click.secho("Outputs: ")
+        for key, val in data['outputs'].items():
+            click.secho("- {}: {}".format(key, val))
+    
+    # iterate over and print tags
+    if 'tags' in data:
+        click.secho("Tags: ")
+        for key, val in data['tags'].items():
+            click.secho("- {}: {}".format(key, val))

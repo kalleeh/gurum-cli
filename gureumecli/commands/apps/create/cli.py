@@ -8,7 +8,7 @@ import time
 from git import Repo, InvalidGitRepositoryError, GitCommandError
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, haikunate
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint, haikunate
 
 
 @click.command('create', short_help='Create a new app')
@@ -66,32 +66,10 @@ def do_cli(ctx, **kwargs):
             url = api_uri + '/events/' + kwargs['name']
 
             r = request('get', url, headers)
-            events = json.loads(r.text)
-            events = json.loads(events['body'])
+            events = json.loads(r['body'])
 
             click.clear()
-
-            click.secho("=== " + apps['name'], fg='blue')
-            click.secho("Description: " + apps['description'])
-
-            # print status yellow if in progress, completed is green
-            if(apps['status'] == 'CREATE_IN_PROGRESS'):
-                click.secho("Status: " + apps['status'], fg='yellow')
-            elif(apps['status'] == 'CREATE_COMPLETE'):
-                click.secho("Status: " + apps['status'], fg='green')
-            else:
-                click.secho("Status: " + apps['status'], fg='red')
-
-            if 'endpoint' in apps:
-                click.secho("Endpoint: " + apps['endpoint'], fg='green')
-            if 'repository' in apps:
-                click.secho("Repository: " + apps['repository'], fg='green')
-
-            # iterate over and print tags
-            click.secho("Tags: ")
-            for key, val in apps['tags'].items():
-                click.secho("- {}: {}".format(key, val))
-
+            prettyprint(apps)
             click.echo(json_to_table(events))
 
             click.echo('Working on: {}'.format(kwargs['name']))

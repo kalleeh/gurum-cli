@@ -4,7 +4,7 @@ import requests
 import json
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('ls', short_help='List your pipelines')
@@ -18,8 +18,7 @@ def cli(ctx):
     headers = {'Authorization': id_token}
 
     r = request('get', url, headers)
-    pipelines = json.loads(r.text)
-    pipelines = json.loads(pipelines['body'])
+    pipelines = json.loads(r['body'])
 
     click.echo("=== Pipelines:")
     click.echo(json_to_table(pipelines))

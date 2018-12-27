@@ -26,7 +26,7 @@ def cli(ctx, name, **kwargs):
     
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
-    options['log_group_name'] = 'platform-app-{}'.format(log_group_name)
+    options['log_group_name'] = 'platform-pipeline-{}'.format(log_group_name)
     options['log_stream_name'] = 'ALL'
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'

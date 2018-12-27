@@ -6,14 +6,12 @@ import json
 import time
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('update', short_help='Update the service')
 @click.argument('name')
-@click.option('--app-name', prompt=True, help="App to link service to")
-@click.option('--app-dev', prompt=False, required=False, help="Add a development stage to the service")
-@click.option('--app-test', prompt=False, required=False, help="Add a test stage to the service")
+@click.option('--service-bindings', prompt=True, required=True, help="Comma-separated string of applications to bind the service to")
 @pass_context
 def cli(ctx, name, **kwargs):
     """Update service configuration."""
@@ -31,8 +29,7 @@ def cli(ctx, name, **kwargs):
 
     try:
         r = request('patch', url, headers, payload)
-        services = json.loads(r.text)
-        services = json.loads(services['body'])
+        services = json.loads(r['body'])
     except Exception:
         pass
     else:
@@ -43,39 +40,16 @@ def cli(ctx, name, **kwargs):
                 url = api_uri + '/services/' + name
 
                 r = request('get', url, headers)
-                services = json.loads(r.text)
-                services = json.loads(services['body'])
+                services = json.loads(r['body'])
 
                 # Get CloudFormation Events
                 url = api_uri + '/events/' + name
 
                 r = request('get', url, headers)
-                events = json.loads(r.text)
-                events = json.loads(events['body'])
+                events = json.loads(r['body'])
 
                 click.clear()
-                
-                click.secho("=== " + services['name'], fg='blue')
-                click.secho("Description: " + services['description'])
-
-                # print status yellow if in progress, completed is green
-                if(services['status'].endswith('_IN_PROGRESS')):
-                    click.secho("Status: " + services['status'], fg='yellow')
-                elif(services['status'].endswith('_COMPLETE')):
-                    click.secho("Status: " + services['status'], fg='green')
-                else:
-                    click.secho("Status: " + services['status'], fg='red')
-
-                if 'endpoint' in services:
-                    click.secho("Endpoint: " + services['endpoint'], fg='green')
-                if 'repository' in services:
-                    click.secho("Repository: " + services['repository'], fg='green')
-
-                # iterate over and print tags
-                click.secho("Tags: ")
-                for key, val in services['tags'].items():
-                    click.secho("- {}: {}".format(key, val))
-
+                prettyprint(services)
                 click.echo(json_to_table(events))
 
                 click.echo('Working on: {}'.format(name))

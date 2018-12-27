@@ -11,7 +11,7 @@ from termcolor import colored
 from gureumecli.cli.main import pass_context, common_options
 from gureumecli.lib.logs.awslogs import AWSLogs
 import gureumecli.commands.exceptions as exceptions
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('logs', short_help='Displays logs about your app')

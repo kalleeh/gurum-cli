@@ -6,7 +6,7 @@ import json
 import time
 
 from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table
+from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('describe', short_help='Displays details about app')
@@ -56,29 +56,7 @@ def do_cli(ctx, name, watch):
             if watch:
                 click.clear()
 
-            click.secho("=== " + apps['name'], fg='blue')
-            click.secho("Description: " + apps['description'])
-
-            # print status yellow if in progress, completed is green
-            if(apps['status'].endswith('_IN_PROGRESS')):
-                click.secho("Status: " + apps['status'], fg='yellow')
-            elif(apps['status'].endswith('_COMPLETE')):
-                click.secho("Status: " + apps['status'], fg='green')
-            else:
-                click.secho("Status: " + apps['status'], fg='red')
-
-            if 'endpoint' in apps:
-                click.secho("Endpoint: " + apps['endpoint'], fg='green')
-            if 'repository' in apps:
-                click.secho("Repository: " + apps['repository'], fg='green')
-            if 'service_role' in apps:
-                click.secho("Service Role: " + apps['service_role'], fg='green')
-
-            # iterate over and print tags
-            click.secho("Tags: ")
-            for key, val in apps['tags'].items():
-                click.secho("- {}: {}".format(key, val))
-
+            prettyprint(apps)
             click.echo(json_to_table(events))
             
             if not watch:
