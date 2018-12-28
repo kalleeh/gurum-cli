@@ -57,7 +57,6 @@ def request(method, url, headers, *payload):
         sys.exit(1)
     else:
         response = json.loads(response.text)
-        print(response)
         
         if response['statusCode'] == '200':
             return response
