@@ -48,6 +48,7 @@ def cli(ctx, **kwargs):
             r = request('get', url, headers)
             events = json.loads(r['body'])
 
+            click.clear()
             prettyprint(services)
             click.echo(json_to_table(events))
 
