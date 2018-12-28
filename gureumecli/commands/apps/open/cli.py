@@ -45,6 +45,6 @@ def do_cli(ctx, name):
     click.secho("=== " + apps['name'], fg='blue')
     click.secho("Description: " + apps['description'])
 
-    if 'endpoint' in apps:
-        click.secho("Endpoint: " + apps['endpoint'], fg='green')
-        webbrowser.open('http://' + apps['endpoint'], new=0, autoraise=True)
+    if 'Endpoint' in apps['outputs']:
+        click.secho("Endpoint: " + apps['outputs']['Endpoint'], fg='green')
+        webbrowser.open('http://' + apps['outputs']['Endpoint'], new=0, autoraise=True)

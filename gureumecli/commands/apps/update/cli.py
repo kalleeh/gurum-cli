@@ -15,8 +15,26 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 @click.option('--health-check-path', prompt=False, help='Path that is queried for health checks')
 @click.option('--image', prompt=False, help='Docker image to run')
 @pass_context
+@common_options
 def cli(ctx, name, **kwargs):
-    """Create a new application."""
+    """ \b
+        Update your application.
+
+    \b
+    Common usage:
+
+        \b
+        Update your application parameters such as number of running tasks,
+        health-check-path or the Docker image.
+        \b
+        $ gureume apps update MyApp --health-check-path '/'
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, name, **kwargs)  # pragma: no cover
+
+
+def do_cli(ctx, name, **kwargs):
+    """Update a new application."""
     id_token = ""
     apps = {}
 
@@ -39,7 +57,6 @@ def cli(ctx, name, **kwargs):
             url = api_uri + '/apps/' + name
             
             r = request('get', url, headers)
-            apps = json.loads(r.text)
             apps = json.loads(r['body'])
 
             # Get CloudFormation Events
