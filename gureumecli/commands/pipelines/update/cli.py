@@ -35,7 +35,6 @@ def cli(ctx, name, **kwargs):
 
     try:
         r = request('patch', url, headers, payload)
-        pipelines = json.loads(r.text)
         pipelines = json.loads(pipelines['body'])
     except Exception:
         pass

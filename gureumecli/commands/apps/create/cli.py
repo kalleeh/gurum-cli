@@ -59,7 +59,6 @@ def do_cli(ctx, **kwargs):
             headers = {'Authorization': id_token}
 
             r = request('get', url, headers)
-            apps = json.loads(r.text)
             apps = json.loads(r['body'])
 
             # Get CloudFormation Events

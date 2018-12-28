@@ -11,7 +11,7 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint, prett
 
 @click.command('create', short_help='Create a new service')
 @click.option('--name', prompt=True, default=haikunate(), help='Name of the service')
-@click.option('--service-type', type=click.Choice(['s3', 'dynamodb']), prompt=True, help="The type of backing service")
+@click.option('--service-type', type=click.Choice(['s3']), prompt=True, help="The type of backing service")
 @click.option('--service-bindings', prompt=True, required=True, help="Comma-separated string of applications to bind the service to")
 @click.option('--service-version', prompt=False, required=False, help="Add a test stage to the service")
 @pass_context
