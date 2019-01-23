@@ -44,25 +44,25 @@ def cli(ctx, user, password):
 
 def do_cli(ctx, user, password):
     if not ctx._config.has_option('default', 'cognito_user_pool_id'):
-        user_pool_id = click.prompt('No user pool configured. Enter Cognito User Pool ID:')
+        user_pool_id = click.prompt('No user pool configured. Enter Cognito User Pool ID')
         ctx._config.set('default', 'cognito_user_pool_id', user_pool_id)
     else:
         user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
     
     if not ctx._config.has_option('default', 'cognito_identity_pool_id'):
-        identity_pool_id = click.prompt('No identity pool configured. Enter Cognito Identity Pool ID:')
+        identity_pool_id = click.prompt('No identity pool configured. Enter Cognito Identity Pool ID')
         ctx._config.set('default', 'cognito_identity_pool_id', identity_pool_id)
     else:
         identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
     
     if not ctx._config.has_option('default', 'cognito_app_client_id'):
-        app_client_id = click.prompt('No user pool configured. Enter Cognito App Client ID:')
+        app_client_id = click.prompt('No user pool configured. Enter Cognito App Client ID')
         ctx._config.set('default', 'cognito_app_client_id', app_client_id)
     else:
         app_client_id = ctx._config.get('default', 'cognito_app_client_id')
     
     if not ctx._config.has_option('default', 'region'):
-        region = click.prompt('No region configured. Enter region (eu-west-1):')
+        region = click.prompt('No region configured. Enter region (eu-west-1)')
         ctx._config.set('default', 'region', region)
     else:
         region = ctx._config.get('default', 'region')

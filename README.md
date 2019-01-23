@@ -93,7 +93,7 @@ To watch the deployment details and current status of your app, use the `describ
 
 ```bash
 $ gureume apps describe <app-name>
-=== karl
+=== my-app
 Description: Platform App on Shared Load Balancer
 Status: UPDATE_COMPLETE
 Endpoint: my-app.apps.gureu.me
