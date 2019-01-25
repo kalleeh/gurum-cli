@@ -66,6 +66,22 @@ def request(method, url, headers, *payload):
             sys.exit(1)
 
 
+def format_message(message, max_line_length):
+    line_length = 0
+    words = message.split(" ")
+    formatted_message = ""
+    for word in words:
+        if line_length + (len(word) + 1) <= max_line_length:
+            formatted_message = formatted_message + word + " "
+            line_length = line_length + len(word) + 1
+        else:
+            #append a line break, then the word and a space
+            formatted_message = formatted_message + "\n" + word + " "
+            line_length = len(word) + 1
+    
+    return formatted_message
+
+
 def json_to_table(events):
     table = PrettyTable()
 
@@ -80,6 +96,7 @@ def json_to_table(events):
             table.field_names = columns
         row = []
         for value in event.values():
+            value = format_message(value, 80)
             row.append(value)
 
         table.add_row(row)
@@ -104,6 +121,12 @@ def prettyprint(data):
     if 'repository' in data:
         click.secho("Repository: " + data['repository'], fg='green')
 
+    # iterate over and print outputs
+    if 'params' in data:
+        click.secho("Parameters: ")
+        for key, val in data['params'].items():
+            click.secho("- {}: {}".format(key, val))
+    
     # iterate over and print outputs
     if 'outputs' in data:
         click.secho("Outputs: ")
