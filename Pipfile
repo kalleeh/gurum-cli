@@ -16,7 +16,7 @@ termcolor = "*"
 prettytable = "*"
 pylint = "*"
 haikunator = "*"
-gureume-cli = {editable = true, path = "."}
+gureume-cli = {editable = true,path = "."}
 
 [dev-packages]
 pylint = "*"
