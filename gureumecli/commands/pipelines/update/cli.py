@@ -44,38 +44,35 @@ def cli(ctx, name, **kwargs):
     # Dynamically get options and remove undefined options
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
-    try:
-        r = request('patch', url, headers, payload)
-        pipelines = json.loads(pipelines['body'])
-    except Exception:
-        pass
-    else:
-        # Start a loop that checks for stack creation status
-        with click_spinner.spinner():
-            while True:
-                # Update creation status
-                url = api_uri + '/pipelines/' + name
+    resp = request('patch', url, headers, payload)
+    pipelines = resp['pipelines']
 
-                r = request('get', url, headers)
-                pipelines = json.loads(r['body'])
+    # Start a loop that checks for stack creation status
+    with click_spinner.spinner():
+        while True:
+            # Update creation status
+            url = api_uri + '/pipelines/' + name
 
-                # Get CloudFormation Events
-                url = api_uri + '/events/' + name
+            resp = request('get', url, headers)
+            pipelines = resp['pipelines'][0]
 
-                r = request('get', url, headers)
-                events = json.loads(r['body'])
+            # Get CloudFormation Events
+            url = api_uri + '/events/' + name
 
-                click.clear()
-                prettyprint(pipelines)
-                click.echo(json_to_table(events))
+            resp = request('get', url, headers)
+            events = resp['events']
 
-                click.echo('Working on: {}'.format(name))
-                click.echo('This usually takes a couple of minutes...')
-                click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
-                            'anytime and it will continue running in background.')
+            click.clear()
+            prettyprint(pipelines)
+            click.echo(json_to_table(events))
 
-                if pipelines['status'].endswith('_COMPLETE'):
-                    break
+            click.echo('Working on: {}'.format(name))
+            click.echo('This usually takes a couple of minutes...')
+            click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
+                        'anytime and it will continue running in background.')
 
-                # refresh every 5 seconds
-                time.sleep(5)
+            if pipelines['status'].endswith('_COMPLETE'):
+                break
+
+            # refresh every 5 seconds
+            time.sleep(5)

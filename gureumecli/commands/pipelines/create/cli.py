@@ -44,8 +44,8 @@ def cli(ctx, **kwargs):
     # Dynamically get options and remove undefined options
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
-    r = request('post', url, headers, payload)
-    pipelines = json.loads(r['body'])
+    resp = request('post', url, headers, payload)
+    pipelines = resp['pipelines']
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -54,14 +54,14 @@ def cli(ctx, **kwargs):
             url = api_uri + '/pipelines/' + kwargs['name']
             headers = {'Authorization': id_token}
 
-            r = request('get', url, headers)
-            pipelines = json.loads(r['body'])
+            resp = request('get', url, headers)
+            pipelines = resp['pipelines']
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + kwargs['name']
 
-            r = request('get', url, headers)
-            events = json.loads(r['body'])
+            resp = request('get', url, headers)
+            events = resp['events']
 
             click.clear()
             prettyprint(pipelines)

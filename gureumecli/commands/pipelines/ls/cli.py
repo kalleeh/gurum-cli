@@ -28,8 +28,8 @@ def cli(ctx):
     url = api_uri + '/pipelines'
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    pipelines = json.loads(r['body'])
+    resp = request('get', url, headers)
+    pipelines = resp['pipelines']
 
     click.echo("=== Pipelines:")
     click.echo(json_to_table(pipelines))

@@ -50,12 +50,12 @@ def do_cli(ctx, name):
     url = api_uri + '/apps/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    apps = json.loads(r['body'])
+    resp = request('get', url, headers)
+    apps = resp['apps'][0]
 
     click.secho("=== " + apps['name'], fg='blue')
     click.secho("Description: " + apps['description'])
 
     if 'Endpoint' in apps['outputs']:
         click.secho("Endpoint: " + apps['outputs']['Endpoint'], fg='green')
-        webbrowser.open('http://' + apps['outputs']['Endpoint'], new=0, autoraise=True)
+        webbrowser.open('https://' + apps['outputs']['Endpoint'], new=0, autoraise=True)

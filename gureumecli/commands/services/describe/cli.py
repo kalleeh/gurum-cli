@@ -31,15 +31,15 @@ def cli(ctx, name):
     url = api_uri + '/services/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    services = json.loads(r['body'])
+    resp = request('get', url, headers)
+    services = resp['services'][0]
 
     # Get CloudFormation Events
     url = api_uri + '/events/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    events = json.loads(r['body'])
+    resp = request('get', url, headers)
+    events = resp['events']
 
     prettyprint(services)
     click.echo(json_to_table(events))

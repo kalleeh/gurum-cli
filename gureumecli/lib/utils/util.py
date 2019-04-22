@@ -74,7 +74,7 @@ def request(method, url, headers, *payload):
             sys.exit(1)
            
         if response['statusCode'] == '200':
-            return response
+            return json.loads(response['body'])
         else:
             click.echo('[{0}] Server Error'.format(response['statusCode']))
             click.echo('{0}'.format(response['body']))
@@ -99,7 +99,7 @@ def format_message(message, max_line_length):
 
 def json_to_table(events):
     table = PrettyTable()
-
+    
     if len(events) < 1:
         return 'Theres nothing here :('
     
@@ -137,19 +137,19 @@ def prettyprint(data):
         click.secho("Repository: " + data['repository'], fg='green')
 
     # iterate over and print outputs
-    if 'params' in data:
+    if 'params' in data and len(data['params']) > 0:
         click.secho("Parameters: ")
         for key, val in data['params'].items():
             click.secho("- {}: {}".format(key, val))
     
     # iterate over and print outputs
-    if 'outputs' in data:
+    if 'outputs' in data and len(data['outputs']) > 0:
         click.secho("Outputs: ")
         for key, val in data['outputs'].items():
             click.secho("- {}: {}".format(key, val))
     
     # iterate over and print tags
-    if 'tags' in data:
+    if 'tags' in data and len(data['tags']) > 0:
         click.secho("Tags: ")
         for key, val in data['tags'].items():
             click.secho("- {}: {}".format(key, val))

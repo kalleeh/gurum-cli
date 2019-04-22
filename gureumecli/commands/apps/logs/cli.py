@@ -120,8 +120,8 @@ def do_cli(ctx, name, **kwargs):
     url = api_uri + '/apps/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    apps = json.loads(r['body'])
+    resp = request('get', url, headers)
+    apps = resp['apps'][0]
 
     # iterate over and print tags
     for key, val in apps['tags'].items():

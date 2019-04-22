@@ -40,7 +40,7 @@ def cli(ctx, name):
     url = api_uri + '/services/' + name
     headers = {'Authorization': id_token}
 
-    r = request('delete', url, headers)
+    resp = request('delete', url, headers)
 
     with click_spinner.spinner():
         while True:
@@ -48,14 +48,14 @@ def cli(ctx, name):
             url = api_uri + '/services/' + name
             headers = {'Authorization': id_token}
 
-            r = request('get', url, headers)
-            services = json.loads(r['body'])
+            resp = request('get', url, headers)
+            services = resp['services']
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
-            r = request('get', url, headers)
-            events = json.loads(r['body'])
+            resp = request('get', url, headers)
+            events = resp['events']
 
             click.clear()
             prettyprint(services)

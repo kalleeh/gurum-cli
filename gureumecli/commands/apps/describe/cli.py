@@ -55,18 +55,18 @@ def do_cli(ctx, name, watch):
             url = api_uri + '/apps/' + name
             headers = {'Authorization': id_token}
             
-            r = request('get', url, headers)
-            apps = json.loads(r['body'])
+            resp = request('get', url, headers)
+            apps = resp['apps'][0]
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
-            r = request('get', url, headers)
-            events = json.loads(r['body'])
+            resp = request('get', url, headers)
+            events = resp['events']
 
             if watch:
                 click.clear()
-
+            
             prettyprint(apps)
             click.echo(json_to_table(events))
             

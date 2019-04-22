@@ -31,8 +31,8 @@ def cli(ctx, name):
     url = api_uri + '/pipelines/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    pipelines = json.loads(r['body'])
+    resp = request('get', url, headers)
+    pipelines = resp['pipelines'][0]
 
     click.secho("=== " + pipelines['name'], fg='blue')
     click.secho("Description: " + pipelines['description'])
@@ -41,8 +41,8 @@ def cli(ctx, name):
     url = api_uri + '/events/' + name
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    events = json.loads(r['body'])
+    resp = request('get', url, headers)
+    events = resp['events']
 
     prettyprint(pipelines)
     click.echo(json_to_table(events))

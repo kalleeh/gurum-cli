@@ -39,8 +39,8 @@ def cli(ctx, name, **kwargs):
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
     try:
-        r = request('patch', url, headers, payload)
-        services = json.loads(r['body'])
+        resp = request('patch', url, headers, payload)
+        services = resp['services']
     except Exception:
         pass
     else:
@@ -50,14 +50,14 @@ def cli(ctx, name, **kwargs):
                 # Update creation status
                 url = api_uri + '/services/' + name
 
-                r = request('get', url, headers)
-                services = json.loads(r['body'])
+                resp = request('get', url, headers)
+                services = resp['services'][0]
 
                 # Get CloudFormation Events
                 url = api_uri + '/events/' + name
 
-                r = request('get', url, headers)
-                events = json.loads(r['body'])
+                resp = request('get', url, headers)
+                events = resp['events']
 
                 click.clear()
                 prettyprint(services)

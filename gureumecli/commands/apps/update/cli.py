@@ -58,8 +58,8 @@ def do_cli(ctx, name, **kwargs):
     # Dynamically get options and remove undefined options
     payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
 
-    r = request('patch', url, headers, payload)
-    apps = json.loads(r['body'])
+    resp = request('patch', url, headers, payload)
+    apps = resp['apps']
     
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -67,14 +67,14 @@ def do_cli(ctx, name, **kwargs):
             # Update creation status
             url = api_uri + '/apps/' + name
             
-            r = request('get', url, headers)
-            apps = json.loads(r['body'])
+            resp = request('get', url, headers)
+            apps = resp['apps'][0]
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + name
 
-            r = request('get', url, headers)
-            events = json.loads(r['body'])
+            resp = request('get', url, headers)
+            events = resp['events']
 
             click.clear()
             prettyprint(apps)

@@ -28,8 +28,8 @@ def cli(ctx):
     url = api_uri + '/services'
     headers = {'Authorization': id_token}
 
-    r = request('get', url, headers)
-    services = json.loads(r['body'])
+    resp = request('get', url, headers)
+    services = resp['services']
 
     click.echo("=== Services:")
     click.echo(json_to_table(services))
