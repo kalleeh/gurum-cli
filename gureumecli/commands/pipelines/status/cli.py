@@ -35,12 +35,12 @@ def cli(ctx, name, watch):
             url = api_uri + '/pipelines/' + name + '/state'
             headers = {'Authorization': id_token}
 
-            if watch:
-                click.clear()
-
             resp = request('get', url, headers)
             states = resp['states']
 
+            if watch:
+                click.clear()
+            
             click.secho("=== " + name + ' status', fg='blue')
 
             click.echo(json_to_table(states))
@@ -48,8 +48,7 @@ def cli(ctx, name, watch):
             if not watch:
                 break
             
-            click.echo('Working on: {}'.format(name))
-            click.echo('This usually takes a couple of minutes...')
+            click.echo('Watching status of pipeline: {}'.format(name))
             click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
                         'anytime and it will continue running in background.')
 

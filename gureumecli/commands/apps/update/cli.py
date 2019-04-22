@@ -25,6 +25,7 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 @click.option('--tasks', prompt=False, help='Number of tasks to run')
 @click.option('--health-check-path', prompt=False, help='Path that is queried for health checks')
 @click.option('--image', prompt=False, help='Docker image to run')
+@click.option('--upgrade-version', is_flag=True, prompt=False, help='Force platform version upgrade')
 @pass_context
 @common_options
 def cli(ctx, name, **kwargs):

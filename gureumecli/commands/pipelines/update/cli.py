@@ -29,6 +29,7 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 @click.option('--github-branch', prompt=False, required=False, default='master', help="Branch to deploy")
 @click.option('--github-token', prompt=False, required=False, help="OAuth Token for access")
 @click.option('--github-user', prompt=False, required=False, help="GitHub user name")
+@click.option('--upgrade-version', is_flag=True, prompt=False, help='Force platform version upgrade')
 @pass_context
 def cli(ctx, name, **kwargs):
     """Update pipeline configuration."""

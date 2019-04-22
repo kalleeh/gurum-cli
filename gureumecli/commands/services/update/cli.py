@@ -23,6 +23,7 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 @click.command('update', short_help='Update the service')
 @click.argument('name')
 @click.option('--service-bindings', prompt=True, required=True, help="Comma-separated string of applications to bind the service to")
+@click.option('--upgrade-version', is_flag=True, prompt=False, help='Force platform version upgrade')
 @pass_context
 def cli(ctx, name, **kwargs):
     """Update service configuration."""
