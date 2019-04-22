@@ -18,31 +18,13 @@ import time
 from gureumecli.cli.main import pass_context, common_options
 from gureumecli.lib.utils.util import request, json_to_table, prettyprint
 
-
-@click.command('describe', short_help='Displays details about app')
+@click.command('status', short_help='Displays status about your pipeline')
 @click.argument('name')
 @click.option('--watch', is_flag=True, help='Automatically update the stauts every 5s')
 @pass_context
-@common_options
 def cli(ctx, name, watch):
-    """ \b
-        Display detailed information about the application
-
-    \b
-    Common usage:
-
-        \b
-        Display detailed information about an application.
-        \b
-        $ gureume apps describe myApp
-    """
-    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
-    do_cli(ctx, name, watch)  # pragma: no cover
-
-
-def do_cli(ctx, name, watch):
     """Display detailed information about the application."""
-    apps = {}
+    states = []
 
     id_token = ctx._config.get('default', 'id_token')
     api_uri = ctx._config.get('default', 'api_uri')
@@ -50,24 +32,18 @@ def do_cli(ctx, name, watch):
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
         while True:
-            # Get app status
-            url = api_uri + '/apps/' + name
+            url = api_uri + '/pipelines/' + name + '/state'
             headers = {'Authorization': id_token}
-            
-            resp = request('get', url, headers)
-            apps = resp['apps'][0]
-
-            # Get CloudFormation Events
-            url = api_uri + '/events/' + name
-
-            resp = request('get', url, headers)
-            events = resp['events']
 
             if watch:
                 click.clear()
-            
-            prettyprint(apps)
-            click.echo(json_to_table(events))
+
+            resp = request('get', url, headers)
+            states = resp['states']
+
+            click.secho("=== " + name + ' status', fg='blue')
+
+            click.echo(json_to_table(states))
             
             if not watch:
                 break
@@ -76,10 +52,6 @@ def do_cli(ctx, name, watch):
             click.echo('This usually takes a couple of minutes...')
             click.echo('This call is asynchrounous so feel free to Ctrl+C ' \
                         'anytime and it will continue running in background.')
-
-            # Stop loop if task is complete
-            if apps['status'].endswith('_COMPLETE') and not watch:
-                break
 
             # refresh every 5 seconds
             time.sleep(5)
