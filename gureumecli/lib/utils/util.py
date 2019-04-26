@@ -111,7 +111,7 @@ def json_to_table(events):
             table.field_names = columns
         row = []
         for value in event.values():
-            value = format_message(value, 80)
+            value = format_message(str(value), 80)
             row.append(value)
 
         table.add_row(row)
