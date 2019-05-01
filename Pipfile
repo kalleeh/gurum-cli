@@ -17,6 +17,7 @@ prettytable = "*"
 pylint = "*"
 haikunator = "*"
 gureume-cli = {editable = true,path = "."}
+awslogs = "*"
 
 [dev-packages]
 pylint = "*"
