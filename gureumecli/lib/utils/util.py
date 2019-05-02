@@ -28,6 +28,8 @@ def request(method, url, headers, *payload):
             response = requests.get(url, headers=headers)
         elif method == 'post':
             response = requests.post(url, json=payload, headers=headers)
+        elif method == 'put':
+            response = requests.put(url, json=payload, headers=headers)
         elif method == 'delete':
             response = requests.delete(url, headers=headers)
         elif method == 'patch':

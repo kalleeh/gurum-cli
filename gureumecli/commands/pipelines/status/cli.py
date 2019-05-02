@@ -32,7 +32,7 @@ def cli(ctx, name, watch):
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
         while True:
-            url = api_uri + '/pipelines/' + name + '/state'
+            url = api_uri + '/pipelines/' + name + '/states'
             headers = {'Authorization': id_token}
 
             resp = request('get', url, headers)
