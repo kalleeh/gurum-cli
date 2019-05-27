@@ -163,7 +163,7 @@ gureume pipelines create
 > Github repo: portal
 > Github branch: master
 > Github token: TOKEN
-> Github user: kalleeh
+> Github user: myGitHubUser
 
 gureume apps create
 > stocks
@@ -173,7 +173,7 @@ gureume pipelines create
 > Github repo: stocks
 > Github branch: master
 > Github token: TOKEN
-> Github user: kalleeh
+> Github user: myGitHubUser
 
 # Watch the logs for the stocks service and filter out health checks
 gureume apps logs stocks --watch | grep -v "/health"
