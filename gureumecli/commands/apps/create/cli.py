@@ -25,7 +25,7 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint, haiku
 @click.command('create', short_help='Create a new app')
 @click.option('--name', prompt=True, default=haikunate(), help='Name of the app')
 @click.option('--tasks', prompt=False, default='1', help='Number of tasks to run')
-@click.option('--health-check-path', prompt=False, default='/health', help='Path that is queried for health checks')
+@click.option('--health-check-path', prompt=False, default='/', help='Path that is queried for health checks')
 @click.option('--image', prompt=False, default='nginx:latest', help='Docker image to run')
 @pass_context
 def cli(ctx, **kwargs):
@@ -70,7 +70,7 @@ def do_cli(ctx, **kwargs):
             headers = {'Authorization': id_token}
 
             resp = request('get', url, headers)
-            apps = resp['apps']
+            apps = resp['apps'][0]
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + kwargs['name']
