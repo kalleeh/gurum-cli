@@ -53,29 +53,39 @@ def cli(ctx, user, password):
 
 
 def do_cli(ctx, user, password):
+    if not ctx._config.has_option('default', 'api_uri'):
+        api_uri = click.prompt('API URI', default='https://api.gureu.me')
+        ctx._config.set('default', 'api_uri', api_uri)
+    else:
+        api_uri = ctx._config.get('default', 'api_uri')
+    
+    if not ctx._config.has_option('default', 'region'):
+        region = click.prompt('API Region', default='eu-west-1')
+        ctx._config.set('default', 'region', region)
+    else:
+        region = ctx._config.get('default', 'region')
+    
     if not ctx._config.has_option('default', 'cognito_user_pool_id'):
-        user_pool_id = click.prompt('No user pool configured. Enter Cognito User Pool ID')
+        user_pool_id = click.prompt('Cognito User Pool ID')
         ctx._config.set('default', 'cognito_user_pool_id', user_pool_id)
     else:
         user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
     
     if not ctx._config.has_option('default', 'cognito_identity_pool_id'):
-        identity_pool_id = click.prompt('No identity pool configured. Enter Cognito Identity Pool ID')
+        identity_pool_id = click.prompt('Cognito Identity Pool ID')
+
+        # clean out eventual region and colon at start of string
+        identity_pool_id = identity_pool_id.rpartition(':')[2]
+
         ctx._config.set('default', 'cognito_identity_pool_id', identity_pool_id)
     else:
         identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
     
     if not ctx._config.has_option('default', 'cognito_app_client_id'):
-        app_client_id = click.prompt('No user pool configured. Enter Cognito App Client ID')
+        app_client_id = click.prompt('Cognito App Client ID')
         ctx._config.set('default', 'cognito_app_client_id', app_client_id)
     else:
         app_client_id = ctx._config.get('default', 'cognito_app_client_id')
-    
-    if not ctx._config.has_option('default', 'region'):
-        region = click.prompt('No region configured. Enter region (eu-west-1)')
-        ctx._config.set('default', 'region', region)
-    else:
-        region = ctx._config.get('default', 'region')
 
     """Authenticates to the platform to access your apps."""
     click.echo('Logging in {}...'.format(user), nl=True)
@@ -152,9 +162,6 @@ def do_cli(ctx, user, password):
         # Configure the config file with API URI and temporary credentials
         if not ctx._config.has_section('default'):
             ctx._config.add_section('default')
-        if not ctx._config.has_option('default', 'api_uri'):
-            ctx._config.set('default', 'api_uri', 'https://api.gureu.me')
-        ctx._api_uri = 'https://api.gureu.me'
         ctx._config.set('default', 'user', user)
         ctx._config.set('default', 'id_token', credentials['id_token'])
         ctx._id_token = credentials['id_token']
@@ -163,7 +170,7 @@ def do_cli(ctx, user, password):
         ctx._config.set('default', 'aws_access_key_id', credentials['aws_access_key_id'])
         ctx._config.set('default', 'aws_secret_access_key', credentials['aws_secret_access_key'])
         ctx._config.set('default', 'aws_session_token', credentials['aws_session_token'])
-        ctx._config.set('default', 'aws_region', 'eu-west-1')
+        ctx._config.set('default', 'region', 'eu-west-1')
         cfgfile = open(ctx._cfg_name, 'w+')
         ctx._config.write(cfgfile)
         cfgfile.close()
