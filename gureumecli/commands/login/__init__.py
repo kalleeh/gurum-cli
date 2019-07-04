@@ -170,7 +170,7 @@ def do_cli(ctx, user, password):
         ctx._config.set('default', 'aws_access_key_id', credentials['aws_access_key_id'])
         ctx._config.set('default', 'aws_secret_access_key', credentials['aws_secret_access_key'])
         ctx._config.set('default', 'aws_session_token', credentials['aws_session_token'])
-        ctx._config.set('default', 'region', 'eu-west-1')
+        ctx._config.set('default', 'region', region)
         cfgfile = open(ctx._cfg_name, 'w+')
         ctx._config.write(cfgfile)
         cfgfile.close()
