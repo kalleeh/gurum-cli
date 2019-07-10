@@ -27,6 +27,7 @@ from gureumecli.lib.utils.util import request, json_to_table, prettyprint, haiku
 @click.option('--tasks', prompt=False, default='1', help='Number of tasks to run')
 @click.option('--health-check-path', prompt=False, default='/', help='Path that is queried for health checks')
 @click.option('--image', prompt=False, default='nginx:latest', help='Docker image to run')
+@click.option('--subtype', type=click.Choice(['shared-lb','dedicated-lb'],), prompt=False, default='shared-lb', help='Type of application to provision')
 @pass_context
 def cli(ctx, **kwargs):
     """ \b
