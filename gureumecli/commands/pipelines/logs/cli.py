@@ -111,10 +111,10 @@ def do_cli(ctx, name, **kwargs):
     """View logs for your pipeline"""
     options = {}
     log_group_name = name
-    
+
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
-    options['log_group_name'] = '/aws/codebuild/{}'.format(log_group_name)
+    options['log_group_name'] = '/aws/codebuild/gureume-{}'.format(log_group_name)
     options['log_stream_name'] = 'ALL'
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
