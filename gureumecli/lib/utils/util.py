@@ -70,12 +70,12 @@ def request(method, url, headers, *payload):
         sys.exit(1)
     else:
         response = json.loads(response.text)
-        
+
         if not 'statusCode' in response:
             click.echo('Unknown Error: {0}'.format(response))
             sys.exit(1)
-           
-        if response['statusCode'] == '200':
+
+        if response['statusCode'] == 200:
             return json.loads(response['body'])
         else:
             click.echo('[{0}] Server Error'.format(response['statusCode']))

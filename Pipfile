@@ -18,6 +18,7 @@ pylint = "*"
 haikunator = "*"
 gureume-cli = {editable = true,path = "."}
 awslogs = "*"
+aws-xray-sdk = "*"
 
 [dev-packages]
 pylint = "*"
