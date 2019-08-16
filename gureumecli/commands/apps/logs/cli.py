@@ -110,8 +110,7 @@ def cli(ctx, name, **kwargs):
 def do_cli(ctx, name, **kwargs):
     """View logs for your app"""
     options = {}
-    log_group_name = name
-    apps = {}
+    log_group_name = 'app-gureume-{}'.format(name)
 
     id_token = ctx._config.get('default', 'id_token')
     api_uri = ctx._config.get('default', 'api_uri')
@@ -123,14 +122,9 @@ def do_cli(ctx, name, **kwargs):
     resp = request('get', url, headers)
     apps = resp['apps'][0]
 
-    # iterate over and print tags
-    for key, val in apps['tags'].items():
-        if key == 'gureume-groups':
-            group = val
-    
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
-    options['log_group_name'] = 'app-{}'.format(log_group_name)
+    options['log_group_name'] = log_group_name
     options['log_stream_name'] = 'ALL'
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
