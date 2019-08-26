@@ -9,9 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Login to the platform
-"""
 import logging
 import click
 import os
@@ -58,19 +55,19 @@ def do_cli(ctx, user, password):
         ctx._config.set('default', 'api_uri', api_uri)
     else:
         api_uri = ctx._config.get('default', 'api_uri')
-    
+
     if not ctx._config.has_option('default', 'region'):
         region = click.prompt('API Region', default='eu-west-1')
         ctx._config.set('default', 'region', region)
     else:
         region = ctx._config.get('default', 'region')
-    
+
     if not ctx._config.has_option('default', 'cognito_user_pool_id'):
         user_pool_id = click.prompt('Cognito User Pool ID')
         ctx._config.set('default', 'cognito_user_pool_id', user_pool_id)
     else:
         user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
-    
+
     if not ctx._config.has_option('default', 'cognito_identity_pool_id'):
         identity_pool_id = click.prompt('Cognito Identity Pool ID')
 
@@ -80,7 +77,7 @@ def do_cli(ctx, user, password):
         ctx._config.set('default', 'cognito_identity_pool_id', identity_pool_id)
     else:
         identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
-    
+
     if not ctx._config.has_option('default', 'cognito_app_client_id'):
         app_client_id = click.prompt('Cognito App Client ID')
         ctx._config.set('default', 'cognito_app_client_id', app_client_id)
@@ -95,7 +92,7 @@ def do_cli(ctx, user, password):
         user_pool_id,
         app_client_id,
         username=user)
-    
+
     # Patch for clients without a ~./aws/credentials file or unconfigured AWS credentials
     u.client = boto3.client(
         'cognito-idp',
@@ -129,7 +126,7 @@ def do_cli(ctx, user, password):
         credentials['access_token'] = u.access_token
 
         click.echo('Getting temporary STS credentials...')
-        client = boto3.client('cognito-identity')
+        client = boto3.client('cognito-identity', region_name=region)
         user_identity_id = ""
 
         try:
@@ -143,7 +140,7 @@ def do_cli(ctx, user, password):
             user_identity_id = response['IdentityId']
         except Exception as ex:
             click.echo(ex)
-        
+
         try:
             response = client.get_credentials_for_identity(
                 IdentityId=user_identity_id,
