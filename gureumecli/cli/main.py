@@ -13,6 +13,7 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 Entry point for the CLI
 """
 
+import sys
 import logging
 import click
 
@@ -62,3 +63,6 @@ def cli(ctx):
     https://github.com/kalleeh/gureume-platform.
     """
     pass
+
+if getattr(sys, 'frozen', False):
+    cli(sys.argv[1:])
