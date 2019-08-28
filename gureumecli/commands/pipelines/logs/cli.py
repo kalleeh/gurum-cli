@@ -19,10 +19,10 @@ import boto3
 
 from botocore.client import ClientError
 from termcolor import colored
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.logs.awslogs import AWSLogs
-import gureumecli.commands.exceptions as exceptions
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.logs.awslogs import AWSLogs
+import gurumcli.commands.exceptions as exceptions
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('logs', short_help='Displays logs about your pipeline')
@@ -44,7 +44,7 @@ def cli(ctx, name, **kwargs):
         \b
         Logs in to the platform.
         \b
-        $ gureume pipelines logs myPipeline
+        $ gurum pipelines logs myPipeline
 
     \b
     Filter options:
@@ -54,7 +54,7 @@ def cli(ctx, name, **kwargs):
         This is helpful if you know precisely what you are looking for, and don't want to download the entire stream.
 
         \b
-        $ gureume pipelines logs myPipeline --filter-pattern="[r=REPORT,...]"
+        $ gurum pipelines logs myPipeline --filter-pattern="[r=REPORT,...]"
         Full documentation of how to write patterns: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/FilterAndPatternSyntax.html
 
     \b
@@ -114,7 +114,7 @@ def do_cli(ctx, name, **kwargs):
 
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
-    options['log_group_name'] = '/aws/codebuild/gureume-{}'.format(log_group_name)
+    options['log_group_name'] = '/aws/codebuild/gurum-{}'.format(log_group_name)
     options['log_stream_name'] = 'ALL'
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'

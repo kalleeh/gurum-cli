@@ -133,7 +133,7 @@
             "index": "pypi",
             "version": "==2.1.11"
         },
-        "gureume-cli": {
+        "gurum-cli": {
             "editable": true,
             "path": "."
         },

@@ -15,8 +15,8 @@ import os
 import json
 import time
 
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('describe', short_help='Displays details about app')
@@ -34,7 +34,7 @@ def cli(ctx, name, watch):
         \b
         Display detailed information about an application.
         \b
-        $ gureume apps describe myApp
+        $ gurum apps describe myApp
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx, name, watch)  # pragma: no cover

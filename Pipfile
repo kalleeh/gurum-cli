@@ -16,7 +16,7 @@ termcolor = "*"
 prettytable = "*"
 pylint = "*"
 haikunator = "*"
-gureume-cli = {editable = true,path = "."}
+gurum-cli = {editable = true,path = "."}
 awslogs = "*"
 aws-xray-sdk = "*"
 

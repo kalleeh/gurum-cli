@@ -16,8 +16,8 @@ import requests
 import json
 import time
 
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('update', short_help='Update the app')
@@ -39,7 +39,7 @@ def cli(ctx, name, **kwargs):
         Update your application parameters such as number of running tasks,
         health-check-path or the Docker image.
         \b
-        $ gureume apps update MyApp --health-check-path '/'
+        $ gurum apps update MyApp --health-check-path '/'
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx, name, **kwargs)  # pragma: no cover

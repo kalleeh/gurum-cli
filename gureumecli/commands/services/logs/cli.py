@@ -19,9 +19,9 @@ import boto3
 
 from botocore.client import ClientError
 from termcolor import colored
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.logs.awslogs import AWSLogs
-import gureumecli.commands.exceptions as exceptions
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.logs.awslogs import AWSLogs
+import gurumcli.commands.exceptions as exceptions
 
 @click.command('logs', short_help='Displays logs about your app')
 @click.argument('name')

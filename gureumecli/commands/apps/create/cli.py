@@ -18,8 +18,8 @@ import time
 
 from git import Repo, InvalidGitRepositoryError, GitCommandError
 
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint, haikunate
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint, haikunate
 
 
 @click.command('create', short_help='Create a new app')
@@ -39,7 +39,7 @@ def cli(ctx, **kwargs):
         \b
         Display detailed information about an application.
         \b
-        $ gureume apps create myApp
+        $ gurum apps create myApp
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx, **kwargs)  # pragma: no cover
@@ -106,11 +106,11 @@ def do_cli(ctx, **kwargs):
             repo = Repo.init('.')
 
         try:
-            repo.create_remote('gureume', apps['repository'])
+            repo.create_remote('gurum', apps['repository'])
             click.echo('Creating remote for platform...')
         except GitCommandError as ex:
             click.secho('Remote already exists...', fg='yellow')
 
         repo.remotes
 
-        click.echo('Deploy by using git push gureume master')
+        click.echo('Deploy by using git push gurum master')

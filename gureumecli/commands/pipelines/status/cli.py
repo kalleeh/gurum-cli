@@ -15,8 +15,8 @@ import os
 import json
 import time
 
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 @click.command('status', short_help='Displays status about your pipeline')
 @click.argument('name')

@@ -17,7 +17,7 @@ import sys
 import logging
 import click
 
-from gureumecli import __version__
+from gurumcli import __version__
 from .options import debug_option, config_option, region_option, profile_option
 from .context import Context
 from .command import BaseCommand
@@ -55,12 +55,12 @@ def aws_creds_options(f):
 @pass_context
 def cli(ctx):
     """
-    AWS Gureume Platform (GUREUME) CLI
+    AWS Gurum Platform (GUREUME) CLI
 
-    The AWS Gureume Platform extends AWS Container Services to provide a simplified way of managing container
+    The AWS Gurum Platform extends AWS Container Services to provide a simplified way of managing container
     applications on Elastic Container Service, AWS CodePipeline, and other services needed by your container application.
     You can find more in-depth guide about the GUREUME specification here:
-    https://github.com/kalleeh/gureume-platform.
+    https://github.com/kalleeh/gurum-platform.
     """
     pass
 

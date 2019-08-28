@@ -38,7 +38,7 @@ class Context(object):
         Initialize the context with default values
         """
         self._debug = False
-        self._app_name = 'gureume'
+        self._app_name = 'gurum'
         self._aws_region = None
         self._aws_profile = None
         self._config = None

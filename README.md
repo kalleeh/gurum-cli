@@ -1,6 +1,6 @@
-# Gureume CLI
+# Gurum CLI
 
-This CLI provides the main developer interface for the Gureume Container Platform.
+This CLI provides the main developer interface for the Gurum Container Platform.
 It provides capabilities for basic app management, creation of pipelines and user management.
 Basic log viewing and filtering can exist for troubleshooting.
 
@@ -9,7 +9,7 @@ Basic log viewing and filtering can exist for troubleshooting.
 * README.md - this file
 * Pipfile - requrements file for usage with Pipenv
 * setup.py - module/package definition for Distutils
-* gureumecli/ - this directory contains the Click CLI files and entrypoint referenced from setup.py
+* gurumcli/ - this directory contains the Click CLI files and entrypoint referenced from setup.py
 * tests/ - this directory contains unit tests for your application
 
 ## Installation
@@ -60,11 +60,11 @@ After you've entered the settings they should be saved in the configuration file
 ### Logging in
 
 The CLI has two main functions to enable you to interact with the platform.
-Start by logging in to the platform which configures your `.gureume` local configuration file placed in your OS' application support folder.
-For MacOS this is `~/Library/Application Support/gureume/`.
+Start by logging in to the platform which configures your `.gurum` local configuration file placed in your OS' application support folder.
+For MacOS this is `~/Library/Application Support/gurum/`.
 
 ```bash
-$ gureume login
+$ gurum login
 User: myuser@email.com
 Password:
 Logging in myuser@email.com..
@@ -80,7 +80,7 @@ The CLI allows you to create an app using an existing container image that will 
 *Currently this only supports unauthenticated Docker registries*
 
 ```bash
-gureume apps create [--name <app-name>]
+gurum apps create [--name <app-name>]
                     [--image <docker-image>] [--health-check-path <path>]
                     [--tasks <number-tasks>] [--env <key=value>]
 ```
@@ -92,17 +92,17 @@ All options are optional, however, if you don't specify a `name` it will be rand
 To watch the deployment details and current status of your app, use the `describe` command.
 
 ```bash
-$ gureume apps describe <app-name>
+$ gurum apps describe <app-name>
 === my-app
 Description: Platform App on Shared Load Balancer
 Status: UPDATE_COMPLETE
 Endpoint: my-app.apps.gureu.me
 Tags:
-- gureume-groups: team1
-- gureume-owner: myuser@email.com
-- gureume-platform-version: 0.2
-- gureume-region: eu-west-1
-- gureume-platform-type: app
+- gurum-groups: team1
+- gurum-owner: myuser@email.com
+- gurum-platform-version: 0.2
+- gurum-region: eu-west-1
+- gurum-platform-type: app
 ...
 ```
 
@@ -114,14 +114,14 @@ You can now visit the endpoint using your browser.
 To view the logs of your running containers you can use the logs command. By default it queries the last 5 minutes of logs but this can be customized using the `--start` option. You can also follow the logs using the `--watch` switch.
 
 ```bash
-gureume apps logs my-app --start '30m' --watch
+gurum apps logs my-app --start '30m' --watch
 ```
 
 ## Usage Guide
 
 ### Commands
 
-gureume
+gurum
 
 * login
 * signout
@@ -153,11 +153,11 @@ gureume
 ### Sample Deploy
 
 ```bash
-gureume apps create --image alexwhen/docker-2048 --health-check-path '/'
+gurum apps create --image alexwhen/docker-2048 --health-check-path '/'
 
-gureume apps create
+gurum apps create
 > portal
-gureume pipelines create
+gurum pipelines create
 > Name: portal-pipeline
 > App name: portal
 > Github repo: portal
@@ -165,9 +165,9 @@ gureume pipelines create
 > Github token: TOKEN
 > Github user: myGitHubUser
 
-gureume apps create
+gurum apps create
 > stocks
-gureume pipelines create
+gurum pipelines create
 > Name: stocks-pipeline
 > App name: stocks
 > Github repo: stocks
@@ -176,4 +176,4 @@ gureume pipelines create
 > Github user: myGitHubUser
 
 # Watch the logs for the stocks service and filter out health checks
-gureume apps logs stocks --watch | grep -v "/health"
+gurum apps logs stocks --watch | grep -v "/health"

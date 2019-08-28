@@ -19,10 +19,10 @@ import boto3
 
 from botocore.client import ClientError
 from termcolor import colored
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.logs.awslogs import AWSLogs
-import gureumecli.commands.exceptions as exceptions
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.logs.awslogs import AWSLogs
+import gurumcli.commands.exceptions as exceptions
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('logs', short_help='Displays logs about your app')
@@ -44,7 +44,7 @@ def cli(ctx, name, **kwargs):
         \b
         Logs in to the platform.
         \b
-        $ gureume apps logs myApp
+        $ gurum apps logs myApp
 
     \b
     Filter options:
@@ -54,7 +54,7 @@ def cli(ctx, name, **kwargs):
         This is helpful if you know precisely what you are looking for, and don't want to download the entire stream.
 
         \b
-        $ gureume apps logs myApp --filter-pattern="[r=REPORT,...]"
+        $ gurum apps logs myApp --filter-pattern="[r=REPORT,...]"
         Full documentation of how to write patterns: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/FilterAndPatternSyntax.html
 
     \b
@@ -110,7 +110,7 @@ def cli(ctx, name, **kwargs):
 def do_cli(ctx, name, **kwargs):
     """View logs for your app"""
     options = {}
-    log_group_name = 'app-gureume-{}'.format(name)
+    log_group_name = 'app-gurum-{}'.format(name)
 
     id_token = ctx._config.get('default', 'id_token')
     api_uri = ctx._config.get('default', 'api_uri')

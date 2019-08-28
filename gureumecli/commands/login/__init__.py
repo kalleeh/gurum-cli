@@ -17,8 +17,8 @@ import boto3
 import botocore
 
 from warrant import Cognito, exceptions
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.commands.exceptions import UserException
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.commands.exceptions import UserException
 
 LOG = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ def cli(ctx, user, password):
         \b
         Logs in to the platform.
         \b
-        $ gureume login
+        $ gurum login
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx, user, password)  # pragma: no cover

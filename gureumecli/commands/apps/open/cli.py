@@ -15,8 +15,8 @@ import requests
 import json
 import webbrowser
 
-from gureumecli.cli.main import pass_context, common_options
-from gureumecli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 
 @click.command('open', short_help='Opens the app endpoint')
@@ -33,7 +33,7 @@ def cli(ctx, name):
         \b
         Fetches the application endpoint and opens it in a browser.
         \b
-        $ gureume apps open myApp
+        $ gurum apps open myApp
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx, name)  # pragma: no cover

@@ -17,7 +17,7 @@ import click
 import os
 import requests
 
-from gureumecli.cli.main import pass_context, common_options
+from gurumcli.cli.main import pass_context, common_options
 from warrant import Cognito
 
 SHORT_HELP = "Log out from the GUREUME platform."
