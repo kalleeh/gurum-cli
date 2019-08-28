@@ -20,7 +20,7 @@ import click
 logger = logging.getLogger(__name__)
 
 # Commands that are bundled with the CLI by default
-_GUREUME_CLI_COMMAND_PACKAGES = {
+_GURUM_CLI_COMMAND_PACKAGES = {
     "gurumcli.commands.apps.apps",
     "gurumcli.commands.pipelines.pipelines",
     "gurumcli.commands.services.services",
@@ -62,7 +62,7 @@ class BaseCommand(click.MultiCommand):
         super(BaseCommand, self).__init__(*args, **kwargs)
 
         if not cmd_packages:
-            cmd_packages = _GUREUME_CLI_COMMAND_PACKAGES
+            cmd_packages = _GURUM_CLI_COMMAND_PACKAGES
 
         self._commands = {}
         self._commands = BaseCommand._set_commands(cmd_packages)

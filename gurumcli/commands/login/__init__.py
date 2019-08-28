@@ -33,7 +33,7 @@ LOG = logging.getLogger(__name__)
 @pass_context
 def cli(ctx, user, password):
     """ \b
-        Login to the GUREUME platform using your Cognito credentials.
+        Login to the GURUM platform using your Cognito credentials.
         This will populate your temporary session tokens in your configuration file.
         Usually this is located with the application data directory.
 

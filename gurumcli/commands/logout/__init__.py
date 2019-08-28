@@ -20,7 +20,7 @@ import requests
 from gurumcli.cli.main import pass_context, common_options
 from warrant import Cognito
 
-SHORT_HELP = "Log out from the GUREUME platform."
+SHORT_HELP = "Log out from the GURUM platform."
 
 
 @click.command("logout", short_help=SHORT_HELP, context_settings={"ignore_unknown_options": True})

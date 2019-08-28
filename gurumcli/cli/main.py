@@ -51,15 +51,15 @@ def aws_creds_options(f):
 
 @click.command(cls=BaseCommand)
 @common_options
-@click.version_option(version=__version__, prog_name="GUREUME CLI")
+@click.version_option(version=__version__, prog_name="GURUM CLI")
 @pass_context
 def cli(ctx):
     """
-    AWS Gurum Platform (GUREUME) CLI
+    AWS Gurum Platform (GURUM) CLI
 
     The AWS Gurum Platform extends AWS Container Services to provide a simplified way of managing container
     applications on Elastic Container Service, AWS CodePipeline, and other services needed by your container application.
-    You can find more in-depth guide about the GUREUME specification here:
+    You can find more in-depth guide about the GURUM specification here:
     https://github.com/kalleeh/gurum-platform.
     """
     pass
