@@ -36,9 +36,7 @@ def cli(ctx):
 def do_cli(ctx):
     """Logs the user out from the platform."""
     user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
-    identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
     app_client_id = ctx._config.get('default', 'cognito_app_client_id')
-    region = ctx._config.get('default', 'region')
     
     user = ctx._config.get('default', 'user')
     id_token = ctx._config.get('default', 'id_token')

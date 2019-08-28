@@ -14,13 +14,13 @@ gitpython = "*"
 termcolor = "*"
 prettytable = "*"
 haikunator = "*"
-gurum-cli = {editable = true,path = "."}
 awslogs = "*"
 aws-xray-sdk = "*"
 gureume-cli = {editable = true,path = "."}
 
 [dev-packages]
 pylint = "*"
+pep8 = "*"
 
 [requires]
 python_version = "3.7"
