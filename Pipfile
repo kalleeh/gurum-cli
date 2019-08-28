@@ -10,15 +10,14 @@ botocore = "*"
 "boto3" = "*"
 warrant = "*"
 click-spinner = "*"
-tox-pipenv = "*"
 gitpython = "*"
 termcolor = "*"
 prettytable = "*"
-pylint = "*"
 haikunator = "*"
 gurum-cli = {editable = true,path = "."}
 awslogs = "*"
 aws-xray-sdk = "*"
+gureume-cli = {editable = true,path = "."}
 
 [dev-packages]
 pylint = "*"
