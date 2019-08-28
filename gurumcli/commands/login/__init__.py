@@ -51,7 +51,7 @@ def cli(ctx, user, password):
 
 def do_cli(ctx, user, password):
     if not ctx._config.has_option('default', 'api_uri'):
-        api_uri = click.prompt('API URI', default='https://api.gureu.me')
+        api_uri = click.prompt('API URI', default='https://api.gurum.cloud')
         ctx._config.set('default', 'api_uri', api_uri)
     else:
         api_uri = ctx._config.get('default', 'api_uri')

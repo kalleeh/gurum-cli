@@ -64,7 +64,7 @@ def do_cli(ctx):
     if not ctx._config.has_section('default'):
         ctx._config.add_section('default')
     if not ctx._config.has_option('default', 'api_uri'):
-        ctx._config.set('default', 'api_uri', 'https://api.gureu.me')
+        ctx._config.set('default', 'api_uri', 'https://api.gurum.cloud')
     ctx._config.set('default', 'user', '')
     ctx._config.set('default', 'access_token', '')
     cfgfile = open(ctx._cfg_name, 'w+')
