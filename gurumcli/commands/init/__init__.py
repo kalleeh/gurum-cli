@@ -48,16 +48,16 @@ def cli(ctx):
 
 def do_cli(ctx):
     
-    base_dir = os.getcwd()
+    base_dir = os.path.join(os.path.dirname(os.path.realpath('__file__')))
 
-    skeleton_file = os.path.join(base_dir, "gurumcommon", GURUM_SKELETON_FILE)
+    skeleton_file = os.path.join(base_dir, GURUM_SKELETON_FILE)
 
     if not os.path.isfile(skeleton_file) or not os.access(skeleton_file, os.R_OK):
         raise click.ClickException('Invalid command: {}'.format("skeleton not found or unable to access " + skeleton_file))
 
-    gurum_init_file = os.path.join(base_dir, gurum_manifest.GURUM_FILE)
+    gurum_init_file = os.path.join(os.getcwd(), gurum_manifest.GURUM_FILE)
 
-    gurum_schema_file = os.path.join(base_dir, "gurumcommon", gurum_manifest.GURUM_SCHEMA_FILE)
+    gurum_schema_file = os.path.join(base_dir, gurum_manifest.GURUM_SCHEMA_FILE)
    
 
     if os.path.isfile(gurum_init_file) and os.access(gurum_init_file, os.R_OK):
