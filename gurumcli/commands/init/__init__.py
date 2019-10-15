@@ -25,7 +25,7 @@ from gurumcli.commands.exceptions import UserException
 
 LOG = logging.getLogger(__name__)
 
-GURUM_SKELETON_FILE = "gurum_manifest_skeleton_stub.yaml"
+GURUM_SKELETON_FILE = "gurum_manifest_skeleton.yaml"
 
 @click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @pass_context
