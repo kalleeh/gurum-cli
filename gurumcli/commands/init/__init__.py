@@ -48,7 +48,12 @@ def cli(ctx):
 
 def do_cli(ctx):
     
-    base_dir = os.path.join(os.path.dirname(os.path.realpath('__file__')))
+    base_dir = os.path.abspath(__file__ + "../../../../../gurumcommon")
+
+    #base_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),"gurumcommon")
+    print(base_dir)
+
+    #print(os.path.realpath(__file__))
 
     skeleton_file = os.path.join(base_dir, GURUM_SKELETON_FILE)
 
