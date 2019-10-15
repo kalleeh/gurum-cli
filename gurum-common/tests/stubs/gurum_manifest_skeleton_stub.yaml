@@ -1,0 +1,13 @@
+project:
+  source:
+    provider: github
+    repo: kalleeh/2048
+  type: ecs-shared-lb
+environments:
+  - name: prod
+    config:
+      - cpu: '256'
+      - memory: '1024'
+    env:
+      - environment: prod
+      - YourVar: AnotherEnvVar

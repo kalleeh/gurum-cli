@@ -1,0 +1,7 @@
+{
+    "name": "noisy-fire-2046",
+    "tasks": "1",
+    "health_check_path": "/",
+    "image": "nginx:latest",
+    "subtype": "shared-lb"
+}
