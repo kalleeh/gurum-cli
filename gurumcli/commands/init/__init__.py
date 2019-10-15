@@ -55,7 +55,7 @@ def do_cli(ctx):
     if not os.path.isfile(skeleton_file) or not os.access(skeleton_file, os.R_OK):
         raise click.ClickException('Invalid command: {}'.format("skeleton not found or unable to access " + skeleton_file))
 
-    gurum_init_file = os.path.join(base_dir, "gurumcommon", gurum_manifest.GURUM_FILE)
+    gurum_init_file = os.path.join(base_dir, gurum_manifest.GURUM_FILE)
 
     gurum_schema_file = os.path.join(base_dir, "gurumcommon", gurum_manifest.GURUM_SCHEMA_FILE)
    
