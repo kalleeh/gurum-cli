@@ -7,14 +7,16 @@ Module used for working with the Service Manifest file.
 
 import os
 
-from exceptions import InvalidGurumManifest
+from .exceptions import InvalidGurumManifestError
 
 import yaml
 import yamale
 
-from logger import configure_logger
+from .logger import configure_logger
 LOGGER = configure_logger(__name__)
 
+GURUM_SCHEMA_FILE = "gurum_manifest_schema.yaml"
+GURUM_FILE = "gurum.yaml"
 
 class GurumManifest:
     def __init__(
@@ -22,9 +24,9 @@ class GurumManifest:
             manifest_schema_path,
             manifest_path=None
     ):
-        self.manifest_path = manifest_path or 'gurum.yaml'
+        self.manifest_path = manifest_path or GURUM_FILE
         self.manifest_dir_path = manifest_path or 'gurum_manifest'
-        self.manifest_schema_path = manifest_schema_path or 'gurum_manifest_schema.yaml'
+        self.manifest_schema_path = manifest_schema_path or GURUM_SCHEMA_FILE
         self._get_all()
         self.account_ou_names = {}
         self._validate()
@@ -57,7 +59,7 @@ class GurumManifest:
             self._read()  # Calling with default no args to get service.yaml in root if it exists
         )
         if not self.manifest_contents['environments']:
-            raise InvalidGurumManifest("No manifest files found..")
+            raise InvalidGurumManifestError("No manifest files found..")
 
     def _validate(self):
         """
@@ -69,14 +71,14 @@ class GurumManifest:
 
             yamale.validate(schema, data)
         except ValueError:
-            raise InvalidGurumManifest(
+            raise InvalidGurumManifestError(
                 "Deployment Map target or regions specification is invalid"
             )
         except KeyError:
-            raise InvalidGurumManifest(
+            raise InvalidGurumManifestError(
                 "Deployment Map target or regions specification is invalid"
             )
         except FileNotFoundError:
-            raise InvalidGurumManifest(
-                "No Service Map files found, create a service.yaml file."
+            raise InvalidGurumManifestError(
+                "No Service Map files found, create a gurum.yaml file."
             )
