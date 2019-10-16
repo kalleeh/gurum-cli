@@ -42,11 +42,10 @@ def cli(ctx):
 
 
 def do_cli(ctx):
+    # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
     manifest = read_manifest()
 
-    click.echo(manifest.project())
-
-    orchestrator = UpOrchestrator(manifest.project())
+    orchestrator = UpOrchestrator(ctx.config, manifest.project())
 
     for environment in manifest.environments():
         orchestrator.provision_environment(environment)
