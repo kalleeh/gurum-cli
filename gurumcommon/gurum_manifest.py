@@ -27,8 +27,7 @@ class GurumManifest:
         self.manifest_path = manifest_path or GURUM_FILE
         self.manifest_dir_path = manifest_path or 'gurum_manifest'
         self.manifest_schema_path = manifest_schema_path or GURUM_SCHEMA_FILE
-        self._get_all()
-        self.account_ou_names = {}
+        self.manifest_contents = self._contents()
         self._validate()
 
     def _read(self, file_path=None):
@@ -41,25 +40,6 @@ class GurumManifest:
         except FileNotFoundError:
             LOGGER.info('No manifest file found at %s, continuing', file_path)
             return {}
-
-    def determine_extend_map(self, service_manifest):
-        if service_manifest.get('environments'):
-            self.manifest_contents['environments'].extend(service_manifest['environments'])
-
-    def _get_all(self):
-        self.manifest_contents = {}
-        self.manifest_contents['environments'] = []
-        if os.path.isdir(self.manifest_dir_path):
-            for file in os.listdir(self.manifest_dir_path):
-                if file.endswith(".yaml") and file != 'example-gurum.yaml':
-                    self.determine_extend_map(
-                        self._read('{0}/{1}'.format(self.manifest_dir_path, file))
-                    )
-        self.determine_extend_map(
-            self._read()  # Calling with default no args to get service.yaml in root if it exists
-        )
-        if not self.manifest_contents['environments']:
-            raise InvalidGurumManifestError("No manifest files found..")
 
     def _validate(self):
         """
@@ -82,3 +62,22 @@ class GurumManifest:
             raise InvalidGurumManifestError(
                 "No Service Map files found, create a gurum.yaml file."
             )
+
+    def _contents(self):
+        manifest_contents = {}
+
+        try:
+            manifest_contents = self._read(GURUM_FILE)
+        except Exception as ex:
+            print(ex) #TODO raise UnableToReadManifestException()
+
+        return manifest_contents
+
+    def project(self):
+        return self.manifest_contents['project']
+        
+    def environments(self):
+        return self.manifest_contents['environments']
+
+    def services(self):
+        return self.manifest_contents['services']
