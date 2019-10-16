@@ -97,20 +97,23 @@ def do_cli(ctx, **kwargs):
 
     # Check if app returned a repository endpoint, if so configure a git remote
     if 'repository' in apps:
-        repo = ""
-        try:
-            repo = Repo('.')
-            click.echo('Found existing git repository. Importing...')
-        except InvalidGitRepositoryError as ex:
-            click.echo('No existing git repository. Initializing... {}'.format(ex))
-            repo = Repo.init('.')
+        create_repository(apps['repository'])
 
-        try:
-            repo.create_remote('gurum', apps['repository'])
-            click.echo('Creating remote for platform...')
-        except GitCommandError as ex:
-            click.secho('Remote already exists...', fg='yellow')
+def create_repository(git_url):
+    repo = ""
+    try:
+        repo = Repo('.')
+        click.echo('Found existing git repository. Importing...')
+    except InvalidGitRepositoryError as ex:
+        click.echo('No existing git repository. Initializing... {}'.format(ex))
+        repo = Repo.init('.')
 
-        repo.remotes
+    try:
+        repo.create_remote('gurum', git_url)
+        click.echo('Creating remote for platform...')
+    except GitCommandError as ex:
+        click.secho('Remote already exists...', fg='yellow')
 
-        click.echo('Deploy by using git push gurum master')
+    repo.remotes
+
+    click.echo('Deploy by using git push gurum master')

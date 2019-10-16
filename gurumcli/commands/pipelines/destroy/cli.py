@@ -31,7 +31,22 @@ def abort_if_false(ctx, param, value):
               prompt='Are you sure you want to destroy the pipeline?')
 @pass_context
 def cli(ctx, name):
-    """Deletes the pipeline."""
+    """Deletes the pipeline.
+
+    \b
+    Common usage:
+
+        \b
+        Delete an application.
+        \b
+        $ gurum apps destroy myApp
+    """
+    # All logic must be implemented in the `do_cli` method. This helps ease unit tests
+    do_cli(ctx, name)  # pragma: no cover
+
+
+def do_cli(ctx, name):
+    """Deletes the application."""
     id_token = ctx._config.get('default', 'id_token')
     api_uri = ctx._config.get('default', 'api_uri')
 

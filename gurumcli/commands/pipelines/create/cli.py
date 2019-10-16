@@ -55,7 +55,7 @@ def cli(ctx, **kwargs):
             headers = {'Authorization': id_token}
 
             resp = request('get', url, headers)
-            pipelines = resp['pipelines']
+            pipelines = resp['pipelines'][0]
 
             # Get CloudFormation Events
             url = api_uri + '/events/' + kwargs['name']
