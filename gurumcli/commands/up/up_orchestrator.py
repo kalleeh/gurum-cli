@@ -2,6 +2,7 @@ import json
 
 from gurumcommon.clients.api_client import ApiClient
 
+
 class UpOrchestrator:
 
     def __init__(self, config, project):
@@ -28,12 +29,42 @@ class UpOrchestrator:
 
         try:
             self.api_client.create_app(json.dumps(payload))
-        except Exception as ex:
+        except Exception: #TODO: Handle different exceptions, now just assumes "already exists"
             payload['upgrade_version'] = 'False'
             self.api_client.update_app(json.dumps(payload))
 
-    def provision_pipeline(self):
+        return payload['name']
+
+    def provision_pipeline(self, environment_names, github_token):
         print('Provisioning {0} Pipeline.'.format(self.project['source']['provider']))
+        payload = {}
+
+        payload['name'] = self.project['name']
+
+        print(environment_names)
+        if environment_names[0]: payload['app_dev'] = environment_names[0]
+        if environment_names[1]: payload['app_name'] = environment_names[1]
+
+        source = self.project['source']
+        payload['github_branch'] = source['branch'] if 'branch' in source else 'master'
+        payload['github_token'] = github_token
+
+        source_details = self.split_user_repo(source['repo'])
+        payload['github_user'] = source_details['user']
+        payload['github_repo'] = source_details['repo']
+
+        print(payload)
+
+        try:
+            self.api_client.create_pipeline(json.dumps(payload))
+        except Exception: #TODO: Handle different exceptions, now just assumes "already exists"
+            payload['upgrade_version'] = 'False'
+            self.api_client.update_pipeline(json.dumps(payload))
 
     def provision_service(self, service):
         print('Provisioning Service: ' + service['name'])
+
+    def split_user_repo(self, user_repo_string):
+        split = user_repo_string.split('/')
+
+        return {'user': split[0], 'repo': split[1]}

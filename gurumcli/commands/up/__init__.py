@@ -43,14 +43,19 @@ def cli(ctx):
 
 def do_cli(ctx):
     # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
+    # TODO: Nicer exception handling/error message when gurum.yaml is missing
     manifest = read_manifest()
 
     orchestrator = UpOrchestrator(ctx.config, manifest.project())
 
-    for environment in manifest.environments():
-        orchestrator.provision_environment(environment)
+    if get_provider(manifest) == 'github':
+        github_token = click.prompt('Please enter your GitHub Token')
 
-    orchestrator.provision_pipeline()
+    environment_names = []
+    for environment in manifest.environments():
+        environment_names.append(orchestrator.provision_environment(environment))
+
+    orchestrator.provision_pipeline(environment_names, github_token)
 
 #TODO: Make this a helper.
 def read_manifest():
@@ -59,3 +64,6 @@ def read_manifest():
     gurum_schema_file = os.path.join(base_dir, gurum_manifest.GURUM_SCHEMA_FILE)
     gurum_init_file = os.path.join(os.getcwd(), gurum_manifest.GURUM_FILE)
     return gurum_manifest.GurumManifest(manifest_schema_path=gurum_schema_file, manifest_path=gurum_init_file)
+
+def get_provider(manifest):
+    return manifest.project()['source']['provider'].lower()

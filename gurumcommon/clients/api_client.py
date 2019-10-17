@@ -19,26 +19,28 @@ Gurum API Client
 
 class ApiClient():
     def __init__(self, api_uri, id_token):
-        self._url = api_uri + 'apps'
+        self._app_url = api_uri + 'apps'
+        self._pipeline_url = api_uri + 'pipelines'
+        self._service_url = api_uri + 'services'
         self._headers = {'Authorization': id_token}
         self._event_client = EventClient(api_uri, id_token)
 
     def create_app(self, payload):
         try:
-            resp = connection_handler.request('post', self._url, self._headers, payload)
+            resp = connection_handler.request('post', self._app_url, self._headers, payload)
         except Exception:
             raise
         else:
             return resp['apps']
 
     def describe_app(self):
-        resp = connection_handler.request('get', self._url, self._headers)
+        resp = connection_handler.request('get', self._app_url, self._headers)
 
         return resp['apps']
 
     def update_app(self, payload):
         data = json.loads(payload)
-        uri = '{0}/{1}'.format(self._url, data['name'])
+        uri = '{0}/{1}'.format(self._app_url, data['name'])
 
         try:
             resp = connection_handler.request('patch', uri, self._headers, payload)
@@ -48,6 +50,36 @@ class ApiClient():
             return resp['apps']
 
     def delete_app(self):
-        resp = connection_handler.request('delete', self._url, self._headers)
+        resp = connection_handler.request('delete', self._app_url, self._headers)
 
         return resp['apps']
+
+
+    def create_pipeline(self, payload):
+        try:
+            resp = connection_handler.request('post', self._pipeline_url, self._headers, payload)
+        except Exception:
+            raise
+        else:
+            return resp['pipelines']
+
+    def describe_pipeline(self):
+        resp = connection_handler.request('get', self._pipeline_url, self._headers)
+
+        return resp['pipelines']
+
+    def update_pipeline(self, payload):
+        data = json.loads(payload)
+        uri = '{0}/{1}'.format(self._pipeline_url, data['name'])
+
+        try:
+            resp = connection_handler.request('patch', uri, self._headers, payload)
+        except Exception as ex:
+            print(ex)
+        else:
+            return resp['pipelines']
+
+    def delete_pipeline(self):
+        resp = connection_handler.request('delete', self._pipeline_url, self._headers)
+
+        return resp['pipelines']
