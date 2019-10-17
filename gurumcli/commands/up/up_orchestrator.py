@@ -41,7 +41,6 @@ class UpOrchestrator:
 
         payload['name'] = self.project['name']
 
-        print(environment_names)
         if environment_names[0]: payload['app_dev'] = environment_names[0]
         if environment_names[1]: payload['app_name'] = environment_names[1]
 
@@ -52,8 +51,6 @@ class UpOrchestrator:
         source_details = self.split_user_repo(source['repo'])
         payload['github_user'] = source_details['user']
         payload['github_repo'] = source_details['repo']
-
-        print(payload)
 
         try:
             self.api_client.create_pipeline(json.dumps(payload))
