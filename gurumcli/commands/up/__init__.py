@@ -50,6 +50,8 @@ def do_cli(ctx):
     for environment in manifest.environments():
         orchestrator.provision_environment(environment)
 
+    orchestrator.provision_pipeline()
+
 #TODO: Make this a helper.
 def read_manifest():
     click.echo("Reading gurum.yaml")

@@ -35,11 +35,11 @@ def request(method, url, headers, *payload):
         if response.status_code == 404:
             raise UrlNotFoundError(response.text)
         if response.status_code == 401:
-            AuthenticationError(response.text)
+            raise AuthenticationError(response.text)
         if response.status_code == 400:
-            BadRequestError(response.text)
+            raise BadRequestError(response.text)
         if response.status_code >= 300:
-            UnexpectedRedirectError(response.text)
+            raise UnexpectedRedirectError(response.text)
     except requests.exceptions.ConnectionError:
         raise
     except requests.exceptions.Timeout:
@@ -54,3 +54,5 @@ def request(method, url, headers, *payload):
 
         if response['statusCode'] == 200:
             return json.loads(response['body'])
+        else:
+            raise UnknownError(response)
