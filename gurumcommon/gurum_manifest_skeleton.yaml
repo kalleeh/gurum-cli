@@ -5,10 +5,15 @@ project:
     repo: MyGitHubUser/MyProjectRepo
   type: shared-lb
 environments:
+  - name: dev
+    config:
+      health_check_path: '/'
+      tasks: '1'
+    env_vars:
+      - environment: prod
+      - YourVar: AnotherEnvVar
   - name: prod
     config:
-      cpu: '256'
-      memory: '1024'
       health_check_path: '/'
       tasks: '1'
     env_vars:

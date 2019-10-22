@@ -1,6 +1,7 @@
 import json
 
 from gurumcommon.clients.api_client import ApiClient
+from gurumcli.lib.utils.github_api import split_user_repo
 
 
 class UpOrchestrator:
@@ -48,7 +49,7 @@ class UpOrchestrator:
         payload['github_branch'] = source['branch'] if 'branch' in source else 'master'
         payload['github_token'] = github_token
 
-        source_details = self.split_user_repo(source['repo'])
+        source_details = split_user_repo(source['repo'])
         payload['github_user'] = source_details['user']
         payload['github_repo'] = source_details['repo']
 
@@ -60,8 +61,3 @@ class UpOrchestrator:
 
     def provision_service(self, service):
         print('Provisioning Service: ' + service['name'])
-
-    def split_user_repo(self, user_repo_string):
-        split = user_repo_string.split('/')
-
-        return {'user': split[0], 'repo': split[1]}

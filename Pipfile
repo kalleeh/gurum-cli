@@ -16,9 +16,9 @@ prettytable = "*"
 haikunator = "*"
 awslogs = "*"
 aws-xray-sdk = "*"
-gurum-cli = {editable = true,path = "."}
 pyyaml = "*"
 yamale = "*"
+gurum-cli = {editable = true,path = "."}
 
 [dev-packages]
 pylint = "*"

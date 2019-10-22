@@ -18,6 +18,7 @@ from .up_orchestrator import UpOrchestrator
 from gurumcommon.exceptions import InvalidGurumManifestError
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
+from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
 
 LOG = logging.getLogger(__name__)
 
@@ -55,7 +56,16 @@ def provision_pipeline_resources(config, manifest):
     orchestrator = UpOrchestrator(config, manifest.project())
 
     if get_provider(manifest) == 'github':
-        github_token = click.prompt('Please enter your GitHub Token')
+        while True:
+            github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
+
+            source = split_user_repo(manifest.project()['source']['repo'])
+            if(validate_pat(github_token, source['user'], source['repo'])):
+                click.echo("Token validation successful.")
+                break
+            else:
+                click.echo("Token invalid or not enough permissions.")
+                continue
 
     environment_names = []
     for environment in manifest.environments():
