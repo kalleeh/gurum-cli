@@ -23,6 +23,7 @@ gurum-cli = {editable = true,path = "."}
 [dev-packages]
 pylint = "*"
 pep8 = "*"
+tox = "*"
 
 [requires]
 python_version = "3.7"

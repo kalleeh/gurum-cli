@@ -1,5 +1,5 @@
 project:
-  name: str()
+  name: regex('[a-zA-Z][-a-zA-Z0-9]*', name='A-Za-z0-9 and hyphens.')
   source:
     provider: str()
     repo: str()

@@ -15,7 +15,7 @@ import os,sys
 import gurumcommon.gurum_manifest as gurum_manifest
 
 from .up_orchestrator import UpOrchestrator
-from gurumcommon.exceptions import InvalidGurumManifestError
+from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
@@ -60,12 +60,14 @@ def provision_pipeline_resources(config, manifest):
             github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
 
             source = split_user_repo(manifest.project()['source']['repo'])
-            if(validate_pat(github_token, source['user'], source['repo'])):
-                click.echo("Token validation successful.")
+
+            try:
+                validate_pat(github_token, source['user'], source['repo'])
                 break
-            else:
-                click.echo("Token invalid or not enough permissions.")
-                continue
+            except InvalidPersonalAccessTokenError as ex:
+                click.echo("Error: {}".format(ex.hint()))
+            except RepositoryNotFoundError as ex:
+                click.echo("Error: {}".format(ex.hint()))
 
     environment_names = []
     for environment in manifest.environments():
