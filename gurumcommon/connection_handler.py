@@ -29,13 +29,10 @@ def request(method, url, headers, *payload):
             response = requests.patch(url, json=payload, headers=headers)
 
         response.raise_for_status()
-        print('HTTP {} - {} {}'.format(response.status_code, method.upper(), url))
-        print(response.text)
     except requests.exceptions.HTTPError:
         if response.status_code >= 500:
             raise ServerError(response.text)
         if response.status_code == 409:
-            print('EXCEPTION: AlreadyExistsError')
             raise AlreadyExistsError(response.text)
         if response.status_code == 404:
             raise UrlNotFoundError(response.text)

@@ -34,7 +34,6 @@ class ApiClient():
         except Exception as ex:
             print(ex)
         else:
-            print(resp)
             return json.loads(resp['body'])['apps']
 
     def describe_app(self):
