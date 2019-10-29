@@ -11,7 +11,7 @@ import json
 
 import gurumcommon.connection_handler as connection_handler
 
-from gurumcommon.exceptions import BadRequestError, AlreadyExistsException, UnknownError
+from gurumcommon.exceptions import BadRequestError, AlreadyExistsError, UnknownError
 from gurumcommon.clients.event_client import EventClient
 
 """
@@ -29,15 +29,13 @@ class ApiClient():
     def create_app(self, payload):
         try:
             resp = connection_handler.request('post', self._app_url, self._headers, payload)
+        except AlreadyExistsError:
+            raise
         except Exception as ex:
             print(ex)
         else:
-            """ Handling of custom Lambda errors until native passthrough
-            is updated in API Gateway configuration """
-            if 'statusCode' in resp and resp['statusCode'] == 200:
-                return json.loads(resp['body'])['apps']
-            if 'statusCode' in resp and resp['statusCode'] == 400:
-                raise AlreadyExistsException
+            print(resp)
+            return json.loads(resp['body'])['apps']
 
     def describe_app(self):
         resp = connection_handler.request('get', self._app_url, self._headers)
@@ -53,12 +51,7 @@ class ApiClient():
         except Exception as ex:
             print(ex)
         else:
-            """ Handling of custom Lambda errors until native passthrough
-            is updated in API Gateway configuration """
-            if 'statusCode' in resp and resp['statusCode'] == 200:
-                return json.loads(resp['body'])['apps']
-            if 'statusCode' in resp and resp['statusCode'] == 400:
-                raise AlreadyExistsException
+            return json.loads(resp['body'])['apps']
 
     def delete_app(self):
         resp = connection_handler.request('delete', self._app_url, self._headers)

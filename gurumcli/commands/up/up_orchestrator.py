@@ -1,6 +1,6 @@
 import json
 
-from gurumcommon.exceptions import AlreadyExistsException
+from gurumcommon.exceptions import AlreadyExistsError
 
 from gurumcommon.clients.api_client import ApiClient
 from gurumcli.lib.utils.github_api import split_user_repo
@@ -32,7 +32,7 @@ class UpOrchestrator:
 
         try:
             self.api_client.create_app(json.dumps(payload))
-        except AlreadyExistsException:
+        except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
             self.api_client.update_app(json.dumps(payload))
 
@@ -57,7 +57,7 @@ class UpOrchestrator:
 
         try:
             self.api_client.create_pipeline(json.dumps(payload))
-        except AlreadyExistsException:
+        except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
             self.api_client.update_pipeline(json.dumps(payload))
 
