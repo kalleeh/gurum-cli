@@ -115,3 +115,9 @@ class InvalidPersonalAccessTokenError(BaseAWSLogsException):
 
     def hint(self):
         return "Personal Access Token invalid or not enough permissions. Ensure you have permissions to the repository."
+
+
+class AlreadyExistsException(BaseAWSLogsException):
+
+    def hint(self):
+        return "The requested resource already exists."

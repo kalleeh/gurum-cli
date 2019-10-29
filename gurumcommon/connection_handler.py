@@ -11,7 +11,7 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import json
 
-from .exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, BadRequestError, UnexpectedRedirectError
+from .exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, AlreadyExistsException, BadRequestError, UnexpectedRedirectError
 import requests
 
 
@@ -41,18 +41,12 @@ def request(method, url, headers, *payload):
         if response.status_code >= 300:
             raise UnexpectedRedirectError(response.text)
     except requests.exceptions.ConnectionError:
-        raise
+        raise UnknownError(response.text)
     except requests.exceptions.Timeout:
-        raise
+        raise UnknownError(response.text)
     except requests.exceptions.RequestException:
-        raise
+        raise UnknownError(response.text)
     else:
         response = json.loads(response.text)
 
-        if 'statusCode' not in response:
-            raise UnknownError(response)
-
-        if response['statusCode'] == 200:
-            return json.loads(response['body'])
-        else:
-            raise UnknownError(response)
+        return response
