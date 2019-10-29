@@ -24,11 +24,8 @@ class UpOrchestrator:
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], environment['name'])
-        payload['health_check_path'] = environment['config']['health_check_path']
-        payload['tasks'] = environment['config']['tasks']
-        payload['image'] = 'nginx:latest'
-        payload['subtype'] = self.project['type']
-        payload['version'] = 'latest'
+        payload['config'] = environment['config']
+        payload['env_vars'] = environment['env_vars']
 
         try:
             self.api_client.create_app(json.dumps(payload))
@@ -44,8 +41,7 @@ class UpOrchestrator:
 
         payload['name'] = self.project['name']
 
-        if environment_names[0]: payload['app_dev'] = environment_names[0]
-        if environment_names[1]: payload['app_name'] = environment_names[1]
+        payload['environments'] = environment_names
 
         source = self.project['source']
         payload['github_branch'] = source['branch'] if 'branch' in source else 'master'

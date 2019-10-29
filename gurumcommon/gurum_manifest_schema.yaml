@@ -10,9 +10,9 @@ services: list(include('service'), required=False)
 environment:
   name: str()
   config: map()
-  env_vars: list()
+  env_vars: map()
 
 service:
   name: str()
   type: str()
-  config: list()
+  config: map()
