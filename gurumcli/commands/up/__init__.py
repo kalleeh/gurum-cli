@@ -73,7 +73,7 @@ def provision_pipeline_resources(config, manifest):
     for environment in manifest.environments():
         environment_names.append(orchestrator.provision_environment(environment))
 
-    #orchestrator.provision_pipeline(environment_names, github_token)
+    orchestrator.provision_pipeline(environment_names, github_token)
 
 #TODO: Make this a helper.
 def read_manifest():

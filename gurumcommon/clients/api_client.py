@@ -11,7 +11,7 @@ import json
 
 import gurumcommon.connection_handler as connection_handler
 
-from gurumcommon.exceptions import BadRequestError, AlreadyExistsError, UnknownError
+from gurumcommon.exceptions import BadRequestError, AlreadyExistsError, UnknownParameterError, UnknownError
 from gurumcommon.clients.event_client import EventClient
 
 """
@@ -29,10 +29,8 @@ class ApiClient():
     def create_app(self, payload):
         try:
             resp = connection_handler.request('post', self._app_url, self._headers, payload)
-        except AlreadyExistsError:
+        except Exception:
             raise
-        except Exception as ex:
-            print(ex)
         else:
             return json.loads(resp['body'])['apps']
 
@@ -47,10 +45,10 @@ class ApiClient():
 
         try:
             resp = connection_handler.request('patch', uri, self._headers, payload)
-        except Exception as ex:
-            print(ex)
+        except BadRequestError:
+            raise UnknownParameterError
         else:
-            return json.loads(resp['body'])['apps']
+            return json.loads(resp['body'])
 
     def delete_app(self):
         resp = connection_handler.request('delete', self._app_url, self._headers)
@@ -61,10 +59,10 @@ class ApiClient():
     def create_pipeline(self, payload):
         try:
             resp = connection_handler.request('post', self._pipeline_url, self._headers, payload)
-        except Exception as ex:
-            print(ex)
+        except Exception:
+            raise
         else:
-            return resp['pipelines']
+            return json.loads(resp['body'])['pipelines']
 
     def describe_pipeline(self):
         resp = connection_handler.request('get', self._pipeline_url, self._headers)
@@ -77,10 +75,10 @@ class ApiClient():
 
         try:
             resp = connection_handler.request('patch', uri, self._headers, payload)
-        except Exception as ex:
-            print(ex)
+        except BadRequestError:
+            raise UnknownParameterError
         else:
-            return resp['pipelines']
+            return json.loads(resp['body'])['pipelines']
 
     def delete_pipeline(self):
         resp = connection_handler.request('delete', self._pipeline_url, self._headers)

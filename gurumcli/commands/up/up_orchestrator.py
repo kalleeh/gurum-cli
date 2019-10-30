@@ -1,6 +1,6 @@
 import json
 
-from gurumcommon.exceptions import AlreadyExistsError
+from gurumcommon.exceptions import AlreadyExistsError, BadRequestError, UnknownParameterError
 
 from gurumcommon.clients.api_client import ApiClient
 from gurumcli.lib.utils.github_api import split_user_repo
@@ -31,7 +31,10 @@ class UpOrchestrator:
             self.api_client.create_app(json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
-            self.api_client.update_app(json.dumps(payload))
+            try:
+                self.api_client.update_app(json.dumps(payload))
+            except UnknownParameterError as ex:
+                print(ex)
 
         return payload['name']
 
@@ -44,18 +47,22 @@ class UpOrchestrator:
         payload['environments'] = environment_names
 
         source = self.project['source']
-        payload['github_branch'] = source['branch'] if 'branch' in source else 'master'
-        payload['github_token'] = github_token
+        payload['source'] = {}
+        payload['source']['GitHubBranch'] = source['branch'] if 'branch' in source else 'master'
+        payload['source']['GitHubToken'] = github_token
 
         source_details = split_user_repo(source['repo'])
-        payload['github_user'] = source_details['user']
-        payload['github_repo'] = source_details['repo']
+        payload['source']['GitHubUser'] = source_details['user']
+        payload['source']['GitHubRepo'] = source_details['repo']
 
         try:
             self.api_client.create_pipeline(json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
-            self.api_client.update_pipeline(json.dumps(payload))
+            try:
+                self.api_client.update_pipeline(json.dumps(payload))
+            except UnknownParameterError as ex:
+                print(ex)
 
     def provision_service(self, service):
         print('Provisioning Service: ' + service['name'])

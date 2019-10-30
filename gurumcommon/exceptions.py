@@ -121,3 +121,9 @@ class AlreadyExistsError(BaseAWSLogsException):
 
     def hint(self):
         return "The requested resource already exists."
+
+
+class UnknownParameterError(BaseAWSLogsException):
+
+    def hint(self):
+        return "Unknown Parameter provided."
