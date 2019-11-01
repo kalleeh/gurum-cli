@@ -1,6 +1,10 @@
 import json
 
+<<<<<<< HEAD
 from gurumcommon.exceptions import AlreadyExistsError, BadRequestError, UnknownParameterError
+=======
+from gurumcommon.exceptions import AlreadyExistsError
+>>>>>>> master
 
 from gurumcommon.clients.api_client import ApiClient
 from gurumcli.lib.utils.github_api import split_user_repo
@@ -24,17 +28,29 @@ class UpOrchestrator:
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], environment['name'])
+<<<<<<< HEAD
         payload['config'] = environment['config']
         payload['env_vars'] = environment['env_vars']
+=======
+        payload['health_check_path'] = environment['config']['health_check_path']
+        payload['tasks'] = environment['config']['tasks']
+        payload['image'] = 'nginx:latest'
+        payload['subtype'] = self.project['type']
+        payload['version'] = 'latest'
+>>>>>>> master
 
         try:
             self.api_client.create_app(json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
+<<<<<<< HEAD
             try:
                 self.api_client.update_app(json.dumps(payload))
             except UnknownParameterError as ex:
                 print(ex)
+=======
+            self.api_client.update_app(json.dumps(payload))
+>>>>>>> master
 
         return payload['name']
 
@@ -44,6 +60,7 @@ class UpOrchestrator:
 
         payload['name'] = self.project['name']
 
+<<<<<<< HEAD
         payload['environments'] = environment_names
 
         source = self.project['source']
@@ -54,15 +71,31 @@ class UpOrchestrator:
         source_details = split_user_repo(source['repo'])
         payload['source']['GitHubUser'] = source_details['user']
         payload['source']['GitHubRepo'] = source_details['repo']
+=======
+        if environment_names[0]: payload['app_dev'] = environment_names[0]
+        if environment_names[1]: payload['app_name'] = environment_names[1]
+
+        source = self.project['source']
+        payload['github_branch'] = source['branch'] if 'branch' in source else 'master'
+        payload['github_token'] = github_token
+
+        source_details = split_user_repo(source['repo'])
+        payload['github_user'] = source_details['user']
+        payload['github_repo'] = source_details['repo']
+>>>>>>> master
 
         try:
             self.api_client.create_pipeline(json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
+<<<<<<< HEAD
             try:
                 self.api_client.update_pipeline(json.dumps(payload))
             except UnknownParameterError as ex:
                 print(ex)
+=======
+            self.api_client.update_pipeline(json.dumps(payload))
+>>>>>>> master
 
     def provision_service(self, service):
         print('Provisioning Service: ' + service['name'])

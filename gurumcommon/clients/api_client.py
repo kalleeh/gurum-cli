@@ -29,8 +29,10 @@ class ApiClient():
     def create_app(self, payload):
         try:
             resp = connection_handler.request('post', self._app_url, self._headers, payload)
-        except Exception:
+        except AlreadyExistsError:
             raise
+        except Exception as ex:
+            print(ex)
         else:
             return json.loads(resp['body'])['apps']
 
