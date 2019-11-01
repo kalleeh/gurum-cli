@@ -1,0 +1,21 @@
+project:
+  name: MyProjectName
+  source:
+    provider: github
+    repo: MyGitHubUser/MyProjectRepo
+  type: shared-lb
+environments:
+  - name: dev
+    config:
+      health_check_path: '/'
+      tasks: '1'
+    env_vars:
+      - environment: prod
+      - YourVar: AnotherEnvVar
+  - name: prod
+    config:
+      health_check_path: '/'
+      tasks: '1'
+    env_vars:
+      - environment: prod
+      - YourVar: AnotherEnvVar

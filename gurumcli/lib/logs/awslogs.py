@@ -15,7 +15,7 @@ from termcolor import colored
 from dateutil.parser import parse
 from dateutil.tz import tzutc
 
-from ...commands.exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
+from ..exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
 
 
 def milis2iso(milis):

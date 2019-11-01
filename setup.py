@@ -48,6 +48,7 @@ setup(
         'haikunator',
         'prettytable',
         'termcolor',
+        'yamale',
         'requests',
         'warrant'
     ],
