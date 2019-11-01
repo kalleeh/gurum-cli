@@ -103,3 +103,21 @@ class EmptyResponseError(BaseAWSLogsException):
 
     def hint(self):
         return "The response was empty."
+
+
+class RepositoryNotFoundError(BaseAWSLogsException):
+
+    def hint(self):
+        return "No such repository found. Validate that you have configured your configuration file properly."
+
+
+class InvalidPersonalAccessTokenError(BaseAWSLogsException):
+
+    def hint(self):
+        return "Personal Access Token invalid or not enough permissions. Ensure you have permissions to the repository."
+
+
+class AlreadyExistsError(BaseAWSLogsException):
+
+    def hint(self):
+        return "The requested resource already exists."

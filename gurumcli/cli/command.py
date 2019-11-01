@@ -27,6 +27,7 @@ _GURUM_CLI_COMMAND_PACKAGES = {
     "gurumcli.commands.logout",
     "gurumcli.commands.pipelines.pipelines",
     "gurumcli.commands.services.services",
+    "gurumcli.commands.up",
     "gurumcli.commands.users.users",
 }
 

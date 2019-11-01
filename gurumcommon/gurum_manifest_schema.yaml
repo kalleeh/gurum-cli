@@ -1,4 +1,5 @@
 project:
+  name: regex('[a-zA-Z][-a-zA-Z0-9]*', name='A-Za-z0-9 and hyphens.')
   source:
     provider: str()
     repo: str()
@@ -9,9 +10,9 @@ services: list(include('service'), required=False)
 environment:
   name: str()
   config: map()
-  env: map()
+  env_vars: list()
 
 service:
   name: str()
   type: str()
-  config: map()
+  config: list()
