@@ -10,12 +10,12 @@ environments:
       health_check_path: '/'
       tasks: '1'
     env_vars:
-      - environment: prod
-      - YourVar: AnotherEnvVar
+      environment: prod
+      YourVar: AnotherEnvVar
   - name: prod
     config:
       health_check_path: '/'
       tasks: '1'
     env_vars:
-      - environment: prod
-      - YourVar: AnotherEnvVar
+      environment: prod
+      YourVar: AnotherEnvVar
