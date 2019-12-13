@@ -66,3 +66,19 @@ class UpOrchestrator:
 
     def provision_service(self, service):
         print('Provisioning Service: ' + service['name'])
+        payload = {}
+
+        payload['name'] = '{0}-{1}'.format(self.project['name'], service['name'])
+        payload['type'] = service['type']
+        payload['config'] = service['config']
+
+        try:
+            self.api_client.create_service(json.dumps(payload))
+        except AlreadyExistsError:
+            payload['upgrade_version'] = 'False'
+            try:
+                self.api_client.update_service(json.dumps(payload))
+            except UnknownParameterError as ex:
+                print(ex)
+
+        return payload['name']

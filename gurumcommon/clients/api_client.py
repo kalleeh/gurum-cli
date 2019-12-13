@@ -86,3 +86,35 @@ class ApiClient():
         resp = connection_handler.request('delete', self._pipeline_url, self._headers)
 
         return resp['pipelines']
+
+
+    def create_service(self, payload):
+        try:
+            resp = connection_handler.request('post', self._service_url, self._headers, payload)
+        except AlreadyExistsError:
+            raise
+        except Exception as ex:
+            print(ex)
+        else:
+            return json.loads(resp['body'])['services']
+
+    def describe_service(self):
+        resp = connection_handler.request('get', self._service_url, self._headers)
+
+        return resp['services']
+
+    def update_service(self, payload):
+        data = json.loads(payload)
+        uri = '{0}/{1}'.format(self._service_url, data['name'])
+
+        try:
+            resp = connection_handler.request('patch', uri, self._headers, payload)
+        except BadRequestError:
+            raise UnknownParameterError
+        else:
+            return json.loads(resp['body'])
+
+    def delete_service(self):
+        resp = connection_handler.request('delete', self._service_url, self._headers)
+
+        return resp['services']

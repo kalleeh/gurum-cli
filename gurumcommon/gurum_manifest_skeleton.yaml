@@ -19,3 +19,8 @@ environments:
     env_vars:
       environment: prod
       YourVar: AnotherEnvVar
+services:
+  - name: mys3bucket
+    type: s3
+    config:
+      BucketName: mys3bucket
