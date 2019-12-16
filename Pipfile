@@ -19,6 +19,7 @@ aws-xray-sdk = "*"
 pyyaml = "*"
 yamale = "*"
 gurum-cli = {editable = true,path = "."}
+keyring = "*"
 
 [dev-packages]
 pylint = "*"

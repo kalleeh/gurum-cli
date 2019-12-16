@@ -11,7 +11,8 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import logging
 import click
-import os,sys
+import os
+import sys
 import gurumcommon.gurum_manifest as gurum_manifest
 
 from .up_orchestrator import UpOrchestrator
@@ -19,8 +20,9 @@ from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAcc
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
+from gurumcli.lib.utils.keyring_api import get_secret, set_secret
 
-LOG = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 GURUM_SKELETON_FILE = "gurum_manifest_skeleton.yaml"
 
@@ -55,20 +57,7 @@ def do_cli(ctx):
 
 def provision_pipeline_resources(config, manifest):
     orchestrator = UpOrchestrator(config, manifest.project())
-
-    if get_provider(manifest) == 'github':
-        while True:
-            github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
-
-            source = split_user_repo(manifest.project()['source']['repo'])
-
-            try:
-                validate_pat(github_token, source['user'], source['repo'])
-                break
-            except InvalidPersonalAccessTokenError as ex:
-                click.echo("Error: {}".format(ex.hint()))
-            except RepositoryNotFoundError as ex:
-                click.echo("Error: {}".format(ex.hint()))
+    repository = manifest.project()['source']['repo']
 
     environment_names = []
     for environment in manifest.environments():
@@ -77,7 +66,9 @@ def provision_pipeline_resources(config, manifest):
     for service in manifest.services():
         orchestrator.provision_service(service)
 
-    orchestrator.provision_pipeline(environment_names, github_token)
+    if get_provider(manifest) == 'github':
+        github_token = get_github_requirements(repository)
+        orchestrator.provision_pipeline(environment_names, github_token)
 
 #TODO: Make this a helper.
 def read_manifest():
@@ -89,3 +80,25 @@ def read_manifest():
 
 def get_provider(manifest):
     return manifest.project()['source']['provider'].lower()
+
+def get_github_requirements(repository):
+    github_token = get_secret(repository)
+    if not github_token:
+        LOGGER.debug('GitHub Token not found in keyring. Prompting user...')
+        github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
+
+    source = split_user_repo(repository)
+
+    try:
+        validate_pat(github_token, source['user'], source['repo'])
+
+        LOGGER.debug('Personal Access Token valid. Saving to keyring...')
+        set_secret(repository, github_token)
+
+        return github_token
+    except InvalidPersonalAccessTokenError as ex:
+        click.echo("Error: {}".format(ex.hint()))
+    except RepositoryNotFoundError as ex:
+        click.echo("Error: {}".format(ex.hint()))
+    
+    return False
