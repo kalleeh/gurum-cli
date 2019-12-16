@@ -83,22 +83,21 @@ def get_provider(manifest):
 
 def get_github_requirements(repository):
     github_token = get_secret(repository)
-    if not github_token:
-        LOGGER.debug('GitHub Token not found in keyring. Prompting user...')
-        github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
-
     source = split_user_repo(repository)
 
-    try:
-        validate_pat(github_token, source['user'], source['repo'])
+    while True:
+        try:
+            validate_pat(github_token, source['user'], source['repo'])
 
-        LOGGER.debug('Personal Access Token valid. Saving to keyring...')
-        set_secret(repository, github_token)
+            LOGGER.debug('Personal Access Token valid. Saving to keyring...')
+            set_secret(repository, github_token)
 
-        return github_token
-    except InvalidPersonalAccessTokenError as ex:
-        click.echo("Error: {}".format(ex.hint()))
-    except RepositoryNotFoundError as ex:
-        click.echo("Error: {}".format(ex.hint()))
+            return github_token
+        except InvalidPersonalAccessTokenError as ex:
+            click.echo("Error: {}".format(ex.hint()))
+            LOGGER.debug('GitHub Token invalid or not found in keyring. Prompting user...')
+            github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
+        except RepositoryNotFoundError as ex:
+            click.echo("Error: {}".format(ex.hint()))
     
     return False
