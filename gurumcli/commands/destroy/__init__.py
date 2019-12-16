@@ -15,7 +15,7 @@ import os
 import sys
 import gurumcommon.gurum_manifest as gurum_manifest
 
-from .up_orchestrator import UpOrchestrator
+from .destroy_orchestrator import DestroyOrchestrator
 from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
@@ -39,7 +39,7 @@ def cli(ctx):
         \b
         Deploy application.
         \b
-        $ gurum up
+        $ gurum destroy
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx)  # pragma: no cover
@@ -53,22 +53,19 @@ def do_cli(ctx):
         LOGGER.debug(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
-        provision_pipeline_resources(ctx.config, manifest)
+        destroy_pipeline_resources(ctx.config, manifest)
 
-def provision_pipeline_resources(config, manifest):
-    orchestrator = UpOrchestrator(config, manifest.project())
-    repository = manifest.project()['source']['repo']
+def destroy_pipeline_resources(config, manifest):
+    orchestrator = DestroyOrchestrator(config, manifest.project())
 
     environment_names = []
     for environment in manifest.environments():
-        environment_names.append(orchestrator.provision_environment(environment))
+        environment_names.append(orchestrator.destroy_environment(environment))
 
     for service in manifest.services():
-        orchestrator.provision_service(service)
+        orchestrator.destroy_service(service)
 
-    if get_provider(manifest) == 'github':
-        github_token = get_github_requirements(repository)
-        orchestrator.provision_pipeline(environment_names, github_token)
+    orchestrator.destroy_pipeline()
 
 #TODO: Make this a helper.
 def read_manifest():
@@ -80,24 +77,3 @@ def read_manifest():
 
 def get_provider(manifest):
     return manifest.project()['source']['provider'].lower()
-
-def get_github_requirements(repository):
-    github_token = get_secret(repository)
-    source = split_user_repo(repository)
-
-    while True:
-        try:
-            validate_pat(github_token, source['user'], source['repo'])
-
-            LOGGER.debug('Personal Access Token valid. Saving to keyring...')
-            set_secret(repository, github_token)
-
-            return github_token
-        except InvalidPersonalAccessTokenError as ex:
-            click.echo("Error: {}".format(ex.hint()))
-            LOGGER.debug('GitHub Token invalid or not found in keyring. Prompting user...')
-            github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
-        except RepositoryNotFoundError as ex:
-            click.echo("Error: {}".format(ex.hint()))
-    
-    return False
