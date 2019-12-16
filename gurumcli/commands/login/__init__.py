@@ -20,18 +20,14 @@ from warrant import Cognito, exceptions
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.commands.exceptions import UserException
 
-LOG = logging.getLogger(__name__)
-
-# export COGNITO_USER_POOL_ID="eu-west-1_Mkfe1asNSAMPLE"
-# export COGNITO_IDENTITY_POOL_ID="b5bbdabdb-9b9b-4fa0-a7fd-533222aeSAMPLE"
-# export COGNITO_APP_CLIENT_ID="1ts042gliofewaadsas0j3k3bbrwSAMPLE"
+LOGGER = logging.getLogger(__name__)
 
 @click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.option('--user', prompt=True, help='Username (email)')
 @click.option('--password', prompt=True, hide_input=True)
 @common_options
 @pass_context
-def cli(ctx, user, password):
+def cli(ctx, user, password, profile='default'):
     """ \b
         Login to the GURUM platform using your Cognito credentials.
         This will populate your temporary session tokens in your configuration file.
@@ -49,43 +45,44 @@ def cli(ctx, user, password):
     do_cli(ctx, user, password)  # pragma: no cover
 
 
-def do_cli(ctx, user, password):
-    if not ctx._config.has_option('default', 'api_uri'):
+def do_cli(ctx, user, password, profile='default'):
+    if not ctx._config.has_option(profile, 'api_uri'):
         api_uri = click.prompt('API URI', default='https://api.gurum.cloud')
-        ctx._config.set('default', 'api_uri', api_uri)
+        ctx._config.set(profile, 'api_uri', api_uri)
     else:
-        api_uri = ctx._config.get('default', 'api_uri')
+        api_uri = ctx._config.get(profile, 'api_uri')
 
-    if not ctx._config.has_option('default', 'region'):
+    if not ctx._config.has_option(profile, 'region'):
         region = click.prompt('API Region', default='eu-west-1')
-        ctx._config.set('default', 'region', region)
+        ctx._config.set(profile, 'region', region)
     else:
-        region = ctx._config.get('default', 'region')
+        region = ctx._config.get(profile, 'region')
 
-    if not ctx._config.has_option('default', 'cognito_user_pool_id'):
+    if not ctx._config.has_option(profile, 'cognito_user_pool_id'):
         user_pool_id = click.prompt('Cognito User Pool ID')
-        ctx._config.set('default', 'cognito_user_pool_id', user_pool_id)
+        ctx._config.set(profile, 'cognito_user_pool_id', user_pool_id)
     else:
-        user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
+        user_pool_id = ctx._config.get(profile, 'cognito_user_pool_id')
 
-    if not ctx._config.has_option('default', 'cognito_identity_pool_id'):
+    if not ctx._config.has_option(profile, 'cognito_identity_pool_id'):
         identity_pool_id = click.prompt('Cognito Identity Pool ID')
 
         # clean out eventual region and colon at start of string
         identity_pool_id = identity_pool_id.rpartition(':')[2]
 
-        ctx._config.set('default', 'cognito_identity_pool_id', identity_pool_id)
+        ctx._config.set(profile, 'cognito_identity_pool_id', identity_pool_id)
     else:
-        identity_pool_id = ctx._config.get('default', 'cognito_identity_pool_id')
+        identity_pool_id = ctx._config.get(profile, 'cognito_identity_pool_id')
 
-    if not ctx._config.has_option('default', 'cognito_app_client_id'):
+    if not ctx._config.has_option(profile, 'cognito_app_client_id'):
         app_client_id = click.prompt('Cognito App Client ID')
-        ctx._config.set('default', 'cognito_app_client_id', app_client_id)
+        ctx._config.set(profile, 'cognito_app_client_id', app_client_id)
     else:
-        app_client_id = ctx._config.get('default', 'cognito_app_client_id')
+        app_client_id = ctx._config.get(profile, 'cognito_app_client_id')
 
     """Authenticates to the platform to access your apps."""
     click.echo('Logging in {}...'.format(user), nl=True)
+    client = boto3.client('cognito-identity', region_name=region)
     credentials = {}
 
     u = Cognito(
@@ -125,51 +122,58 @@ def do_cli(ctx, user, password):
         credentials['refresh_token'] = u.refresh_token
         credentials['access_token'] = u.access_token
 
-        click.echo('Getting temporary STS credentials...')
-        client = boto3.client('cognito-identity', region_name=region)
-        user_identity_id = ""
-
-        try:
-            response = client.get_id(
-                IdentityPoolId='{}:{}'.format(region, identity_pool_id),
-                Logins={
-                    'cognito-idp.{}.amazonaws.com/{}'.format(region, user_pool_id): credentials['id_token']
-                }
-            )
-
-            user_identity_id = response['IdentityId']
-        except Exception as ex:
-            click.echo(ex)
-
-        try:
-            response = client.get_credentials_for_identity(
-                IdentityId=user_identity_id,
-                Logins={
-                    'cognito-idp.{}.amazonaws.com/{}'.format(region, user_pool_id): credentials['id_token']
-                }
-            )
-
-            credentials['aws_access_key_id'] = response['Credentials']['AccessKeyId']
-            credentials['aws_secret_access_key'] = response['Credentials']['SecretKey']
-            credentials['aws_session_token'] = response['Credentials']['SessionToken']
-            credentials['aws_token_expiration'] = response['Credentials']['Expiration']
-        except Exception as ex:
-            click.echo(ex)
-
-        # Configure the config file with API URI and temporary credentials
-        if not ctx._config.has_section('default'):
-            ctx._config.add_section('default')
-        ctx._config.set('default', 'user', user)
-        ctx._config.set('default', 'id_token', credentials['id_token'])
-        ctx._id_token = credentials['id_token']
-        ctx._config.set('default', 'refresh_token', credentials['refresh_token'])
-        ctx._config.set('default', 'access_token', credentials['access_token'])
-        ctx._config.set('default', 'aws_access_key_id', credentials['aws_access_key_id'])
-        ctx._config.set('default', 'aws_secret_access_key', credentials['aws_secret_access_key'])
-        ctx._config.set('default', 'aws_session_token', credentials['aws_session_token'])
-        ctx._config.set('default', 'region', region)
-        cfgfile = open(ctx._cfg_name, 'w+')
-        ctx._config.write(cfgfile)
-        cfgfile.close()
+        user_identity_id = get_user_identity_id(client, region, identity_pool_id, user_pool_id, credentials['id_token'])
+        credentials = get_sts_credentials(client, region, user_identity_id, user_pool_id, credentials)
+        store_credentials_file(ctx, user, region, credentials)
 
         click.echo('Logged in!')
+
+def get_sts_credentials(client, region, user_identity_id, user_pool_id, credentials):
+    try:
+        response = client.get_credentials_for_identity(
+            IdentityId=user_identity_id,
+            Logins={
+                'cognito-idp.{}.amazonaws.com/{}'.format(region, user_pool_id): credentials['id_token']
+            }
+        )
+
+        credentials['aws_access_key_id'] = response['Credentials']['AccessKeyId']
+        credentials['aws_secret_access_key'] = response['Credentials']['SecretKey']
+        credentials['aws_session_token'] = response['Credentials']['SessionToken']
+        credentials['aws_token_expiration'] = response['Credentials']['Expiration']
+    except Exception as ex:
+        click.echo(ex)
+    else:
+        return credentials
+
+def get_user_identity_id(client, region, identity_pool_id, user_pool_id, id_token):
+    click.echo('Getting temporary STS credentials...')
+
+    try:
+        response = client.get_id(
+            IdentityPoolId='{}:{}'.format(region, identity_pool_id),
+            Logins={
+                'cognito-idp.{}.amazonaws.com/{}'.format(region, user_pool_id): id_token
+            }
+        )
+    except Exception as ex:
+        LOGGER.debug(ex)
+
+    return response['IdentityId']
+
+def store_credentials_file(ctx, user, region, credentials, profile='default'):
+    # Configure the config file with API URI and temporary credentials
+    if not ctx._config.has_section(profile):
+        ctx._config.add_section(profile)
+    ctx._config.set(profile, 'user', user)
+    ctx._config.set(profile, 'id_token', credentials['id_token'])
+    ctx._id_token = credentials['id_token']
+    ctx._config.set(profile, 'refresh_token', credentials['refresh_token'])
+    ctx._config.set(profile, 'access_token', credentials['access_token'])
+    ctx._config.set(profile, 'aws_access_key_id', credentials['aws_access_key_id'])
+    ctx._config.set(profile, 'aws_secret_access_key', credentials['aws_secret_access_key'])
+    ctx._config.set(profile, 'aws_session_token', credentials['aws_session_token'])
+    ctx._config.set(profile, 'region', region)
+    cfgfile = open(ctx._cfg_name, 'w+')
+    ctx._config.write(cfgfile)
+    cfgfile.close()
