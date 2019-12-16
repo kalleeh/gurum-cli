@@ -28,11 +28,11 @@ class UpOrchestrator:
         payload['env_vars'] = environment['env_vars']
 
         try:
-            self.api_client.create_app(json.dumps(payload))
+            self.api_client.create(resource='apps', payload=json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
             try:
-                self.api_client.update_app(json.dumps(payload))
+                self.api_client.update(resource='apps', payload=json.dumps(payload))
             except UnknownParameterError as ex:
                 print(ex)
 
@@ -56,11 +56,11 @@ class UpOrchestrator:
         payload['source']['GitHubRepo'] = source_details['repo']
 
         try:
-            self.api_client.create_pipeline(json.dumps(payload))
+            self.api_client.create(resource='pipelines', payload=json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
             try:
-                self.api_client.update_pipeline(json.dumps(payload))
+                self.api_client.update(resource='pipelines', payload=json.dumps(payload))
             except UnknownParameterError as ex:
                 print(ex)
 
@@ -73,11 +73,11 @@ class UpOrchestrator:
         payload['config'] = service['config']
 
         try:
-            self.api_client.create_service(json.dumps(payload))
+            self.api_client.create(resource='services', payload=json.dumps(payload))
         except AlreadyExistsError:
             payload['upgrade_version'] = 'False'
             try:
-                self.api_client.update_service(json.dumps(payload))
+                self.api_client.update(resource='services', payload=json.dumps(payload))
             except UnknownParameterError as ex:
                 print(ex)
 
