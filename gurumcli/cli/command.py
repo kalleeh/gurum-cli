@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 # Commands that are bundled with the CLI by default
 _GURUM_CLI_COMMAND_PACKAGES = {
     "gurumcli.commands.apps.apps",
+    "gurumcli.commands.destroy",
     "gurumcli.commands.init",
     "gurumcli.commands.login",
     "gurumcli.commands.logout",

@@ -34,8 +34,9 @@ class ApiClient():
         else:
             return json.loads(resp['body'])[resource]
 
-    def describe(self, resource):
-        uri = self._api_uri + resource
+    def describe(self, resource, payload):
+        data = json.loads(payload)
+        uri = '{0}/{1}'.format(self._api_uri + resource, data['name'])
 
         try:
             resp = connection_handler.request('get', uri, self._headers)
@@ -55,8 +56,11 @@ class ApiClient():
         else:
             return json.loads(resp['body'])
 
-    def delete(self, resource):
-        uri = self._api_uri + resource
-        resp = connection_handler.request('delete', uri, self._headers)
+    def delete(self, resource, payload):
+        data = json.loads(payload)
+        uri = '{0}/{1}'.format(self._api_uri + resource, data['name'])
 
-        return resp[resource]
+        try:
+            resp = connection_handler.request('delete', uri, self._headers)
+        except Exception:
+            raise
