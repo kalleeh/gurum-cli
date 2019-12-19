@@ -2,7 +2,7 @@ project:
   name: MyProjectName
   source:
     provider: github
-    repo: MyGitHubUser/MyProjectRepo
+    repo: alexwhen/docker-2048
   type: ecs-shared-lb
 environments:
   - name: dev
