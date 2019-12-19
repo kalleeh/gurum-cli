@@ -12,8 +12,6 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import keyring
 import logging
 
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
-
 LOGGER = logging.getLogger(__name__)
 
 GURUM_GITHUB_NAMESPACE = "gurum.github"
