@@ -16,11 +16,10 @@ import sys
 import gurumcommon.gurum_manifest as gurum_manifest
 
 from .destroy_orchestrator import DestroyOrchestrator
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
+from gurumcommon.exceptions import InvalidGurumManifestError
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
-from gurumcli.lib.utils.keyring_api import get_secret, set_secret
 
 LOGGER = logging.getLogger(__name__)
 
