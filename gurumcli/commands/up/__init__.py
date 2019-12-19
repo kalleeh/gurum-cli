@@ -20,7 +20,7 @@ from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAcc
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
-from gurumcli.lib.utils.keyring_api import get_secret, set_secret
+from gurumcli.lib.utils.keyring_api import get_github_secret, set_github_secret
 
 LOGGER = logging.getLogger(__name__)
 
@@ -82,7 +82,7 @@ def get_provider(manifest):
     return manifest.project()['source']['provider'].lower()
 
 def get_github_requirements(repository):
-    github_token = get_secret(repository)
+    github_token = get_github_secret(repository)
     source = split_user_repo(repository)
 
     while True:
@@ -90,7 +90,7 @@ def get_github_requirements(repository):
             validate_pat(github_token, source['user'], source['repo'])
 
             LOGGER.debug('Personal Access Token valid. Saving to keyring...')
-            set_secret(repository, github_token)
+            set_github_secret(repository, github_token)
 
             return github_token
         except InvalidPersonalAccessTokenError as ex:

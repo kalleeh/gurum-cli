@@ -16,9 +16,15 @@ LOGGER = logging.getLogger(__name__)
 
 GURUM_GITHUB_NAMESPACE = "gurum.github"
 
-def get_secret(key):
+def get_github_secret(key):
+    return _get_secret(GURUM_GITHUB_NAMESPACE, key)
+
+def set_github_secret(key, value):
+    _set_secret(GURUM_GITHUB_NAMESPACE, key, value)
+
+def _get_secret(namespace, key):
     try:
-        secret = keyring.get_password(GURUM_GITHUB_NAMESPACE, key)
+        secret = keyring.get_password(namespace, key)
 
         return secret
     except keyring.errors.KeyringError as ex:
@@ -26,9 +32,9 @@ def get_secret(key):
     except Exception as ex:
         LOGGER.debug(ex)
     
-def set_secret(key, value):
+def _set_secret(namespace, key, value):
     keyring.set_password(
-        GURUM_GITHUB_NAMESPACE,
+        namespace,
         key,
         value
     )
