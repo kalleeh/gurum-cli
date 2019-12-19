@@ -12,25 +12,27 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import keyring
 import logging
 
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
-
 LOGGER = logging.getLogger(__name__)
 
 GURUM_GITHUB_NAMESPACE = "gurum.github"
 
-def get_secret(key):
-    try:
-        secret = keyring.get_password(GURUM_GITHUB_NAMESPACE, key)
+def get_github_secret(key):
+    return _get_secret(GURUM_GITHUB_NAMESPACE, key)
 
-        return secret
+def set_github_secret(key, value):
+    _set_secret(GURUM_GITHUB_NAMESPACE, key, value)
+
+def _get_secret(namespace, key):
+    try:
+        return secret = keyring.get_password(namespace, key)
     except keyring.errors.KeyringError as ex:
         LOGGER.debug(ex)
     except Exception as ex:
         LOGGER.debug(ex)
     
-def set_secret(key, value):
+def _set_secret(namespace, key, value):
     keyring.set_password(
-        GURUM_GITHUB_NAMESPACE,
+        namespace,
         key,
         value
     )
