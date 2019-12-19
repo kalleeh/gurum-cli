@@ -3,22 +3,22 @@ project:
   source:
     provider: github
     repo: alexwhen/docker-2048
-  type: ecs-fargate
+  type: ecs-shared-lb
 environments:
   - name: dev
     config:
-      HealthCheckPath: '/'
-      DesiredCount: '1'
-      ServiceDiscoveryTTL: '60'
-    env_vars:
-      environment: dev
-  - name: prod
-    config:
-      HealthCheckPath: '/'
-      DesiredCount: '1'
-      ServiceDiscoveryTTL: '60'
+      health_check_path: '/'
+      tasks: '1'
     env_vars:
       environment: prod
+      YourVar: AnotherEnvVar
+  - name: prod
+    config:
+      health_check_path: '/'
+      tasks: '1'
+    env_vars:
+      environment: prod
+      YourVar: AnotherEnvVar
 services:
   - name: mys3bucket
     type: s3
