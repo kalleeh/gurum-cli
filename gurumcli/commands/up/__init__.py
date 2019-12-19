@@ -20,11 +20,7 @@ from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAcc
 from shutil import copyfile
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
-<<<<<<< HEAD
-from gurumcli.lib.utils.keyring_api import get_secret, set_secret
-=======
 from gurumcli.lib.utils.keyring_api import get_github_secret, set_github_secret
->>>>>>> master
 
 LOGGER = logging.getLogger(__name__)
 
