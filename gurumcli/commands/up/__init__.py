@@ -47,8 +47,9 @@ def do_cli(ctx):
     # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
     try:
         manifest = read_manifest()
-    except InvalidGurumManifestError:
-        click.echo("Missing configuration file. Please run 'gurum init'.")
+    except InvalidGurumManifestError as e:
+        print(e)
+        click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
         provision_pipeline_resources(ctx.config, manifest)
 
@@ -72,6 +73,9 @@ def provision_pipeline_resources(config, manifest):
     environment_names = []
     for environment in manifest.environments():
         environment_names.append(orchestrator.provision_environment(environment))
+
+    for service in manifest.services():
+        orchestrator.provision_service(service)
 
     orchestrator.provision_pipeline(environment_names, github_token)
 

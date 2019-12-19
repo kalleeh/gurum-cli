@@ -52,11 +52,11 @@ class GurumManifest:
             yamale.validate(schema, data)
         except ValueError:
             raise InvalidGurumManifestError(
-                "Deployment Map target or regions specification is invalid"
+                "Deployment Map specification is invalid (ValueError)"
             )
         except KeyError:
             raise InvalidGurumManifestError(
-                "Deployment Map target or regions specification is invalid"
+                "Deployment Map specification is invalid (KeyError)"
             )
         except FileNotFoundError:
             raise InvalidGurumManifestError(

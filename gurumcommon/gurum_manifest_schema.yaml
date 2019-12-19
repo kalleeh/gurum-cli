@@ -15,4 +15,4 @@ environment:
 service:
   name: str()
   type: str()
-  config: list()
+  config: map()
