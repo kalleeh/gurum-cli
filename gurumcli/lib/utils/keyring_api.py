@@ -24,7 +24,7 @@ def set_github_secret(key, value):
 
 def _get_secret(namespace, key):
     try:
-        return secret = keyring.get_password(namespace, key)
+        return keyring.get_password(namespace, key)
     except keyring.errors.KeyringError as ex:
         LOGGER.debug(ex)
     except Exception as ex:
