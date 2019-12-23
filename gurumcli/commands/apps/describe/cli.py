@@ -9,11 +9,9 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
+import time
 import click
 import click_spinner
-import os
-import json
-import time
 
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.util import request, json_to_table, prettyprint
@@ -44,8 +42,8 @@ def do_cli(ctx, name, watch):
     """Display detailed information about the application."""
     apps = {}
 
-    id_token = ctx._config.get('default', 'id_token')
-    api_uri = ctx._config.get('default', 'api_uri')
+    id_token = ctx.config.get('default', 'id_token')
+    api_uri = ctx.config.get('default', 'api_uri')
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
@@ -53,7 +51,7 @@ def do_cli(ctx, name, watch):
             # Get app status
             url = api_uri + '/apps/' + name
             headers = {'Authorization': id_token}
-            
+
             resp = request('get', url, headers)
             apps = resp['apps'][0]
 
@@ -65,13 +63,13 @@ def do_cli(ctx, name, watch):
 
             if watch:
                 click.clear()
-            
+
             prettyprint(apps)
             click.echo(json_to_table(events))
-            
+
             if not watch:
                 break
-            
+
             click.echo('Working on: {}'.format(name))
             click.echo('This usually takes a couple of minutes...')
             click.echo('This call is asynchrounous so feel free to Ctrl+C ' \

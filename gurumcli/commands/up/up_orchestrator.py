@@ -1,6 +1,17 @@
+"""
+This is a sample, non-production-ready template.
+
+© 2019 Amazon Web Services, In​c. or its affiliates. All Rights Reserved.
+
+This AWS Content is provided subject to the terms of the
+AWS Customer Agreement available at http://aws.amazon.com/agreement
+or other written agreement between Customer and either
+Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
+"""
+
 import json
 
-from gurumcommon.exceptions import AlreadyExistsError, BadRequestError, UnknownParameterError
+from gurumcommon.exceptions import AlreadyExistsError, UnknownParameterError
 
 from gurumcommon.clients.api_client import ApiClient
 from gurumcli.lib.utils.github_api import split_user_repo
@@ -11,12 +22,12 @@ class UpOrchestrator:
     def __init__(self, config, project):
         self.config = config
         self.project = project
-        self.api_client = self.init_api_client(config)
+        self.api_client = self.init_api_client()
 
-    def init_api_client(self, config):
+    def init_api_client(self):
         return ApiClient(
-            api_uri = config.get('default', 'api_uri'),
-            id_token = config.get('default', 'id_token')
+            api_uri=self.config.get('default', 'api_uri'),
+            id_token=self.config.get('default', 'id_token')
         )
 
     def provision_environment(self, environment):

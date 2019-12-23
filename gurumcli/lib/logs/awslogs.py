@@ -1,3 +1,14 @@
+"""
+This is a sample, non-production-ready template.
+
+© 2019 Amazon Web Services, In​c. or its affiliates. All Rights Reserved.
+
+This AWS Content is provided subject to the terms of the
+AWS Customer Agreement available at http://aws.amazon.com/agreement
+or other written agreement between Customer and either
+Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
+"""
+
 import re
 import sys
 import os
@@ -15,7 +26,7 @@ from termcolor import colored
 from dateutil.parser import parse
 from dateutil.tz import tzutc
 
-from ..exceptions import BaseAWSLogsException, TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
+from ..exceptions import TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
 
 
 def milis2iso(milis):
@@ -23,7 +34,7 @@ def milis2iso(milis):
     return (res + ".000")[:23] + 'Z'
 
 
-class AWSLogs(object):
+class AWSLogs():
 
     ACTIVE = 1
     EXHAUSTED = 2
@@ -76,9 +87,9 @@ class AWSLogs(object):
             streams = list(self._get_streams_from_pattern(self.log_group_name, self.log_stream_name))
             if len(streams) > self.FILTER_LOG_EVENTS_STREAMS_LIMIT:
                 raise TooManyStreamsFilteredError(
-                     self.log_stream_name,
-                     len(streams),
-                     self.FILTER_LOG_EVENTS_STREAMS_LIMIT
+                    self.log_stream_name,
+                    len(streams),
+                    self.FILTER_LOG_EVENTS_STREAMS_LIMIT
                 )
             if len(streams) == 0:
                 raise NoStreamsFilteredError(self.log_stream_name)

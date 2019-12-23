@@ -9,18 +9,20 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import logging
-import click
 import os
 import sys
-import gurumcommon.gurum_manifest as gurum_manifest
-
-from .up_orchestrator import UpOrchestrator
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
+import logging
 from shutil import copyfile
+
+import click
+
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
 from gurumcli.lib.utils.keyring_api import get_github_secret, set_github_secret
+import gurumcommon.gurum_manifest as gurum_manifest
+from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
+
+from .up_orchestrator import UpOrchestrator
 
 LOGGER = logging.getLogger(__name__)
 
@@ -99,5 +101,5 @@ def get_github_requirements(repository):
             github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
         except RepositoryNotFoundError as ex:
             click.echo("Error: {}".format(ex.hint()))
-    
+
     return False

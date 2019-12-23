@@ -9,16 +9,12 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-CLI command for "logout" command
-"""
-
-import click
 import os
+import click
 import requests
+from warrant import Cognito
 
 from gurumcli.cli.main import pass_context, common_options
-from warrant import Cognito
 
 SHORT_HELP = "Log out from the GURUM platform."
 
@@ -35,13 +31,13 @@ def cli(ctx):
 
 def do_cli(ctx):
     """Logs the user out from the platform."""
-    user_pool_id = ctx._config.get('default', 'cognito_user_pool_id')
-    app_client_id = ctx._config.get('default', 'cognito_app_client_id')
-    
-    user = ctx._config.get('default', 'user')
-    id_token = ctx._config.get('default', 'id_token')
-    refresh_token = ctx._config.get('default', 'refresh_token')
-    access_token = ctx._config.get('default', 'access_token')
+    user_pool_id = ctx.config.get('default', 'cognito_user_pool_id')
+    app_client_id = ctx.config.get('default', 'cognito_app_client_id')
+
+    user = ctx.config.get('default', 'user')
+    id_token = ctx.config.get('default', 'id_token')
+    refresh_token = ctx.config.get('default', 'refresh_token')
+    access_token = ctx.config.get('default', 'access_token')
 
     click.echo('Signing out {}...'.format(user), nl=True)
 
@@ -53,18 +49,18 @@ def do_cli(ctx):
         access_token=access_token)
 
     try:
-        u.logout
+        u.logout()
         click.echo('Signed out!')
     except Exception as ex:
         click.echo(ex)
 
     # Configure the config file with API URI and temporary credentials
-    if not ctx._config.has_section('default'):
-        ctx._config.add_section('default')
-    if not ctx._config.has_option('default', 'api_uri'):
-        ctx._config.set('default', 'api_uri', 'https://api.gurum.cloud')
-    ctx._config.set('default', 'user', '')
-    ctx._config.set('default', 'access_token', '')
-    cfgfile = open(ctx._cfg_name, 'w+')
-    ctx._config.write(cfgfile)
+    if not ctx.config.has_section('default'):
+        ctx.config.add_section('default')
+    if not ctx.config.has_option('default', 'api_uri'):
+        ctx.config.set('default', 'api_uri', 'https://api.gurum.cloud')
+    ctx.config.set('default', 'user', '')
+    ctx.config.set('default', 'access_token', '')
+    cfgfile = open(ctx.cfg_name, 'w+')
+    ctx.config.write(cfgfile)
     cfgfile.close()

@@ -10,24 +10,25 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import click
-import os
-import requests
-
-from gurumcli.cli.main import pass_context, common_options
 from warrant import Cognito
+
+from gurumcli.cli.main import pass_context
 
 
 @click.command('reset-password', short_help='Initiate forgot password for a user')
 @click.option('--user', prompt=True, help='Username (email)')
 @click.option('--confirmation-code', prompt=True, help='Confirmation Code')
 @pass_context
-def cli(ctx, user, confirmation_code):
+def cli(ctx, user, confirmation_code, profile='default'):
     """Confirm user signup."""
     click.echo('Initiating forgot password process for {}...'.format(user), nl=True)
 
+    user_pool_id = ctx.config.get(profile, 'cognito_user_pool_id')
+    app_client_id = ctx.config.get(profile, 'cognito_app_client_id')
+
     u = Cognito(
-        'eu-west-1_MkM8NwiuN',
-        '1ts0lglioorltjrs0j3k3bniv5',
+        user_pool_id,
+        app_client_id,
         username=user)
 
     try:

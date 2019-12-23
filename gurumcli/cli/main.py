@@ -9,9 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Entry point for the CLI
-"""
 
 import sys
 import logging
@@ -53,7 +50,7 @@ def aws_creds_options(f):
 @common_options
 @click.version_option(version=__version__, prog_name="GURUM CLI")
 @pass_context
-def cli(ctx):
+def cli(_ctx):
     """
     AWS Gurum Platform (GURUM) CLI
 

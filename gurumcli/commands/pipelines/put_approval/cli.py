@@ -9,26 +9,23 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import click
-import click_spinner
-import os
 import json
-import time
+import click
 
-from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.cli.main import pass_context
+from gurumcli.lib.utils.util import request
 
 @click.command('put-approval', short_help='Displays status about your pipeline')
 @click.argument('name')
 @click.option('--summary', prompt=True, help="Approve update message.")
-@click.option('--status', prompt=True, type=click.Choice(['Approved','Rejected']), help="String giving the Approved or Rejected status")
+@click.option('--status', prompt=True, type=click.Choice(['Approved', 'Rejected']), help="String giving the Approved or Rejected status")
 @pass_context
 def cli(ctx, name, **kwargs):
     """Approve or reject an application deployment."""
     states = []
 
-    id_token = ctx._config.get('default', 'id_token')
-    api_uri = ctx._config.get('default', 'api_uri')
+    id_token = ctx.config.get('default', 'id_token')
+    api_uri = ctx.config.get('default', 'api_uri')
 
     url = api_uri + '/pipelines/' + name + '/states'
     headers = {'Authorization': id_token}
@@ -38,7 +35,7 @@ def cli(ctx, name, **kwargs):
 
     resp = request('put', url, headers, payload)
     states = resp['states']
-    
+
     click.secho("=== " + name + ' status', fg='blue')
 
     click.echo(states)

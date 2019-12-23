@@ -10,32 +10,33 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import click
-import os
-import requests
-
-from gurumcli.cli.main import pass_context, common_options
 from warrant import Cognito
+
+from gurumcli.cli.main import pass_context
 
 
 @click.command('change-password', short_help='Change password for current user')
 @click.option('--password', prompt=True, hide_input=True)
 @click.option('--new-password', prompt=True, hide_input=True, confirmation_prompt=True)
 @pass_context
-def cli(ctx, password, new_password, confirm_password):
+def cli(ctx, password, new_password, confirm_password, profile='default'):
     """Change password."""
-    user = ctx._config.get('default', 'user')
+    user = ctx.config.get('default', 'user')
     click.echo('Changing password for {}...'.format(user), nl=True)
 
     id_token = ""
     refresh_token = ""
     access_token = ""
-    id_token = ctx._config.get('default', 'id_token')
-    refresh_token = ctx._config.get('default', 'refresh_token')
-    access_token = ctx._config.get('default', 'access_token')
+    id_token = ctx.config.get('default', 'id_token')
+    refresh_token = ctx.config.get('default', 'refresh_token')
+    access_token = ctx.config.get('default', 'access_token')
+
+    user_pool_id = ctx.config.get(profile, 'cognito_user_pool_id')
+    app_client_id = ctx.config.get(profile, 'cognito_app_client_id')
 
     u = Cognito(
-        'eu-west-1_MkM8NwiuN',
-        '1ts0lglioorltjrs0j3k3bniv5',
+        user_pool_id,
+        app_client_id,
         username=user,
         id_token=id_token,
         refresh_token=refresh_token,

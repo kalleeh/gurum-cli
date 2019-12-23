@@ -9,10 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Format log events produced by CloudWatch Logs
-"""
-
 import json
 import functools
 
@@ -26,7 +22,7 @@ except ImportError:
     from builtins import map as imap
 
 
-class LogsFormatter(object):
+class LogsFormatter():
     """
     Formats log messages returned by CloudWatch Logs service.
     """
@@ -132,7 +128,7 @@ class LogsFormatter(object):
         return ' '.join([event.log_stream_name, event.timestamp, event.message])
 
 
-class LambdaLogMsgFormatters(object):
+class LambdaLogMsgFormatters():
     """
     Format logs printed by AWS Lambda functions.
 
@@ -157,7 +153,7 @@ class LambdaLogMsgFormatters(object):
         return event
 
 
-class KeywordHighlighter(object):
+class KeywordHighlighter():
     """
     Highlight certain keywords in the log line
     """
@@ -176,13 +172,13 @@ class KeywordHighlighter(object):
         return event
 
 
-class JSONMsgFormatter(object):
+class JSONMsgFormatter():
     """
     Pretty print JSONs within a message
     """
 
     @staticmethod
-    def format_json(event, colored):
+    def format_json(event):
         """
         If the event message is a JSON string, then pretty print the JSON with 2 indents and sort the keys. This makes
         it very easy to visually parse and search JSON data

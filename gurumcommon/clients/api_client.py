@@ -13,10 +13,6 @@ import gurumcommon.connection_handler as connection_handler
 
 from gurumcommon.exceptions import BadRequestError, AlreadyExistsError, UnknownParameterError, UnknownError
 
-"""
-Gurum API Client
-"""
-
 class ApiClient():
     def __init__(self, api_uri, id_token):
         self._api_uri = api_uri
@@ -30,7 +26,7 @@ class ApiClient():
         except AlreadyExistsError:
             raise
         except Exception:
-            raise
+            raise UnknownError
         else:
             return json.loads(resp['body'])[resource]
 
@@ -41,7 +37,7 @@ class ApiClient():
         try:
             resp = connection_handler.request('get', uri, self._headers)
         except Exception:
-            raise
+            raise UnknownError
 
         return resp[resource]
 
@@ -63,4 +59,4 @@ class ApiClient():
         try:
             resp = connection_handler.request('delete', uri, self._headers)
         except Exception:
-            raise
+            raise UnknownError

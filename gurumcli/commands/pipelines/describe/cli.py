@@ -10,11 +10,8 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import click
-import os
-import requests
-import json
 
-from gurumcli.cli.main import pass_context, common_options
+from gurumcli.cli.main import pass_context
 from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 
 
@@ -25,8 +22,8 @@ def cli(ctx, name):
     """Display detailed information about the application."""
     pipelines = {}
 
-    id_token = ctx._config.get('default', 'id_token')
-    api_uri = ctx._config.get('default', 'api_uri')
+    id_token = ctx.config.get('default', 'id_token')
+    api_uri = ctx.config.get('default', 'api_uri')
 
     url = api_uri + '/pipelines/' + name
     headers = {'Authorization': id_token}

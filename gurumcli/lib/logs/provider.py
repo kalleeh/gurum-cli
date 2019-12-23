@@ -9,12 +9,7 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Discover & provide the log group name
-"""
-
-
-class LogGroupProvider(object):
+class LogGroupProvider():
     """
     Resolve the name of log group given the name of the resource
     """

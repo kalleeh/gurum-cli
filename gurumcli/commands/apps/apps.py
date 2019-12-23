@@ -9,11 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Command group for "apps" suite for commands. It provides common CLI arguments, template parsing capabilities,
-setting up stdin/stdout etc
-"""
-
 import click
 
 from .describe.cli import cli as describe_cli

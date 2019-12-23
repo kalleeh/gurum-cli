@@ -9,18 +9,14 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Context information passed to each CLI command
-"""
-
-import logging
-import boto3
 import os
 import configparser
+import logging
+import boto3
 import click
 
 
-class Context(object):
+class Context():
     """
     Top level context object for the CLI. Exposes common functionality required by a CLI, including logging,
     environment config parsing, debug logging etc.
@@ -41,11 +37,11 @@ class Context(object):
         self._app_name = 'gurum'
         self._aws_region = None
         self._aws_profile = None
-        self._config = None
-        self._cfg_name = None
+        self.cfg_name = None
         self._cfg_path = None
         self._id_token = None
         self._api_uri = None
+        self.config = None
 
     @property
     def debug(self):
@@ -99,14 +95,14 @@ class Context(object):
 
     @property
     def config(self):
-        return self._config
-    
+        return self.config
+
     @config.setter
     def config(self, value):
         """
         Manage configuration file
         """
-        self._config = value
+        self.config = value
         self._refresh_config()
 
     def _refresh_config(self):
@@ -117,13 +113,13 @@ class Context(object):
 
         if not os.path.exists(self._cfg_path):
             os.makedirs(self._cfg_path)
-        self._cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
-        if not os.path.exists(self._cfg_name):
-            with open(self._cfg_name, 'a') as f:
+        self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
+        if not os.path.exists(self.cfg_name):
+            with open(self.cfg_name, 'a') as f:
                 f.write(' \
                     [default] \
                     user = \
                 ')
-        
-        self._config = configparser.ConfigParser()
-        self._config.read(self._cfg_name)
+
+        self.config = configparser.ConfigParser()
+        self.config.read(self.cfg_name)

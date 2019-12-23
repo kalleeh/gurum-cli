@@ -9,19 +9,16 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import click
-import os
-import requests
-import json
 import sys
-
-import boto3
+import click
 
 from botocore.client import ClientError
 from termcolor import colored
-from gurumcli.cli.main import pass_context, common_options
+
+import gurumcommon.exceptions as exceptions
+from gurumcli.cli.main import pass_context
 from gurumcli.lib.logs.awslogs import AWSLogs
-import gurumcli.commands.exceptions as exceptions
+
 
 @click.command('logs', short_help='Displays logs about your app')
 @click.argument('name')
@@ -34,7 +31,7 @@ def cli(ctx, name, **kwargs):
     """View logs for your app"""
     options = {}
     log_group_name = name
-    
+
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
     options['log_group_name'] = 'platform-svc-{}'.format(log_group_name)
@@ -42,10 +39,10 @@ def cli(ctx, name, **kwargs):
     options['color_enabled'] = 'true'
     options['output_stream_enabled'] = 'true'
     options['output_timestamp_enabled'] = 'true'
-    options['aws_access_key_id'] = ctx._config.get('default', 'aws_access_key_id')
-    options['aws_secret_access_key'] = ctx._config.get('default', 'aws_secret_access_key')
-    options['aws_session_token'] = ctx._config.get('default', 'aws_session_token')
-    options['aws_region'] = ctx._config.get('default', 'region')
+    options['aws_access_key_id'] = ctx.config.get('default', 'aws_access_key_id')
+    options['aws_secret_access_key'] = ctx.config.get('default', 'aws_secret_access_key')
+    options['aws_session_token'] = ctx.config.get('default', 'aws_session_token')
+    options['aws_region'] = ctx.config.get('default', 'region')
 
     try:
         logs = AWSLogs(**options)
@@ -57,7 +54,7 @@ def cli(ctx, name, **kwargs):
             hint = ex.response['Error'].get('Message', 'AccessDeniedException')
             sys.stderr.write(colored("{0}\n".format(hint), "yellow"))
             return 4
-        if code in (u'ResourceNotFoundException'):
+        if code in u'ResourceNotFoundException':
             click.echo('Error: Could not find logs for "{}"...'.format(name))
             return 4
         raise

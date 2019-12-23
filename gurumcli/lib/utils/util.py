@@ -9,9 +9,9 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import requests
 import json
 import sys
+import requests
 import click
 
 from prettytable import PrettyTable
@@ -58,11 +58,11 @@ def request(method, url, headers, *payload):
             click.echo('Message: {0}'.format(response.text))
             sys.exit(1)
     except requests.exceptions.ConnectionError as e:
-        click.echo ("Error Connecting:", e)
+        click.echo("Error Connecting:", e)
         click.echo('Message: {0}'.format(response.text))
         sys.exit(1)
     except requests.exceptions.Timeout as e:
-        click.echo ("Timeout Error:", e)
+        click.echo("Timeout Error:", e)
         click.echo('Message: {0}'.format(response.text))
         sys.exit(1)
     except requests.exceptions.RequestException as e:
@@ -74,13 +74,11 @@ def request(method, url, headers, *payload):
         if not 'statusCode' in response:
             click.echo('Unknown Error: {0}'.format(response))
             sys.exit(1)
-
         if response['statusCode'] == 200:
             return json.loads(response['body'])
-        else:
-            click.echo('[{0}] Server Error'.format(response['statusCode']))
-            click.echo('{0}'.format(response['body']))
-            sys.exit(1)
+        click.echo('[{0}] Server Error'.format(response['statusCode']))
+        click.echo('{0}'.format(response['body']))
+        sys.exit(1)
 
 
 def format_message(message, max_line_length):
@@ -95,16 +93,16 @@ def format_message(message, max_line_length):
             #append a line break, then the word and a space
             formatted_message = formatted_message + "\n" + word + " "
             line_length = len(word) + 1
-    
+
     return formatted_message
 
 
 def json_to_table(events):
     table = PrettyTable()
-    
+
     if len(events) < 1:
         return 'Theres nothing here :('
-    
+
     for index, event in enumerate(events):
         if index == 0:
             columns = []
@@ -117,7 +115,7 @@ def json_to_table(events):
             row.append(value)
 
         table.add_row(row)
-    
+
     return table
 
 
@@ -126,9 +124,9 @@ def prettyprint(data):
     click.secho("Description: " + data['description'])
 
     # print status yellow if in progress, completed is green
-    if(data['status'].endswith('_IN_PROGRESS')):
+    if data['status'].endswith('_IN_PROGRESS'):
         click.secho("Status: " + data['status'], fg='yellow')
-    elif(data['status'].endswith('_COMPLETE')):
+    elif data['status'].endswith('_COMPLETE'):
         click.secho("Status: " + data['status'], fg='green')
     else:
         click.secho("Status: " + data['status'], fg='red')
@@ -143,13 +141,13 @@ def prettyprint(data):
         click.secho("Parameters: ")
         for key, val in data['params'].items():
             click.secho("- {}: {}".format(key, val))
-    
+
     # iterate over and print outputs
     if 'outputs' in data and len(data['outputs']) > 0:
         click.secho("Outputs: ")
         for key, val in data['outputs'].items():
             click.secho("- {}: {}".format(key, val))
-    
+
     # iterate over and print tags
     if 'tags' in data and len(data['tags']) > 0:
         click.secho("Tags: ")

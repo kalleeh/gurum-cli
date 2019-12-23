@@ -8,11 +8,10 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-
 import json
-
-from .exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, AlreadyExistsError, BadRequestError, UnexpectedRedirectError
 import requests
+
+from gurumcommon.exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, AlreadyExistsError, BadRequestError, UnexpectedRedirectError
 
 
 def request(method, url, headers, *payload):

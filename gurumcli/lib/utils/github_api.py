@@ -11,17 +11,17 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import requests
 
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
+from gurumcommon.exceptions import InvalidPersonalAccessTokenError, RepositoryNotFoundError
 
 def validate_pat(pat_token, owner, repo):
     url = 'https://api.github.com/repos/{}/{}'.format(owner, repo)
     headers = {'Authorization': 'token {}'.format(pat_token)}
- 
+
     resp = requests.get(url, headers=headers)
 
     if resp.status_code == 401:
         raise InvalidPersonalAccessTokenError
-    elif resp.status_code == 404:
+    if resp.status_code == 404:
         raise RepositoryNotFoundError
 
 def split_user_repo(user_repo_string):

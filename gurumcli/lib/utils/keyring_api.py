@@ -9,8 +9,8 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import keyring
 import logging
+import keyring
 
 LOGGER = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ def _get_secret(namespace, key):
         LOGGER.debug(ex)
     except Exception as ex:
         LOGGER.debug(ex)
-    
+
 def _set_secret(namespace, key, value):
     keyring.set_password(
         namespace,

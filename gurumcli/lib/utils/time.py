@@ -3,9 +3,8 @@ Date & Time related utilities
 """
 
 import datetime
-import dateparser
-
 from dateutil.tz import tzutc
+import dateparser
 
 
 def timestamp_to_iso(timestamp):

@@ -9,17 +9,20 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
+import os
+import sys
 import logging
+from shutil import copyfile
+
 import click
-import os,sys
 import requests
 import boto3
 import botocore
-import gurumcommon.gurum_manifest as gurum_manifest
 
-from shutil import copyfile
 from termcolor import colored
 from warrant import Cognito, exceptions
+
+import gurumcommon.gurum_manifest as gurum_manifest
 from gurumcli.cli.main import pass_context, common_options
 from gurumcli.commands.exceptions import UserException
 
@@ -47,7 +50,6 @@ def cli(ctx):
 
 
 def do_cli(ctx):
-    
     base_dir = os.path.abspath(__file__ + "../../../../../gurumcommon")
 
     skeleton_file = os.path.join(base_dir, GURUM_SKELETON_FILE)
@@ -58,7 +60,6 @@ def do_cli(ctx):
     gurum_init_file = os.path.join(os.getcwd(), gurum_manifest.GURUM_FILE)
 
     gurum_schema_file = os.path.join(base_dir, gurum_manifest.GURUM_SCHEMA_FILE)
-   
 
     if os.path.isfile(gurum_init_file) and os.access(gurum_init_file, os.R_OK):
         click.echo("Found " + gurum_init_file)
@@ -68,8 +69,8 @@ def do_cli(ctx):
 
     # validate schema
     gurum_manifest.GurumManifest(
-            manifest_schema_path=gurum_schema_file,
-            manifest_path=gurum_init_file
+        manifest_schema_path=gurum_schema_file,
+        manifest_path=gurum_init_file
     )
 
     click.echo('Initialised!')

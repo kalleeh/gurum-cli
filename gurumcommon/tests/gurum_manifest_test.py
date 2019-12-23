@@ -6,10 +6,9 @@
 import os
 import boto3
 
-from exceptions import InvalidGurumManifest
 from pytest import fixture, raises
-from mock import Mock
-from gurum_manifest import GurumManifest
+from gurumcommon.exceptions import InvalidGurumManifestError
+from gurumcommon.gurum_manifest import GurumManifest
 
 
 @fixture
@@ -30,7 +29,7 @@ def test_validate_schema(cls):
 
 def test_validate_invalid_no_content(cls):
     cls.manifest_path = ''
-    with raises(InvalidGurumManifest):
+    with raises(InvalidGurumManifestError):
         cls._validate()
 
 

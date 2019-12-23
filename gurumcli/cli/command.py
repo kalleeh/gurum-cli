@@ -9,10 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Base classes that implement the CLI framework
-"""
-
 import logging
 import importlib
 import click

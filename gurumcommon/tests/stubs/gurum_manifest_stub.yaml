@@ -2,35 +2,31 @@ project:
   name: MyProjectName
   source:
     provider: github
-    repo: MyGitHubUser/MyProjectRepo
+    repo: alexwhen/docker-2048
   type: ecs-shared-lb
 environments:
   - name: dev
     config:
-      cpu: '256'
-      memory: '1024'
       health_check_path: '/'
       tasks: '1'
     env_vars:
-      - environment: dev
-      - YourVar: AnotherEnvVar
+      environment: prod
+      YourVar: AnotherEnvVar
   - name: prod
     config:
-      cpu: '256'
-      memory: '1024'
       health_check_path: '/'
       tasks: '1'
     env_vars:
-      - environment: prod
-      - YourVar: AnotherEnvVar
+      environment: prod
+      YourVar: AnotherEnvVar
 services:
   - name: block_storage
     type: s3
     config:
-      - BucketName: my-block-storage-bucket
-      - LoggingPrefix: log-prefix
+      BucketName: my-block-storage-bucket
+      LoggingPrefix: log-prefix
   - name: customer_database
     type: rds
     config:
-      - engine: mysql
-      - instance_class: db.t2.small
+      DBEngine: mysql
+      InstanceClass: db.t2.small
