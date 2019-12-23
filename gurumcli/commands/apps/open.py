@@ -9,11 +9,12 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
+import json
 import webbrowser
 import click
 
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.util import request
+from gurumcommon.clients.api_client import ApiClient
 
 
 @click.command('open', short_help='Opens the app endpoint')
@@ -39,15 +40,15 @@ def cli(ctx, name):
 def do_cli(ctx, name):
     """Open the application."""
     apps = {}
+    payload = {}
+    payload['name'] = name
 
-    id_token = ctx.cfg.get('default', 'id_token')
-    api_uri = ctx.cfg.get('default', 'api_uri')
+    api_client = ApiClient(
+        api_uri=ctx.config.get('default', 'api_uri'),
+        id_token=ctx.config.get('default', 'id_token')
+    )
 
-    # Get app status
-    url = api_uri + '/apps/' + name
-    headers = {'Authorization': id_token}
-
-    resp = request('get', url, headers)
+    resp = api_client.describe(resource='apps', payload=json.dumps(payload))
     apps = resp['apps'][0]
 
     click.secho("=== " + apps['name'], fg='blue')

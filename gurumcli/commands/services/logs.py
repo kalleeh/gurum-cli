@@ -9,15 +9,13 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import sys
 import click
 
 from botocore.client import ClientError
-from termcolor import colored
 
 import gurumcommon.exceptions as exceptions
 from gurumcli.cli.main import pass_context
-from gurumcli.lib.logs.awslogs import AWSLogs
+from gurumcommon.logs.awslogs import AWSLogs
 
 
 @click.command('logs', short_help='Displays logs about your app')
@@ -35,14 +33,10 @@ def cli(ctx, name, **kwargs):
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
     options['log_group_name'] = 'platform-svc-{}'.format(log_group_name)
-    options['log_stream_name'] = 'ALL'
-    options['color_enabled'] = 'true'
-    options['output_stream_enabled'] = 'true'
-    options['output_timestamp_enabled'] = 'true'
-    options['aws_access_key_id'] = ctx.cfg.get('default', 'aws_access_key_id')
-    options['aws_secret_access_key'] = ctx.cfg.get('default', 'aws_secret_access_key')
-    options['aws_session_token'] = ctx.cfg.get('default', 'aws_session_token')
-    options['aws_region'] = ctx.cfg.get('default', 'region')
+    options['aws_access_key_id'] = ctx.config.get('default', 'aws_access_key_id')
+    options['aws_secret_access_key'] = ctx.config.get('default', 'aws_secret_access_key')
+    options['aws_session_token'] = ctx.config.get('default', 'aws_session_token')
+    options['aws_region'] = ctx.config.get('default', 'region')
 
     try:
         logs = AWSLogs(**options)
@@ -52,18 +46,14 @@ def cli(ctx, name, **kwargs):
         code = ex.response['Error']['Code']
         if code in (u'AccessDeniedException', u'ExpiredTokenException'):
             hint = ex.response['Error'].get('Message', 'AccessDeniedException')
-            sys.stderr.write(colored("{0}\n".format(hint), "yellow"))
+            click.secho("{0}\n".format(hint), fg='yellow')
             return 4
         if code in u'ResourceNotFoundException':
             click.echo('Error: Could not find logs for "{}"...'.format(name))
             return 4
         raise
     except exceptions.BaseAWSLogsException as ex:
-        sys.stderr.write(colored("{0}\n".format(ex.hint()), "red"))
+        click.secho("{0}\n".format(ex.hint()), fg='red')
         return ex.code
-    except Exception:
-        import traceback
-        sys.stderr.write(traceback.format_exc())
-        return 1
 
     return 0

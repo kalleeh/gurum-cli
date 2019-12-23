@@ -18,6 +18,16 @@ class ApiClient():
         self._api_uri = api_uri
         self._headers = {'Authorization': id_token}
 
+    def list(self, resource):
+        uri = self._api_uri + resource
+
+        try:
+            resp = connection_handler.request('get', uri, self._headers)
+        except Exception:
+            raise UnknownError
+        else:
+            return json.loads(resp['body'])
+
     def create(self, resource, payload):
         uri = self._api_uri + resource
 

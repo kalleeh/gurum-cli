@@ -12,7 +12,8 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import click
 
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.util import request, json_to_table
+from gurumcli.lib.utils.util import json_to_table
+from gurumcommon.clients.api_client import ApiClient
 
 
 @click.command('ls', short_help='List your apps')
@@ -36,13 +37,12 @@ def cli(ctx):
 
 def do_cli(ctx):
     """List your apps in the platform."""
-    id_token = ctx.cfg.get('default', 'id_token')
-    api_uri = ctx.cfg.get('default', 'api_uri')
+    api_client = ApiClient(
+        api_uri=ctx.config.get('default', 'api_uri'),
+        id_token=ctx.config.get('default', 'id_token')
+    )
 
-    url = api_uri + '/apps'
-    headers = {'Authorization': id_token}
-
-    resp = request('get', url, headers)
+    resp = api_client.list('apps')
     apps = resp['apps']
 
     click.echo("=== Apps:")

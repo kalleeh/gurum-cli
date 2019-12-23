@@ -22,8 +22,8 @@ def cli(ctx, name):
     """Display detailed information about the application."""
     pipelines = {}
 
-    id_token = ctx.cfg.get('default', 'id_token')
-    api_uri = ctx.cfg.get('default', 'api_uri')
+    id_token = ctx.config.get('default', 'id_token')
+    api_uri = ctx.config.get('default', 'api_uri')
 
     url = api_uri + '/pipelines/' + name
     headers = {'Authorization': id_token}

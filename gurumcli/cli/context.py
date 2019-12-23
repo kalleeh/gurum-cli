@@ -35,13 +35,12 @@ class Context():
         """
         self._debug = False
         self._app_name = 'gurum'
-        self._aws_region = None
-        self._aws_profile = None
+        self.profile = None
         self.cfg_name = None
         self._cfg_path = None
         self._id_token = None
         self._api_uri = None
-        self.cfg = None
+        self.config = None
 
     @property
     def debug(self):
@@ -61,48 +60,26 @@ class Context():
             logging.getLogger().setLevel(logging.DEBUG)
 
     @property
-    def region(self):
-        return self._aws_region
-
-    @region.setter
-    def region(self, value):
-        """
-        Set AWS region
-        """
-        self._aws_region = value
-        self._refresh_session()
-
-    @property
     def profile(self):
-        return self._aws_profile
+        return self._profile
 
     @profile.setter
     def profile(self, value):
         """
-        Set AWS profile for credential resolution
+        Set profile for credential resolution
         """
-        self._aws_profile = value
-        self._refresh_session()
-
-    def _refresh_session(self):
-        """
-        Update boto3's default session by creating a new session based on values set in the context. Some properties of
-        the Boto3's session object are read-only. Therefore when Click parses new AWS session related properties (like
-        region & profile), it will call this method to create a new session with latest values for these properties.
-        """
-        boto3.setup_default_session(region_name=self._aws_region,
-                                    profile_name=self._aws_profile)
+        self._profile = value
 
     @property
     def config(self):
-        return self.cfg
+        return self._config
 
     @config.setter
     def config(self, value):
         """
         Manage configuration file
         """
-        self.cfg = value
+        self._config = value
         self._refresh_config()
 
     def _refresh_config(self):
@@ -121,5 +98,5 @@ class Context():
                     user = \
                 ')
 
-        self.cfg = configparser.ConfigParser()
-        self.cfg.read(self.cfg_name)
+        self._config = configparser.ConfigParser()
+        self._config.read(self.cfg_name)

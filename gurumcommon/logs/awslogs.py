@@ -26,7 +26,7 @@ from termcolor import colored
 from dateutil.parser import parse
 from dateutil.tz import tzutc
 
-from ..exceptions import TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
+from gurumcommon.exceptions import TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
 
 
 def milis2iso(milis):
@@ -50,13 +50,13 @@ class AWSLogs():
         self.aws_secret_access_key = kwargs.get('aws_secret_access_key')
         self.aws_session_token = kwargs.get('aws_session_token')
         self.log_group_name = kwargs.get('log_group_name')
-        self.log_stream_name = kwargs.get('log_stream_name')
+        self.log_stream_name = kwargs.get('log_stream_name', 'ALL')
         self.filter_pattern = kwargs.get('filter_pattern')
         self.watch = kwargs.get('watch')
-        self.color_enabled = kwargs.get('color_enabled')
-        self.output_stream_enabled = kwargs.get('output_stream_enabled')
+        self.color_enabled = kwargs.get('color_enabled', 'true')
+        self.output_stream_enabled = kwargs.get('output_stream_enabled', 'true')
         self.output_group_enabled = kwargs.get('output_group_enabled')
-        self.output_timestamp_enabled = kwargs.get('output_timestamp_enabled')
+        self.output_timestamp_enabled = kwargs.get('output_timestamp_enabled', 'true')
         self.output_ingestion_time_enabled = kwargs.get(
             'output_ingestion_time_enabled')
         self.start = self.parse_datetime(kwargs.get('start'))
