@@ -9,10 +9,12 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
+import json
 import click
 
 from gurumcli.cli.main import pass_context
-from gurumcli.lib.utils.util import request, json_to_table, prettyprint
+from gurumcli.lib.utils.util import json_to_table, prettyprint
+from gurumcommon.clients.api_client import ApiClient
 
 
 @click.command('describe', short_help='Displays details about service')
@@ -21,21 +23,18 @@ from gurumcli.lib.utils.util import request, json_to_table, prettyprint
 def cli(ctx, name):
     """Display detailed information about the application."""
     services = {}
+    payload = {}
+    payload['name'] = name
 
-    id_token = ctx.config.get(ctx.profile, 'id_token')
-    api_uri = ctx.config.get(ctx.profile, 'api_uri')
+    api_client = ApiClient(
+        api_uri=ctx.config.get(ctx.profile, 'api_uri'),
+        id_token=ctx.config.get(ctx.profile, 'id_token')
+    )
 
-    url = api_uri + '/services/' + name
-    headers = {'Authorization': id_token}
-
-    resp = request('get', url, headers)
+    resp = api_client.describe(resource='services', payload=json.dumps(payload))
     services = resp['services'][0]
 
-    # Get CloudFormation Events
-    url = api_uri + '/events/' + name
-    headers = {'Authorization': id_token}
-
-    resp = request('get', url, headers)
+    resp = api_client.describe(resource='events', payload=json.dumps(payload))
     events = resp['events']
 
     prettyprint(services)
