@@ -31,13 +31,13 @@ def cli(ctx):
 
 def do_cli(ctx):
     """Logs the user out from the platform."""
-    user_pool_id = ctx.config.get('default', 'cognito_user_pool_id')
-    app_client_id = ctx.config.get('default', 'cognito_app_client_id')
+    user_pool_id = ctx.config.get(ctx.profile, 'cognito_user_pool_id')
+    app_client_id = ctx.config.get(ctx.profile, 'cognito_app_client_id')
 
-    user = ctx.config.get('default', 'user')
-    id_token = ctx.config.get('default', 'id_token')
-    refresh_token = ctx.config.get('default', 'refresh_token')
-    access_token = ctx.config.get('default', 'access_token')
+    user = ctx.config.get(ctx.profile, 'user')
+    id_token = ctx.config.get(ctx.profile, 'id_token')
+    refresh_token = ctx.config.get(ctx.profile, 'refresh_token')
+    access_token = ctx.config.get(ctx.profile, 'access_token')
 
     click.echo('Signing out {}...'.format(user), nl=True)
 

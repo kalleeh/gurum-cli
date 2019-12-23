@@ -12,7 +12,6 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import os
 import configparser
 import logging
-import boto3
 import click
 
 
@@ -35,11 +34,11 @@ class Context():
         """
         self._debug = False
         self._app_name = 'gurum'
-        self.profile = None
-        self.cfg_name = None
-        self._cfg_path = None
-        self._id_token = None
         self._api_uri = None
+        self._id_token = None
+        self._cfg_path = None
+        self.cfg_name = None
+        self.profile = None
         self.config = None
 
     @property
@@ -70,6 +69,9 @@ class Context():
         """
         self._profile = value
 
+        if not self._profile:
+            self._profile = 'default'
+
     @property
     def config(self):
         return self._config
@@ -99,4 +101,7 @@ class Context():
                 ')
 
         self._config = configparser.ConfigParser()
-        self._config.read(self.cfg_name)
+        try:
+            self._config.read(self.cfg_name)
+        except configparser.NoSectionError as e:
+            print('No such profile: {}'.format(e))

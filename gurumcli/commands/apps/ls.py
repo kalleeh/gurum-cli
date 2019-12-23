@@ -38,8 +38,8 @@ def cli(ctx):
 def do_cli(ctx):
     """List your apps in the platform."""
     api_client = ApiClient(
-        api_uri=ctx.config.get('default', 'api_uri'),
-        id_token=ctx.config.get('default', 'id_token')
+        api_uri=ctx.config.get(ctx.profile, 'api_uri'),
+        id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
     resp = api_client.list('apps')

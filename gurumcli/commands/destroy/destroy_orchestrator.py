@@ -11,22 +11,15 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import json
 
-from gurumcommon.clients.api_client import ApiClient
 from gurumcommon.exceptions import UnknownError
 
 
 class DestroyOrchestrator:
 
-    def __init__(self, config, project):
+    def __init__(self, api_client, config, project):
         self.cfg = config
         self.project = project
-        self.api_client = self.init_api_client()
-
-    def init_api_client(self):
-        return ApiClient(
-            api_uri=self.cfg.get('default', 'api_uri'),
-            id_token=self.cfg.get('default', 'id_token')
-        )
+        self.api_client = api_client
 
     def destroy_environment(self, environment):
         print('Destroying Environment: ' + environment['name'])

@@ -19,6 +19,7 @@ from gurumcli.cli.main import pass_context, common_options
 from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
 import gurumcommon.gurum_manifest as gurum_manifest
 from gurumcommon.exceptions import InvalidGurumManifestError
+from gurumcommon.clients.api_client import ApiClient
 
 from .destroy_orchestrator import DestroyOrchestrator
 
@@ -46,6 +47,11 @@ def cli(ctx):
 
 
 def do_cli(ctx):
+    api_client = ApiClient(
+        api_uri=ctx.config.get(ctx.profile, 'api_uri'),
+        id_token=ctx.config.get(ctx.profile, 'id_token')
+    )
+
     # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
     try:
         manifest = read_manifest()
@@ -53,10 +59,10 @@ def do_cli(ctx):
         LOGGER.debug(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
-        destroy_pipeline_resources(ctx.config, manifest)
+        destroy_pipeline_resources(api_client, ctx.config, manifest)
 
-def destroy_pipeline_resources(config, manifest):
-    orchestrator = DestroyOrchestrator(config, manifest.project())
+def destroy_pipeline_resources(api_client, config, manifest):
+    orchestrator = DestroyOrchestrator(api_client, config, manifest.project())
 
     environment_names = []
     for environment in manifest.environments():

@@ -47,8 +47,8 @@ def do_cli(ctx, name, watch):
     payload['name'] = name
 
     api_client = ApiClient(
-        api_uri=ctx.config.get('default', 'api_uri'),
-        id_token=ctx.config.get('default', 'id_token')
+        api_uri=ctx.config.get(ctx.profile, 'api_uri'),
+        id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
     # Start a loop that checks for stack creation status

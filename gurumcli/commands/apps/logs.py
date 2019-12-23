@@ -38,10 +38,10 @@ def do_cli(ctx, name, **kwargs):
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
     options['log_group_name'] = log_group_name
-    options['aws_access_key_id'] = ctx.config.get('default', 'aws_access_key_id')
-    options['aws_secret_access_key'] = ctx.config.get('default', 'aws_secret_access_key')
-    options['aws_session_token'] = ctx.config.get('default', 'aws_session_token')
-    options['aws_region'] = ctx.config.get('default', 'region')
+    options['aws_access_key_id'] = ctx.config.get(ctx.profile, 'aws_access_key_id')
+    options['aws_secret_access_key'] = ctx.config.get(ctx.profile, 'aws_secret_access_key')
+    options['aws_session_token'] = ctx.config.get(ctx.profile, 'aws_session_token')
+    options['aws_region'] = ctx.config.get(ctx.profile, 'region')
 
     try:
         logs = AWSLogs(**options)

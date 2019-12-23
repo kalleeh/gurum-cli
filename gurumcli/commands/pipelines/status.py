@@ -25,8 +25,8 @@ def cli(ctx, name, watch):
     """Display detailed information about the application."""
     states = []
 
-    id_token = ctx.config.get('default', 'id_token')
-    api_uri = ctx.config.get('default', 'api_uri')
+    id_token = ctx.config.get(ctx.profile, 'id_token')
+    api_uri = ctx.config.get(ctx.profile, 'api_uri')
 
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():

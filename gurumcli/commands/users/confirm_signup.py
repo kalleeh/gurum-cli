@@ -19,12 +19,12 @@ from gurumcli.cli.main import pass_context
 @click.option('--user', prompt=True, help='Username (email)')
 @click.option('--confirmation-code', prompt=True, help='Confirmation Code')
 @pass_context
-def cli(ctx, user, confirmation_code, profile='default'):
+def cli(ctx, user, confirmation_code):
     """Confirm user signup."""
     click.echo('Initiating forgot password process for {}...'.format(user), nl=True)
 
-    user_pool_id = ctx.config.get(profile, 'cognito_user_pool_id')
-    app_client_id = ctx.config.get(profile, 'cognito_app_client_id')
+    user_pool_id = ctx.config.get(ctx.profile, 'cognito_user_pool_id')
+    app_client_id = ctx.config.get(ctx.profile, 'cognito_app_client_id')
 
     u = Cognito(
         user_pool_id,

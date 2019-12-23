@@ -13,22 +13,15 @@ import json
 
 from gurumcommon.exceptions import AlreadyExistsError, UnknownParameterError
 
-from gurumcommon.clients.api_client import ApiClient
 from gurumcli.lib.utils.github_api import split_user_repo
 
 
 class UpOrchestrator:
 
-    def __init__(self, config, project):
+    def __init__(self, api_client, config, project):
         self.cfg = config
         self.project = project
-        self.api_client = self.init_api_client()
-
-    def init_api_client(self):
-        return ApiClient(
-            api_uri=self.cfg.get('default', 'api_uri'),
-            id_token=self.cfg.get('default', 'id_token')
-        )
+        self.api_client = api_client
 
     def provision_environment(self, environment):
         print('Provisioning Environment: ' + environment['name'])

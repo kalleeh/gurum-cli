@@ -51,23 +51,6 @@ def config_option(f):
                         callback=callback)(f)
 
 
-def region_option(f):
-    """
-    Configures --region option for CLI
-
-    :param f: Callback Function to be passed to Click
-    """
-    def callback(ctx, _param, value):
-        state = ctx.ensure_object(Context)
-        state.region = value
-        return value
-
-    return click.option('--region',
-                        expose_value=False,
-                        help='Set the AWS Region of the service (e.g. us-east-1).',
-                        callback=callback)(f)
-
-
 def profile_option(f):
     """
     Configures --profile option for CLI
@@ -81,5 +64,5 @@ def profile_option(f):
 
     return click.option('--profile',
                         expose_value=False,
-                        help='Select a specific profile from your credential file to get AWS credentials.',
+                        help='Select a specific profile.',
                         callback=callback)(f)
