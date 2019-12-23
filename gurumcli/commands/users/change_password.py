@@ -19,7 +19,7 @@ from gurumcli.cli.main import pass_context
 @click.option('--password', prompt=True, hide_input=True)
 @click.option('--new-password', prompt=True, hide_input=True, confirmation_prompt=True)
 @pass_context
-def cli(ctx, password, new_password, confirm_password, profile='default'):
+def cli(ctx, password, new_password, profile='default'):
     """Change password."""
     user = ctx.cfg.get('default', 'user')
     click.echo('Changing password for {}...'.format(user), nl=True)

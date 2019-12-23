@@ -11,9 +11,9 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import click
 
-from .change_password.cli import cli as change_password_cli
-from .confirm_signup.cli import cli as confirm_signup_cli
-from .forgot_password.cli import cli as forgot_password_cli
+from .change_password import cli as change_password_cli
+from .confirm_signup import cli as confirm_signup_cli
+from .forgot_password import cli as forgot_password_cli
 
 
 @click.group()
