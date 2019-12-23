@@ -21,18 +21,18 @@ from gurumcli.cli.main import pass_context
 @pass_context
 def cli(ctx, password, new_password, confirm_password, profile='default'):
     """Change password."""
-    user = ctx.config.get('default', 'user')
+    user = ctx.cfg.get('default', 'user')
     click.echo('Changing password for {}...'.format(user), nl=True)
 
     id_token = ""
     refresh_token = ""
     access_token = ""
-    id_token = ctx.config.get('default', 'id_token')
-    refresh_token = ctx.config.get('default', 'refresh_token')
-    access_token = ctx.config.get('default', 'access_token')
+    id_token = ctx.cfg.get('default', 'id_token')
+    refresh_token = ctx.cfg.get('default', 'refresh_token')
+    access_token = ctx.cfg.get('default', 'access_token')
 
-    user_pool_id = ctx.config.get(profile, 'cognito_user_pool_id')
-    app_client_id = ctx.config.get(profile, 'cognito_app_client_id')
+    user_pool_id = ctx.cfg.get(profile, 'cognito_user_pool_id')
+    app_client_id = ctx.cfg.get(profile, 'cognito_app_client_id')
 
     u = Cognito(
         user_pool_id,

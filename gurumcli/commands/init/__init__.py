@@ -24,7 +24,6 @@ from warrant import Cognito, exceptions
 
 import gurumcommon.gurum_manifest as gurum_manifest
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.commands.exceptions import UserException
 
 LOG = logging.getLogger(__name__)
 

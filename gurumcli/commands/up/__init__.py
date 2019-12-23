@@ -55,7 +55,7 @@ def do_cli(ctx):
         LOGGER.debug(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
-        provision_pipeline_resources(ctx.config, manifest)
+        provision_pipeline_resources(ctx.cfg, manifest)
 
 def provision_pipeline_resources(config, manifest):
     orchestrator = UpOrchestrator(config, manifest.project())

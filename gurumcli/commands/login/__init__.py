@@ -18,7 +18,6 @@ import botocore
 
 from warrant import Cognito, exceptions
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.commands.exceptions import UserException
 
 LOGGER = logging.getLogger(__name__)
 
@@ -46,39 +45,39 @@ def cli(ctx, user, password, profile='default'):
 
 
 def do_cli(ctx, user, password, profile='default'):
-    if not ctx.config.has_option(profile, 'api_uri'):
+    if not ctx.cfg.has_option(profile, 'api_uri'):
         api_uri = click.prompt('API URI', default='https://api.gurum.cloud')
-        ctx.config.set(profile, 'api_uri', api_uri)
+        ctx.cfg.set(profile, 'api_uri', api_uri)
     else:
-        api_uri = ctx.config.get(profile, 'api_uri')
+        api_uri = ctx.cfg.get(profile, 'api_uri')
 
-    if not ctx.config.has_option(profile, 'region'):
+    if not ctx.cfg.has_option(profile, 'region'):
         region = click.prompt('API Region', default='eu-west-1')
-        ctx.config.set(profile, 'region', region)
+        ctx.cfg.set(profile, 'region', region)
     else:
-        region = ctx.config.get(profile, 'region')
+        region = ctx.cfg.get(profile, 'region')
 
-    if not ctx.config.has_option(profile, 'cognito_user_pool_id'):
+    if not ctx.cfg.has_option(profile, 'cognito_user_pool_id'):
         user_pool_id = click.prompt('Cognito User Pool ID')
-        ctx.config.set(profile, 'cognito_user_pool_id', user_pool_id)
+        ctx.cfg.set(profile, 'cognito_user_pool_id', user_pool_id)
     else:
-        user_pool_id = ctx.config.get(profile, 'cognito_user_pool_id')
+        user_pool_id = ctx.cfg.get(profile, 'cognito_user_pool_id')
 
-    if not ctx.config.has_option(profile, 'cognito_identity_pool_id'):
+    if not ctx.cfg.has_option(profile, 'cognito_identity_pool_id'):
         identity_pool_id = click.prompt('Cognito Identity Pool ID')
 
         # clean out eventual region and colon at start of string
         identity_pool_id = identity_pool_id.rpartition(':')[2]
 
-        ctx.config.set(profile, 'cognito_identity_pool_id', identity_pool_id)
+        ctx.cfg.set(profile, 'cognito_identity_pool_id', identity_pool_id)
     else:
-        identity_pool_id = ctx.config.get(profile, 'cognito_identity_pool_id')
+        identity_pool_id = ctx.cfg.get(profile, 'cognito_identity_pool_id')
 
-    if not ctx.config.has_option(profile, 'cognito_app_client_id'):
+    if not ctx.cfg.has_option(profile, 'cognito_app_client_id'):
         app_client_id = click.prompt('Cognito App Client ID')
-        ctx.config.set(profile, 'cognito_app_client_id', app_client_id)
+        ctx.cfg.set(profile, 'cognito_app_client_id', app_client_id)
     else:
-        app_client_id = ctx.config.get(profile, 'cognito_app_client_id')
+        app_client_id = ctx.cfg.get(profile, 'cognito_app_client_id')
 
     click.echo('Logging in {}...'.format(user), nl=True)
     client = boto3.client('cognito-identity', region_name=region)
@@ -112,7 +111,7 @@ def do_cli(ctx, user, password, profile='default'):
 
             # Update config file with Cognito properies if it's not set
             cfgfile = open(ctx.cfg_name, 'w+')
-            ctx.config.write(cfgfile)
+            ctx.cfg.write(cfgfile)
             cfgfile.close()
     except Exception as ex:
         click.echo(ex)
@@ -162,17 +161,17 @@ def get_user_identity_id(client, region, identity_pool_id, user_pool_id, id_toke
 
 def store_credentials_file(ctx, user, region, credentials, profile='default'):
     # Configure the config file with API URI and temporary credentials
-    if not ctx.config.has_section(profile):
-        ctx.config.add_section(profile)
-    ctx.config.set(profile, 'user', user)
-    ctx.config.set(profile, 'id_token', credentials['id_token'])
+    if not ctx.cfg.has_section(profile):
+        ctx.cfg.add_section(profile)
+    ctx.cfg.set(profile, 'user', user)
+    ctx.cfg.set(profile, 'id_token', credentials['id_token'])
     ctx.id_token = credentials['id_token']
-    ctx.config.set(profile, 'refresh_token', credentials['refresh_token'])
-    ctx.config.set(profile, 'access_token', credentials['access_token'])
-    ctx.config.set(profile, 'aws_access_key_id', credentials['aws_access_key_id'])
-    ctx.config.set(profile, 'aws_secret_access_key', credentials['aws_secret_access_key'])
-    ctx.config.set(profile, 'aws_session_token', credentials['aws_session_token'])
-    ctx.config.set(profile, 'region', region)
+    ctx.cfg.set(profile, 'refresh_token', credentials['refresh_token'])
+    ctx.cfg.set(profile, 'access_token', credentials['access_token'])
+    ctx.cfg.set(profile, 'aws_access_key_id', credentials['aws_access_key_id'])
+    ctx.cfg.set(profile, 'aws_secret_access_key', credentials['aws_secret_access_key'])
+    ctx.cfg.set(profile, 'aws_session_token', credentials['aws_session_token'])
+    ctx.cfg.set(profile, 'region', region)
     cfgfile = open(ctx.cfg_name, 'w+')
-    ctx.config.write(cfgfile)
+    ctx.cfg.write(cfgfile)
     cfgfile.close()

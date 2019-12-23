@@ -31,13 +31,13 @@ def cli(ctx):
 
 def do_cli(ctx):
     """Logs the user out from the platform."""
-    user_pool_id = ctx.config.get('default', 'cognito_user_pool_id')
-    app_client_id = ctx.config.get('default', 'cognito_app_client_id')
+    user_pool_id = ctx.cfg.get('default', 'cognito_user_pool_id')
+    app_client_id = ctx.cfg.get('default', 'cognito_app_client_id')
 
-    user = ctx.config.get('default', 'user')
-    id_token = ctx.config.get('default', 'id_token')
-    refresh_token = ctx.config.get('default', 'refresh_token')
-    access_token = ctx.config.get('default', 'access_token')
+    user = ctx.cfg.get('default', 'user')
+    id_token = ctx.cfg.get('default', 'id_token')
+    refresh_token = ctx.cfg.get('default', 'refresh_token')
+    access_token = ctx.cfg.get('default', 'access_token')
 
     click.echo('Signing out {}...'.format(user), nl=True)
 
@@ -55,12 +55,12 @@ def do_cli(ctx):
         click.echo(ex)
 
     # Configure the config file with API URI and temporary credentials
-    if not ctx.config.has_section('default'):
-        ctx.config.add_section('default')
-    if not ctx.config.has_option('default', 'api_uri'):
-        ctx.config.set('default', 'api_uri', 'https://api.gurum.cloud')
-    ctx.config.set('default', 'user', '')
-    ctx.config.set('default', 'access_token', '')
+    if not ctx.cfg.has_section('default'):
+        ctx.cfg.add_section('default')
+    if not ctx.cfg.has_option('default', 'api_uri'):
+        ctx.cfg.set('default', 'api_uri', 'https://api.gurum.cloud')
+    ctx.cfg.set('default', 'user', '')
+    ctx.cfg.set('default', 'access_token', '')
     cfgfile = open(ctx.cfg_name, 'w+')
-    ctx.config.write(cfgfile)
+    ctx.cfg.write(cfgfile)
     cfgfile.close()

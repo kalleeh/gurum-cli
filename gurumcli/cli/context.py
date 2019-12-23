@@ -41,7 +41,7 @@ class Context():
         self._cfg_path = None
         self._id_token = None
         self._api_uri = None
-        self.config = None
+        self.cfg = None
 
     @property
     def debug(self):
@@ -95,14 +95,14 @@ class Context():
 
     @property
     def config(self):
-        return self.config
+        return self.cfg
 
     @config.setter
     def config(self, value):
         """
         Manage configuration file
         """
-        self.config = value
+        self.cfg = value
         self._refresh_config()
 
     def _refresh_config(self):
@@ -121,5 +121,5 @@ class Context():
                     user = \
                 ')
 
-        self.config = configparser.ConfigParser()
-        self.config.read(self.cfg_name)
+        self.cfg = configparser.ConfigParser()
+        self.cfg.read(self.cfg_name)

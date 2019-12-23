@@ -22,8 +22,8 @@ def cli(ctx, user, profile='default'):
     """Initiates a forgot password."""
     click.echo('Initiating forgot password process for {}...'.format(user), nl=True)
 
-    user_pool_id = ctx.config.get(profile, 'cognito_user_pool_id')
-    app_client_id = ctx.config.get(profile, 'cognito_app_client_id')
+    user_pool_id = ctx.cfg.get(profile, 'cognito_user_pool_id')
+    app_client_id = ctx.cfg.get(profile, 'cognito_app_client_id')
 
     u = Cognito(
         user_pool_id,

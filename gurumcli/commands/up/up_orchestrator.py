@@ -20,14 +20,14 @@ from gurumcli.lib.utils.github_api import split_user_repo
 class UpOrchestrator:
 
     def __init__(self, config, project):
-        self.config = config
+        self.cfg = config
         self.project = project
         self.api_client = self.init_api_client()
 
     def init_api_client(self):
         return ApiClient(
-            api_uri=self.config.get('default', 'api_uri'),
-            id_token=self.config.get('default', 'id_token')
+            api_uri=self.cfg.get('default', 'api_uri'),
+            id_token=self.cfg.get('default', 'id_token')
         )
 
     def provision_environment(self, environment):
