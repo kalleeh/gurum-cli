@@ -45,6 +45,7 @@ def do_cli(ctx, name, watch):
     """Display detailed information about the application."""
     apps = {}
     payload = {}
+    payload['name'] = name
 
     api_client = ApiClient(
         api_uri=ctx.cfg.get('default', 'api_uri'),
@@ -54,7 +55,6 @@ def do_cli(ctx, name, watch):
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
         while True:
-            payload['name'] = name
 
             resp = api_client.describe(resource='apps', payload=json.dumps(payload))
             apps = resp['apps'][0]

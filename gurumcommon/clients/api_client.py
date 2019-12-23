@@ -38,8 +38,8 @@ class ApiClient():
             resp = connection_handler.request('get', uri, self._headers)
         except Exception:
             raise UnknownError
-
-        return resp[resource]
+        else:
+            return json.loads(resp['body'])
 
     def update(self, resource, payload):
         data = json.loads(payload)

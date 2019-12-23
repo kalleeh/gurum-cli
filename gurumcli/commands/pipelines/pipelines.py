@@ -11,11 +11,11 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import click
 
-from .describe.cli import cli as describe_cli
-from .logs.cli import cli as logs_cli
-from .ls.cli import cli as ls_cli
-from .put_approval.cli import cli as put_approval_cli
-from .status.cli import cli as status_cli
+from .describe import cli as describe_cli
+from .logs import cli as logs_cli
+from .ls import cli as ls_cli
+from .put_approval import cli as put_approval_cli
+from .status import cli as status_cli
 
 
 @click.group()
