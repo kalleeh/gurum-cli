@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 from collections import deque
 
 import boto3
+import botocore
 from botocore.compat import json, six, total_seconds
 
 import jmespath
@@ -26,7 +27,14 @@ from termcolor import colored
 from dateutil.parser import parse
 from dateutil.tz import tzutc
 
-from gurumcommon.exceptions import TooManyStreamsFilteredError, NoStreamsFilteredError, UnknownDateError
+from . import exceptions
+
+
+COLOR_ENABLED = {
+    'always': True,
+    'never': False,
+    'auto': sys.stdout.isatty(),
+}
 
 
 def milis2iso(milis):
@@ -34,7 +42,24 @@ def milis2iso(milis):
     return (res + ".000")[:23] + 'Z'
 
 
-class AWSLogs():
+def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_session_token, aws_region):
+    core_session = botocore.session.get_session()
+    core_session.set_config_variable('profile', aws_profile)
+
+    credential_provider = core_session.get_component('credential_provider').get_provider('assume-role')
+    cache_dir = os.path.join(os.path.expanduser('~'), '.aws', 'cli', 'cache')
+    credential_provider.cache = botocore.credentials.JSONFileCache(cache_dir)
+
+    session = boto3.session.Session(botocore_session=core_session)
+    return session.client(
+        'logs',
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key,
+        aws_session_token=aws_session_token,
+        region_name=aws_region)
+
+
+class AWSLogs(object):
 
     ACTIVE = 1
     EXHAUSTED = 2
@@ -49,14 +74,16 @@ class AWSLogs():
         self.aws_access_key_id = kwargs.get('aws_access_key_id')
         self.aws_secret_access_key = kwargs.get('aws_secret_access_key')
         self.aws_session_token = kwargs.get('aws_session_token')
+        self.aws_profile = kwargs.get('aws_profile')
         self.log_group_name = kwargs.get('log_group_name')
-        self.log_stream_name = kwargs.get('log_stream_name', 'ALL')
+        self.log_stream_name = kwargs.get('log_stream_name')
         self.filter_pattern = kwargs.get('filter_pattern')
         self.watch = kwargs.get('watch')
-        self.color_enabled = kwargs.get('color_enabled', 'true')
-        self.output_stream_enabled = kwargs.get('output_stream_enabled', 'true')
+        self.watch_interval = kwargs.get('watch_interval')
+        self.color_enabled = COLOR_ENABLED.get(kwargs.get('color'), True)
+        self.output_stream_enabled = kwargs.get('output_stream_enabled')
         self.output_group_enabled = kwargs.get('output_group_enabled')
-        self.output_timestamp_enabled = kwargs.get('output_timestamp_enabled', 'true')
+        self.output_timestamp_enabled = kwargs.get('output_timestamp_enabled')
         self.output_ingestion_time_enabled = kwargs.get(
             'output_ingestion_time_enabled')
         self.start = self.parse_datetime(kwargs.get('start'))
@@ -65,12 +92,12 @@ class AWSLogs():
         if self.query is not None:
             self.query_expression = jmespath.compile(self.query)
         self.log_group_prefix = kwargs.get('log_group_prefix')
-        self.client = boto3.client(
-            'logs',
-            aws_access_key_id=self.aws_access_key_id,
-            aws_secret_access_key=self.aws_secret_access_key,
-            aws_session_token=self.aws_session_token,
-            region_name=self.aws_region
+        self.client = boto3_client(
+            self.aws_profile,
+            self.aws_access_key_id,
+            self.aws_secret_access_key,
+            self.aws_session_token,
+            self.aws_region
         )
 
     def _get_streams_from_pattern(self, group, pattern):
@@ -86,13 +113,13 @@ class AWSLogs():
         if self.log_stream_name != self.ALL_WILDCARD:
             streams = list(self._get_streams_from_pattern(self.log_group_name, self.log_stream_name))
             if len(streams) > self.FILTER_LOG_EVENTS_STREAMS_LIMIT:
-                raise TooManyStreamsFilteredError(
+                raise exceptions.TooManyStreamsFilteredError(
                     self.log_stream_name,
                     len(streams),
                     self.FILTER_LOG_EVENTS_STREAMS_LIMIT
                 )
             if len(streams) == 0:
-                raise NoStreamsFilteredError(self.log_stream_name)
+                raise exceptions.NoStreamsFilteredError(self.log_stream_name)
 
         max_stream_length = max([len(s) for s in streams]) if streams else 10
         group_length = len(self.log_group_name)
@@ -149,7 +176,7 @@ class AWSLogs():
 
                 if event is do_wait:
                     if self.watch:
-                        time.sleep(1)
+                        time.sleep(self.watch_interval)
                         continue
                     else:
                         return
@@ -244,7 +271,7 @@ class AWSLogs():
                     # no firstEventTimestamp.
                     yield stream['logStreamName']
                 elif max(stream['firstEventTimestamp'], window_start) <= \
-                        min(stream['lastEventTimestamp'], window_end):
+                        min(stream['lastIngestionTime'], window_end):
                     yield stream['logStreamName']
 
     def color(self, text, color):
@@ -271,7 +298,7 @@ class AWSLogs():
             try:
                 date = parse(datetime_text)
             except ValueError:
-                raise UnknownDateError(datetime_text)
+                raise exceptions.UnknownDateError(datetime_text)
 
         if date.tzinfo:
             if date.utcoffset != 0:

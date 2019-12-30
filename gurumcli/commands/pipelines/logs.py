@@ -14,7 +14,7 @@ import click
 from botocore.client import ClientError
 from gurumcli.cli.main import pass_context, common_options
 from gurumcommon.logs.awslogs import AWSLogs
-import gurumcommon.exceptions as exceptions
+import gurumcommon.logs.exceptions as exceptions
 
 
 @click.command('logs', short_help='Displays logs about your pipeline')
@@ -33,11 +33,15 @@ def cli(ctx, name, **kwargs):
 def do_cli(ctx, name, **kwargs):
     """View logs for your pipeline"""
     options = {}
-    log_group_name = name
+    log_group_name = '/aws/codebuild/gurum-{}'.format(name)
 
     # Dynamically get options and remove undefined options
     options = {k: v for k, v in kwargs.items() if v is not None}
-    options['log_group_name'] = '/aws/codebuild/gurum-{}'.format(log_group_name)
+    options['log_group_name'] = log_group_name
+    options['log_stream_name'] = 'ALL'
+    options['color'] = 'always'
+    options['output_stream_enabled'] = True
+    options['watch_interval'] = 1
     options['aws_access_key_id'] = ctx.config.get(ctx.profile, 'aws_access_key_id')
     options['aws_secret_access_key'] = ctx.config.get(ctx.profile, 'aws_secret_access_key')
     options['aws_session_token'] = ctx.config.get(ctx.profile, 'aws_session_token')
