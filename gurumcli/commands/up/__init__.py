@@ -99,10 +99,10 @@ def get_github_requirements(repository):
 
             return github_token
         except InvalidPersonalAccessTokenError as ex:
-            click.echo("Error: {}".format(ex.hint()))
+            click.echo("Error: {}".format(ex.message))
             LOGGER.debug('GitHub Token invalid or not found in keyring. Prompting user...')
             github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
         except RepositoryNotFoundError as ex:
-            click.echo("Error: {}".format(ex.hint()))
+            click.echo("Error: {}".format(ex.message))
 
     return False
