@@ -16,8 +16,8 @@ from shutil import copyfile
 
 import click
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
 import gurumcommon.gurum_manifest as gurum_manifest
+from gurumcommon.github_api import validate_pat, split_user_repo
 from gurumcommon.exceptions import InvalidGurumManifestError
 from gurumcommon.clients.api_client import ApiClient
 

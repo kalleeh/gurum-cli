@@ -12,8 +12,7 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import json
 
 from gurumcommon.exceptions import AlreadyExistsError, UnknownParameterError
-
-from gurumcli.lib.utils.github_api import split_user_repo
+from gurumcommon.github_api import split_user_repo
 
 
 class UpOrchestrator:

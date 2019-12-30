@@ -13,6 +13,7 @@ import logging
 import keyring
 
 LOGGER = logging.getLogger(__name__)
+logging.getLogger('keyring').setLevel(logging.DEBUG)
 
 GURUM_GITHUB_NAMESPACE = "gurum.github"
 

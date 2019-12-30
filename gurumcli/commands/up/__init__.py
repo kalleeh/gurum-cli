@@ -10,16 +10,14 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import os
-import sys
 import logging
-from shutil import copyfile
 
 import click
 
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
-from gurumcli.lib.utils.keyring_api import get_github_secret, set_github_secret
 import gurumcommon.gurum_manifest as gurum_manifest
+from gurumcommon.github_api import validate_pat, split_user_repo
+from gurumcommon.keyring_api import get_github_secret, set_github_secret
 from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
 from gurumcommon.clients.api_client import ApiClient
 

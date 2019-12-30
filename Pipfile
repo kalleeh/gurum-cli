@@ -18,8 +18,8 @@ awslogs = "*"
 aws-xray-sdk = "*"
 pyyaml = "*"
 yamale = "*"
-gurum-cli = {editable = true,path = "."}
 keyring = "*"
+gurum-cli = {editable = true,path = "."}
 
 [dev-packages]
 pylint = "*"
