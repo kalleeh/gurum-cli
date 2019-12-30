@@ -15,17 +15,16 @@ from gurumcommon.exceptions import UnknownError, ServerError, UrlNotFoundError, 
 
 
 def request(method, url, headers, *payload):
+    router = {
+        'get': get(url, headers),
+        'post': post(url, payload, headers),
+        'put': put(url, payload, headers),
+        'delete': delete(url, headers),
+        'patch': patch(url, payload, headers)
+    }
+
     try:
-        if method == 'get':
-            response = requests.get(url, headers=headers)
-        elif method == 'post':
-            response = requests.post(url, json=payload, headers=headers)
-        elif method == 'put':
-            response = requests.put(url, json=payload, headers=headers)
-        elif method == 'delete':
-            response = requests.delete(url, headers=headers)
-        elif method == 'patch':
-            response = requests.patch(url, json=payload, headers=headers)
+        response = router[method]
 
         response.raise_for_status()
     except requests.exceptions.HTTPError:
@@ -51,3 +50,18 @@ def request(method, url, headers, *payload):
         response = json.loads(response.text)
 
         return response
+
+def get(url, headers):
+    return requests.get(url, headers=headers)
+
+def post(url, payload, headers):
+    return requests.post(url, json=payload, headers=headers)
+
+def put(url, payload, headers):
+    return requests.put(url, json=payload, headers=headers)
+
+def delete(url, headers):
+    return requests.delete(url, headers=headers)
+
+def patch(url, payload, headers):
+    return requests.patch(url, json=payload, headers=headers)
