@@ -12,9 +12,9 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import click
 
 from botocore.client import ClientError
+from awslogs import AWSLogs
+from awslogs.exceptions import BaseAWSLogsException
 from gurumcli.cli.main import pass_context, common_options
-from gurumcommon.logs.awslogs import AWSLogs
-import gurumcommon.logs.exceptions as exceptions
 
 
 @click.command('logs', short_help='Displays logs about your app')
@@ -56,7 +56,7 @@ def cli(ctx, name, **kwargs):
             click.echo('Error: Could not find logs for "{}"...'.format(name))
             return 4
         raise
-    except exceptions.BaseAWSLogsException as ex:
+    except BaseAWSLogsException as ex:
         click.secho("{0}\n".format(ex.hint()), fg='red')
         return ex.code
 

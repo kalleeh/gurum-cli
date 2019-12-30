@@ -9,10 +9,13 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
+import logging
 import json
 
 from gurumcommon.exceptions import AlreadyExistsError, UnknownParameterError
 from gurumcommon.github_api import split_user_repo
+
+LOGGER = logging.getLogger(__name__)
 
 
 class UpOrchestrator:
@@ -23,7 +26,7 @@ class UpOrchestrator:
         self.api_client = api_client
 
     def provision_environment(self, environment):
-        print('Provisioning Environment: ' + environment['name'])
+        LOGGER.info('Provisioning Environment: %s', environment['name'])
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], environment['name'])
@@ -37,12 +40,12 @@ class UpOrchestrator:
             try:
                 self.api_client.update(resource='apps', payload=json.dumps(payload))
             except UnknownParameterError as ex:
-                print(ex)
+                LOGGER.warning(ex)
 
         return payload['name']
 
     def provision_pipeline(self, environment_names, github_token):
-        print('Provisioning {0} Pipeline.'.format(self.project['source']['provider']))
+        LOGGER.info('Provisioning %s Pipeline.', self.project['source']['provider'])
         payload = {}
 
         payload['name'] = self.project['name']
@@ -65,10 +68,10 @@ class UpOrchestrator:
             try:
                 self.api_client.update(resource='pipelines', payload=json.dumps(payload))
             except UnknownParameterError as ex:
-                print(ex)
+                LOGGER.warning(ex)
 
     def provision_service(self, service):
-        print('Provisioning Service: ' + service['name'])
+        LOGGER.info('Provisioning Service: %s', service['name'])
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], service['name'])
@@ -82,6 +85,6 @@ class UpOrchestrator:
             try:
                 self.api_client.update(resource='services', payload=json.dumps(payload))
             except UnknownParameterError as ex:
-                print(ex)
+                LOGGER.warning(ex)
 
         return payload['name']

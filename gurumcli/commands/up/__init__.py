@@ -78,7 +78,6 @@ def provision_pipeline_resources(api_client, config, manifest):
 
 #TODO: Make this a helper.
 def read_manifest():
-    click.echo("Reading gurum.yaml")
     base_dir = os.path.abspath(__file__ + "../../../../../gurumcommon")
     gurum_schema_file = os.path.join(base_dir, gurum_manifest.GURUM_SCHEMA_FILE)
     gurum_init_file = os.path.join(os.getcwd(), gurum_manifest.GURUM_FILE)
