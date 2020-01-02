@@ -47,14 +47,11 @@ def cli(ctx):
 
 
 def do_cli(ctx):
-<<<<<<< HEAD
     api_client = ApiClient(
         api_uri=ctx.config.get(ctx.profile, 'api_uri'),
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
-=======
->>>>>>> master
     # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
     try:
         manifest = read_manifest()
@@ -62,17 +59,10 @@ def do_cli(ctx):
         LOGGER.debug(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
-<<<<<<< HEAD
         destroy_pipeline_resources(api_client, ctx.config, manifest)
 
 def destroy_pipeline_resources(api_client, config, manifest):
     orchestrator = DestroyOrchestrator(api_client, config, manifest.project())
-=======
-        destroy_pipeline_resources(ctx.config, manifest)
-
-def destroy_pipeline_resources(config, manifest):
-    orchestrator = DestroyOrchestrator(config, manifest.project())
->>>>>>> master
 
     environment_names = []
     for environment in manifest.environments():
