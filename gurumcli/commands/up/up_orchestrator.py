@@ -9,13 +9,13 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import logging
 import json
 
 from gurumcommon.exceptions import AlreadyExistsError, UnknownParameterError
 from gurumcommon.github_api import split_user_repo
+from gurumcommon.logger import configure_logger
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 
 class UpOrchestrator:
@@ -36,6 +36,7 @@ class UpOrchestrator:
         try:
             self.api_client.create(resource='apps', payload=json.dumps(payload))
         except AlreadyExistsError:
+            LOGGER.info('%s already exists. Updating...', environment['name'])
             payload['upgrade_version'] = 'False'
             try:
                 self.api_client.update(resource='apps', payload=json.dumps(payload))
@@ -64,6 +65,7 @@ class UpOrchestrator:
         try:
             self.api_client.create(resource='pipelines', payload=json.dumps(payload))
         except AlreadyExistsError:
+            LOGGER.info('Pipeline already exists. Updating...')
             payload['upgrade_version'] = 'False'
             try:
                 self.api_client.update(resource='pipelines', payload=json.dumps(payload))
@@ -76,11 +78,13 @@ class UpOrchestrator:
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], service['name'])
         payload['type'] = service['type']
-        payload['config'] = service['config']
+        if 'config' in service:
+            payload['config'] = service['config']
 
         try:
             self.api_client.create(resource='services', payload=json.dumps(payload))
         except AlreadyExistsError:
+            LOGGER.info('%s already exists. Updating...', service['name'])
             payload['upgrade_version'] = 'False'
             try:
                 self.api_client.update(resource='services', payload=json.dumps(payload))

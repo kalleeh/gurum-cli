@@ -20,10 +20,11 @@ import gurumcommon.gurum_manifest as gurum_manifest
 from gurumcommon.github_api import validate_pat, split_user_repo
 from gurumcommon.exceptions import InvalidGurumManifestError
 from gurumcommon.clients.api_client import ApiClient
+from gurumcommon.logger import configure_logger
 
 from .destroy_orchestrator import DestroyOrchestrator
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 GURUM_SKELETON_FILE = "gurum_manifest_skeleton.yaml"
 

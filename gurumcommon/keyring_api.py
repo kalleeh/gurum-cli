@@ -12,8 +12,10 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import logging
 import keyring
 
-LOGGER = logging.getLogger(__name__)
-logging.getLogger('keyring').setLevel(logging.DEBUG)
+from gurumcommon.logger import configure_logger
+
+LOGGER = configure_logger(__name__)
+logging.getLogger(__name__).setLevel(logging.ERROR)
 
 GURUM_GITHUB_NAMESPACE = "gurum.github"
 

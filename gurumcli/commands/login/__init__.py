@@ -18,8 +18,9 @@ import botocore
 
 from warrant import Cognito, exceptions
 from gurumcli.cli.main import pass_context, common_options
+from gurumcommon.logger import configure_logger
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 @click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.option('--user', prompt=True, help='Username (email)')

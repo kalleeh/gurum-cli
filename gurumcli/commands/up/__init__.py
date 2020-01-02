@@ -20,10 +20,11 @@ from gurumcommon.github_api import validate_pat, split_user_repo
 from gurumcommon.keyring_api import get_github_secret, set_github_secret
 from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
 from gurumcommon.clients.api_client import ApiClient
+from gurumcommon.logger import configure_logger
 
 from .up_orchestrator import UpOrchestrator
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 GURUM_SKELETON_FILE = "gurum_manifest_skeleton.yaml"
 
@@ -67,7 +68,8 @@ def provision_pipeline_resources(api_client, config, manifest):
 
     environment_names = []
     for environment in manifest.environments():
-        environment_names.append(orchestrator.provision_environment(environment))
+        orchestrator.provision_environment(environment)
+        environment_names.append(environment)
 
     for service in manifest.services():
         orchestrator.provision_service(service)

@@ -9,12 +9,12 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import logging
 import requests
 
 from gurumcommon.exceptions import InvalidPersonalAccessTokenError, RepositoryNotFoundError
+from gurumcommon.logger import configure_logger
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 def validate_pat(pat_token, owner, repo):
     url = 'https://api.github.com/repos/{}/{}'.format(owner, repo)

@@ -19,7 +19,7 @@ class ApiClient():
         self._headers = {'Authorization': id_token}
 
     def list(self, resource):
-        uri = self._api_uri + resource
+        uri = '{0}{1}'.format(self._api_uri, resource)
 
         try:
             resp = connection_handler.request('get', uri, self._headers)
@@ -29,7 +29,7 @@ class ApiClient():
             return json.loads(resp['body'])
 
     def create(self, resource, payload):
-        uri = self._api_uri + resource
+        uri = '{0}{1}'.format(self._api_uri, resource)
 
         try:
             resp = connection_handler.request('post', uri, self._headers, payload)
@@ -42,7 +42,7 @@ class ApiClient():
 
     def describe(self, resource, payload):
         data = json.loads(payload)
-        uri = '{0}/{1}'.format(self._api_uri + resource, data['name'])
+        uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
 
         try:
             resp = connection_handler.request('get', uri, self._headers)
@@ -53,7 +53,7 @@ class ApiClient():
 
     def update(self, resource, payload):
         data = json.loads(payload)
-        uri = '{0}/{1}'.format(self._api_uri + resource, data['name'])
+        uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
 
         try:
             resp = connection_handler.request('patch', uri, self._headers, payload)
@@ -64,7 +64,7 @@ class ApiClient():
 
     def delete(self, resource, payload):
         data = json.loads(payload)
-        uri = '{0}/{1}'.format(self._api_uri + resource, data['name'])
+        uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
 
         try:
             resp = connection_handler.request('delete', uri, self._headers)

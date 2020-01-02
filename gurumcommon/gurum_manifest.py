@@ -78,4 +78,6 @@ class GurumManifest:
         return self.manifest_contents['environments']
 
     def services(self):
-        return self.manifest_contents['services']
+        if 'services' in self.manifest_contents:
+            return self.manifest_contents['services']
+        return {}
