@@ -12,7 +12,7 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import click
 
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.util import json_to_table
+from gurumcli.libs.formatter import json_to_table
 from gurumcommon.clients.api_client import ApiClient
 
 

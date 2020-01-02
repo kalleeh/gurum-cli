@@ -15,7 +15,7 @@ import click
 import click_spinner
 
 from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.util import json_to_table, prettyprint
+from gurumcli.libs.formatter import json_to_table, prettyprint
 from gurumcommon.clients.api_client import ApiClient
 
 

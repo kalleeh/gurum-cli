@@ -15,7 +15,7 @@ import click
 import click_spinner
 
 from gurumcli.cli.main import pass_context
-from gurumcli.lib.utils.util import request, json_to_table
+from gurumcli.libs.formatter import request, json_to_table
 
 @click.command('status', short_help='Displays status about your pipeline')
 @click.argument('name')

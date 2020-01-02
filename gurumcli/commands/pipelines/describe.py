@@ -13,7 +13,7 @@ import json
 import click
 
 from gurumcli.cli.main import pass_context
-from gurumcli.lib.utils.util import json_to_table, prettyprint
+from gurumcli.libs.formatter import json_to_table, prettyprint
 from gurumcommon.clients.api_client import ApiClient
 
 

@@ -13,7 +13,7 @@ import json
 import click
 
 from gurumcli.cli.main import pass_context
-from gurumcli.lib.utils.util import request
+from gurumcli.libs.formatter import request
 
 @click.command('put-approval', short_help='Displays status about your pipeline')
 @click.argument('name')
