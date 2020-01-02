@@ -26,7 +26,7 @@ LOGGER = logging.getLogger(__name__)
 @click.option('--password', prompt=True, hide_input=True)
 @common_options
 @pass_context
-def cli(ctx, user, password):
+def cli(ctx, user, password, profile='default'):
     """ \b
         Login to the GURUM platform using your Cognito credentials.
         This will populate your temporary session tokens in your configuration file.
