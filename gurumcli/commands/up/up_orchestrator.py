@@ -30,6 +30,7 @@ class UpOrchestrator:
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], environment['name'])
+        payload['product_flavor'] = self.project['type']
         payload['config'] = environment['config']
         payload['env_vars'] = environment['env_vars']
 
@@ -77,7 +78,7 @@ class UpOrchestrator:
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], service['name'])
-        payload['type'] = service['type']
+        payload['product_flavor'] = service['type']
         if 'config' in service:
             payload['config'] = service['config']
 

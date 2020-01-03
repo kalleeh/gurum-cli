@@ -12,7 +12,9 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import json
 
 from gurumcommon.exceptions import UnknownError
+from gurumcommon.logger import configure_logger
 
+LOGGER = configure_logger(__name__)
 
 class DestroyOrchestrator:
 
@@ -22,7 +24,7 @@ class DestroyOrchestrator:
         self.api_client = api_client
 
     def destroy_environment(self, environment):
-        print('Destroying Environment: ' + environment['name'])
+        LOGGER.info('Destroying Environment: %s', environment['name'])
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], environment['name'])
@@ -33,7 +35,7 @@ class DestroyOrchestrator:
             raise UnknownError
 
     def destroy_pipeline(self):
-        print('Destroying {0} Pipeline.'.format(self.project['source']['provider']))
+        LOGGER.info('Destroying %s Pipeline.', format(self.project['source']['provider']))
         payload = {}
 
         payload['name'] = self.project['name']
@@ -44,7 +46,7 @@ class DestroyOrchestrator:
             raise UnknownError
 
     def destroy_service(self, service):
-        print('Destroying Service: ' + service['name'])
+        LOGGER.info('Destroying Service: %s', service['name'])
         payload = {}
 
         payload['name'] = '{0}-{1}'.format(self.project['name'], service['name'])
