@@ -11,7 +11,6 @@ import json
 
 import gurumcommon.connection_handler as connection_handler
 
-from gurumcommon.exceptions import BadRequestError, AlreadyExistsError, UnknownParameterError, UnknownError
 
 class ApiClient():
     def __init__(self, api_uri, id_token):
@@ -21,52 +20,37 @@ class ApiClient():
     def list(self, resource):
         uri = '{0}{1}'.format(self._api_uri, resource)
 
-        try:
-            resp = connection_handler.request('get', uri, self._headers)
-        except Exception:
-            raise UnknownError
-        else:
-            return json.loads(resp['body'])
+        resp = connection_handler.request('get', uri, self._headers)
+
+        return json.loads(resp['body'])
 
     def create(self, resource, payload):
         uri = '{0}{1}'.format(self._api_uri, resource)
 
-        try:
-            resp = connection_handler.request('post', uri, self._headers, payload)
-        except AlreadyExistsError:
-            raise
-        except Exception:
-            raise UnknownError
-        else:
-            return json.loads(resp['body'])[resource]
+        resp = connection_handler.request('post', uri, self._headers, payload)
+
+        return json.loads(resp['body'])[resource]
 
     def describe(self, resource, payload):
         data = json.loads(payload)
         uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
 
-        try:
-            resp = connection_handler.request('get', uri, self._headers)
-        except Exception:
-            raise UnknownError
-        else:
-            return json.loads(resp['body'])
+        resp = connection_handler.request('get', uri, self._headers)
+
+        return json.loads(resp['body'])
 
     def update(self, resource, payload):
         data = json.loads(payload)
         uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
 
-        try:
-            resp = connection_handler.request('patch', uri, self._headers, payload)
-        except BadRequestError:
-            raise UnknownParameterError
-        else:
-            return json.loads(resp['body'])
+        resp = connection_handler.request('patch', uri, self._headers, payload)
+
+        return json.loads(resp['body'])
 
     def delete(self, resource, payload):
         data = json.loads(payload)
         uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
 
-        try:
-            resp = connection_handler.request('delete', uri, self._headers)
-        except Exception:
-            raise UnknownError
+        connection_handler.request('delete', uri, self._headers)
+
+        return {}

@@ -74,18 +74,23 @@ Logged in!
 
 This generated temporary Cognito and STS credentials for you valid for 1 hour. After this you will need to log in again.
 
-### Creating an app
+### Initialize your Gurum Manifest (gurum.yaml)
 
-The CLI allows you to create an app using an existing container image that will be downloaded from the web.
-*Currently this only supports unauthenticated Docker registries*
+In the folder where you host your source code run the following command and follow the prompts to initialize a manifest file.
 
 ```bash
-gurum apps create [--name <app-name>]
-                    [--image <docker-image>] [--health-check-path <path>]
-                    [--tasks <number-tasks>] [--env <key=value>]
+gurum init
 ```
 
-All options are optional, however, if you don't specify a `name` it will be randomly generated herokuish-style.
+### Deploy your app
+
+Use the up command to deploy your app according to your manifest file.
+
+```bash
+gurum up
+```
+
+This will validate your manifest schema and provision the resources declared.
 
 ### Describe your app
 
@@ -107,7 +112,7 @@ Tags:
 ```
 
 You can now visit the endpoint using your browser.
-*Currently only HTTP port 80 traffic is supported*
+*Currently only HTTPS port 443 traffic is supported*
 
 ### Troubleshooting
 
@@ -121,30 +126,24 @@ gurum apps logs my-app --start '30m' --watch
 
 ### Commands
 
-gurum
+gurum --help
 
 * login
 * signout
+* up
+* destroy
 * apps
-  * create
   * describe
-  * destroy
   * logs
   * ls
-  * update
 * pipelines
-  * create
   * describe
-  * destroy
-  * ls
-  * update
-* services
-  * create
-  * describe
-  * destroy
   * logs
   * ls
-  * update
+* services
+  * describe
+  * logs
+  * ls
 * users
   * change_password
   * confirm_signup
@@ -153,27 +152,8 @@ gurum
 ### Sample Deploy
 
 ```bash
-gurum apps create --image alexwhen/docker-2048 --health-check-path '/'
-
-gurum apps create
-> portal
-gurum pipelines create
-> Name: portal-pipeline
-> App name: portal
-> Github repo: portal
-> Github branch: master
-> Github token: TOKEN
-> Github user: myGitHubUser
-
-gurum apps create
-> stocks
-gurum pipelines create
-> Name: stocks-pipeline
-> App name: stocks
-> Github repo: stocks
-> Github branch: master
-> Github token: TOKEN
-> Github user: myGitHubUser
-
+gurum init
+gurum up
+git push
 # Watch the logs for the stocks service and filter out health checks
-gurum apps logs stocks --watch | grep -v "/health"
+gurum apps logs MyApp --watch | grep -v "/health"
