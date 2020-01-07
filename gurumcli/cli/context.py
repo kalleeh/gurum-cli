@@ -107,5 +107,5 @@ class Context():
         try:
             self._config.read(self.cfg_name)
         except configparser.NoSectionError as e:
-            LOGGER.error('No such profile: %s', e)
+            LOGGER.error('No profiles found. %s', e)
             raise
