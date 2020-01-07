@@ -13,7 +13,13 @@ import os
 import configparser
 import logging
 import click
+from gurumcommon.logger import configure_logger
 
+LOGGER = configure_logger(__name__)
+
+DEFAULT_CONFIG_CONTENTS = ' \
+    [default] \
+    user = '
 
 class Context():
     """
@@ -56,7 +62,7 @@ class Context():
 
         if self._debug:
             # Turn on debug logging
-            logging.getLogger().setLevel(logging.DEBUG)
+            LOGGER.setLevel(logging.DEBUG)
 
     @property
     def profile(self):
@@ -95,13 +101,11 @@ class Context():
         self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
         if not os.path.exists(self.cfg_name):
             with open(self.cfg_name, 'a') as f:
-                f.write(' \
-                    [default] \
-                    user = \
-                ')
+                f.write(DEFAULT_CONFIG_CONTENTS)
 
         self._config = configparser.ConfigParser()
         try:
             self._config.read(self.cfg_name)
         except configparser.NoSectionError as e:
-            print('No such profile: {}'.format(e))
+            LOGGER.error('No such profile: %s', e)
+            raise
