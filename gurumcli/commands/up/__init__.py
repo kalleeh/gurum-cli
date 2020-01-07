@@ -74,7 +74,7 @@ def provision_pipeline_resources(api_client, config, manifest):
     for service in manifest.services():
         orchestrator.provision_service(service)
 
-    if get_provider(manifest) == 'github':
+    if get_provider(manifest).startswith('github'):
         github_token = get_github_requirements(repository)
         orchestrator.provision_pipeline(environment_names, github_token)
 

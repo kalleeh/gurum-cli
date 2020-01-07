@@ -31,11 +31,19 @@ class ApiClient():
 
         return json.loads(resp['body'])[resource]
 
-    def describe(self, resource, payload):
+    def describe(self, resource, payload, custom_uri=''):
         data = json.loads(payload)
-        uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
+        uri = '{0}{1}/{2}{3}'.format(self._api_uri, resource, data['name'], custom_uri)
 
         resp = connection_handler.request('get', uri, self._headers)
+
+        return json.loads(resp['body'])
+
+    def put(self, resource, payload, custom_uri=''):
+        data = json.loads(payload)
+        uri = '{0}{1}/{2}{3}'.format(self._api_uri, resource, data['name'], custom_uri)
+
+        resp = connection_handler.request('put', uri, self._headers, payload)
 
         return json.loads(resp['body'])
 

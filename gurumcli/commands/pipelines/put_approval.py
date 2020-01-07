@@ -13,7 +13,8 @@ import json
 import click
 
 from gurumcli.cli.main import pass_context
-from gurumcli.libs.formatter import request
+from gurumcli.libs.formatter import json_to_table
+from gurumcommon.clients.api_client import ApiClient
 
 @click.command('put-approval', short_help='Displays status about your pipeline')
 @click.argument('name')
@@ -22,20 +23,22 @@ from gurumcli.libs.formatter import request
 @pass_context
 def cli(ctx, name, **kwargs):
     """Approve or reject an application deployment."""
+    payload = {}
+    payload['name'] = name
     states = []
 
-    id_token = ctx.config.get(ctx.profile, 'id_token')
-    api_uri = ctx.config.get(ctx.profile, 'api_uri')
-
-    url = api_uri + '/pipelines/' + name + '/states'
-    headers = {'Authorization': id_token}
+    api_client = ApiClient(
+        api_uri=ctx.config.get(ctx.profile, 'api_uri'),
+        id_token=ctx.config.get(ctx.profile, 'id_token')
+    )
 
     # Dynamically get options and remove undefined options
-    payload = json.dumps({k: v for k, v in kwargs.items() if v is not None})
+    args = json.dumps({k: v for k, v in kwargs.items() if v is not None})
+    payload.update(json.loads(args))
 
-    resp = request('put', url, headers, payload)
+    resp = api_client.put(resource='pipelines', payload=json.dumps(payload), custom_uri='/states')
     states = resp['states']
 
     click.secho("=== " + name + ' status', fg='blue')
 
-    click.echo(states)
+    click.echo(json_to_table(states))
