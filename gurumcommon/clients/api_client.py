@@ -26,6 +26,13 @@ class ApiClient():
 
         return json.loads(resp['body'])
 
+    def list(self, resource):
+        uri = '{0}{1}'.format(self._api_uri, resource)
+
+        resp = connection_handler.request('get', uri, self._headers)
+
+        return json.loads(resp['body'])
+
     def create(self, resource, payload):
         uri = '{0}{1}'.format(self._api_uri, resource)
 
