@@ -46,6 +46,7 @@ setup(
         'colorama',
         'gitpython',
         'haikunator',
+        'keyring',
         'prettytable',
         'termcolor',
         'yamale',

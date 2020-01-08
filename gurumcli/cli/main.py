@@ -9,20 +9,18 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Entry point for the CLI
-"""
 
 import sys
 import logging
 import click
 
+from gurumcommon.logger import configure_logger
 from gurumcli import __version__
-from .options import debug_option, config_option, region_option, profile_option
+from .options import debug_option, config_option, profile_option
 from .context import Context
 from .command import BaseCommand
 
-logger = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 
@@ -37,14 +35,6 @@ def common_options(f):
     """
     f = debug_option(f)
     f = config_option(f)
-    return f
-
-
-def aws_creds_options(f):
-    """
-    Common CLI options necessary to interact with AWS services
-    """
-    f = region_option(f)
     f = profile_option(f)
     return f
 
@@ -53,7 +43,7 @@ def aws_creds_options(f):
 @common_options
 @click.version_option(version=__version__, prog_name="GURUM CLI")
 @pass_context
-def cli(ctx):
+def cli(_ctx):
     """
     AWS Gurum Platform (GURUM) CLI
 

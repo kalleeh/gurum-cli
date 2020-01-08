@@ -9,16 +9,11 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Command group for "users" suite for commands. It provides common CLI arguments, template parsing capabilities,
-setting up stdin/stdout etc
-"""
-
 import click
 
-from .change_password.cli import cli as change_password_cli
-from .confirm_signup.cli import cli as confirm_signup_cli
-from .forgot_password.cli import cli as forgot_password_cli
+from .change_password import cli as change_password_cli
+from .confirm_signup import cli as confirm_signup_cli
+from .forgot_password import cli as forgot_password_cli
 
 
 @click.group()

@@ -9,11 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-This file contains common CLI options common to all commands. As we add more commands, this will
-become a repository of options that other commands could use when needed.
-"""
-
 import click
 
 from .context import Context
@@ -25,7 +20,7 @@ def debug_option(f):
 
     :param f: Callback Function to be passed to Click
     """
-    def callback(ctx, param, value):
+    def callback(ctx, _param, value):
         state = ctx.ensure_object(Context)
         state.debug = value
         return value
@@ -44,7 +39,7 @@ def config_option(f):
 
     :param f: Callback Function to be passed to Click
     """
-    def callback(ctx, param, value):
+    def callback(ctx, _param, value):
         state = ctx.ensure_object(Context)
         state.config = value
         return value
@@ -56,35 +51,18 @@ def config_option(f):
                         callback=callback)(f)
 
 
-def region_option(f):
-    """
-    Configures --region option for CLI
-
-    :param f: Callback Function to be passed to Click
-    """
-    def callback(ctx, param, value):
-        state = ctx.ensure_object(Context)
-        state.region = value
-        return value
-
-    return click.option('--region',
-                        expose_value=False,
-                        help='Set the AWS Region of the service (e.g. us-east-1).',
-                        callback=callback)(f)
-
-
 def profile_option(f):
     """
     Configures --profile option for CLI
 
     :param f: Callback Function to be passed to Click
     """
-    def callback(ctx, param, value):
+    def callback(ctx, _param, value):
         state = ctx.ensure_object(Context)
         state.profile = value
         return value
 
     return click.option('--profile',
                         expose_value=False,
-                        help='Select a specific profile from your credential file to get AWS credentials.',
+                        help='Select a specific profile.',
                         callback=callback)(f)

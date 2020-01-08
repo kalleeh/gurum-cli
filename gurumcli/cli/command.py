@@ -9,15 +9,11 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Base classes that implement the CLI framework
-"""
-
-import logging
 import importlib
 import click
+from gurumcommon.logger import configure_logger
 
-logger = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 # Commands that are bundled with the CLI by default
 _GURUM_CLI_COMMAND_PACKAGES = {
@@ -106,7 +102,7 @@ class BaseCommand(click.MultiCommand):
         :return: Click object representing the command
         """
         if cmd_name not in self._commands:
-            logger.error("Command %s not available", cmd_name)
+            LOGGER.error("Command %s not available", cmd_name)
             return
 
         pkg_name = self._commands[cmd_name]
@@ -114,11 +110,11 @@ class BaseCommand(click.MultiCommand):
         try:
             mod = importlib.import_module(pkg_name)
         except ImportError:
-            logger.exception("Command '%s' is not configured correctly. Unable to import '%s'", cmd_name, pkg_name)
+            LOGGER.exception("Command '%s' is not configured correctly. Unable to import '%s'", cmd_name, pkg_name)
             return
 
         if not hasattr(mod, "cli"):
-            logger.error("Command %s is not configured correctly. It must expose an function called 'cli'", cmd_name)
+            LOGGER.error("Command %s is not configured correctly. It must expose an function called 'cli'", cmd_name)
             return
 
         return mod.cli

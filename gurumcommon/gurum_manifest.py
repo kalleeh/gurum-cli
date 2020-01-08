@@ -5,14 +5,12 @@
 Module used for working with the Service Manifest file.
 """
 
-import os
-
-from .exceptions import InvalidGurumManifestError
-
 import yaml
 import yamale
 
-from .logger import configure_logger
+from gurumcommon.exceptions import InvalidGurumManifestError
+from gurumcommon.logger import configure_logger
+
 LOGGER = configure_logger(__name__)
 
 GURUM_SCHEMA_FILE = "gurum_manifest_schema.yaml"
@@ -75,9 +73,11 @@ class GurumManifest:
 
     def project(self):
         return self.manifest_contents['project']
-        
+
     def environments(self):
         return self.manifest_contents['environments']
 
     def services(self):
-        return self.manifest_contents['services']
+        if 'services' in self.manifest_contents:
+            return self.manifest_contents['services']
+        return {}

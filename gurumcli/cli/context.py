@@ -9,18 +9,19 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-"""
-Context information passed to each CLI command
-"""
-
-import logging
-import boto3
 import os
 import configparser
+import logging
 import click
+from gurumcommon.logger import configure_logger
 
+LOGGER = configure_logger(__name__)
 
-class Context(object):
+DEFAULT_CONFIG_CONTENTS = ' \
+    [default] \
+    user = '
+
+class Context():
     """
     Top level context object for the CLI. Exposes common functionality required by a CLI, including logging,
     environment config parsing, debug logging etc.
@@ -39,13 +40,12 @@ class Context(object):
         """
         self._debug = False
         self._app_name = 'gurum'
-        self._aws_region = None
-        self._aws_profile = None
-        self._config = None
-        self._cfg_name = None
-        self._cfg_path = None
-        self._id_token = None
         self._api_uri = None
+        self._id_token = None
+        self._cfg_path = None
+        self.cfg_name = None
+        self.profile = None
+        self.config = None
 
     @property
     def debug(self):
@@ -62,45 +62,26 @@ class Context(object):
 
         if self._debug:
             # Turn on debug logging
-            logging.getLogger().setLevel(logging.DEBUG)
-
-    @property
-    def region(self):
-        return self._aws_region
-
-    @region.setter
-    def region(self, value):
-        """
-        Set AWS region
-        """
-        self._aws_region = value
-        self._refresh_session()
+            LOGGER.setLevel(logging.DEBUG)
 
     @property
     def profile(self):
-        return self._aws_profile
+        return self._profile
 
     @profile.setter
     def profile(self, value):
         """
-        Set AWS profile for credential resolution
+        Set profile for credential resolution
         """
-        self._aws_profile = value
-        self._refresh_session()
+        self._profile = value
 
-    def _refresh_session(self):
-        """
-        Update boto3's default session by creating a new session based on values set in the context. Some properties of
-        the Boto3's session object are read-only. Therefore when Click parses new AWS session related properties (like
-        region & profile), it will call this method to create a new session with latest values for these properties.
-        """
-        boto3.setup_default_session(region_name=self._aws_region,
-                                    profile_name=self._aws_profile)
+        if not self._profile:
+            self._profile = 'default'
 
     @property
     def config(self):
         return self._config
-    
+
     @config.setter
     def config(self, value):
         """
@@ -117,13 +98,14 @@ class Context(object):
 
         if not os.path.exists(self._cfg_path):
             os.makedirs(self._cfg_path)
-        self._cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
-        if not os.path.exists(self._cfg_name):
-            with open(self._cfg_name, 'a') as f:
-                f.write(' \
-                    [default] \
-                    user = \
-                ')
-        
+        self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
+        if not os.path.exists(self.cfg_name):
+            with open(self.cfg_name, 'a') as f:
+                f.write(DEFAULT_CONFIG_CONTENTS)
+
         self._config = configparser.ConfigParser()
-        self._config.read(self._cfg_name)
+        try:
+            self._config.read(self.cfg_name)
+        except configparser.NoSectionError as e:
+            LOGGER.error('No profiles found. %s', e)
+            raise

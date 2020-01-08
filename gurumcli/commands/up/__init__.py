@@ -9,20 +9,22 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import logging
-import click
 import os
-import sys
+import logging
+
+import click
+
+from gurumcli.cli.main import pass_context, common_options
 import gurumcommon.gurum_manifest as gurum_manifest
+from gurumcommon.github_api import validate_pat, split_user_repo
+from gurumcommon.keyring_api import get_github_secret, set_github_secret
+from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
+from gurumcommon.clients.api_client import ApiClient
+from gurumcommon.logger import configure_logger
 
 from .up_orchestrator import UpOrchestrator
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
-from shutil import copyfile
-from gurumcli.cli.main import pass_context, common_options
-from gurumcli.lib.utils.github_api import validate_pat, split_user_repo
-from gurumcli.lib.utils.keyring_api import get_github_secret, set_github_secret
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger(__name__)
 
 GURUM_SKELETON_FILE = "gurum_manifest_skeleton.yaml"
 
@@ -46,6 +48,11 @@ def cli(ctx):
 
 
 def do_cli(ctx):
+    api_client = ApiClient(
+        api_uri=ctx.config.get(ctx.profile, 'api_uri'),
+        id_token=ctx.config.get(ctx.profile, 'id_token')
+    )
+
     # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
     try:
         manifest = read_manifest()
@@ -53,26 +60,26 @@ def do_cli(ctx):
         LOGGER.debug(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
-        provision_pipeline_resources(ctx.config, manifest)
+        provision_pipeline_resources(api_client, ctx.config, manifest)
 
-def provision_pipeline_resources(config, manifest):
-    orchestrator = UpOrchestrator(config, manifest.project())
+def provision_pipeline_resources(api_client, config, manifest):
+    orchestrator = UpOrchestrator(api_client, config, manifest.project())
     repository = manifest.project()['source']['repo']
 
     environment_names = []
     for environment in manifest.environments():
-        environment_names.append(orchestrator.provision_environment(environment))
+        orchestrator.provision_environment(environment)
+        environment_names.append(environment['name'])
 
     for service in manifest.services():
         orchestrator.provision_service(service)
 
-    if get_provider(manifest) == 'github':
+    if get_provider(manifest).startswith('github'):
         github_token = get_github_requirements(repository)
         orchestrator.provision_pipeline(environment_names, github_token)
 
 #TODO: Make this a helper.
 def read_manifest():
-    click.echo("Reading gurum.yaml")
     base_dir = os.path.abspath(__file__ + "../../../../../gurumcommon")
     gurum_schema_file = os.path.join(base_dir, gurum_manifest.GURUM_SCHEMA_FILE)
     gurum_init_file = os.path.join(os.getcwd(), gurum_manifest.GURUM_FILE)
@@ -94,10 +101,10 @@ def get_github_requirements(repository):
 
             return github_token
         except InvalidPersonalAccessTokenError as ex:
-            click.echo("Error: {}".format(ex.hint()))
+            click.echo("Error: {}".format(ex.message))
             LOGGER.debug('GitHub Token invalid or not found in keyring. Prompting user...')
             github_token = click.prompt('Please enter your GitHub Personal Access Token', hide_input=True)
         except RepositoryNotFoundError as ex:
-            click.echo("Error: {}".format(ex.hint()))
-    
+            click.echo("Error: {}".format(ex.message))
+
     return False

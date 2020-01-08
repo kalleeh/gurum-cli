@@ -8,25 +8,15 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-
 import json
-
-from .exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, AlreadyExistsError, BadRequestError, UnexpectedRedirectError
 import requests
+
+from gurumcommon.exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, AlreadyExistsError, BadRequestError, UnexpectedRedirectError
 
 
 def request(method, url, headers, *payload):
     try:
-        if method == 'get':
-            response = requests.get(url, headers=headers)
-        elif method == 'post':
-            response = requests.post(url, json=payload, headers=headers)
-        elif method == 'put':
-            response = requests.put(url, json=payload, headers=headers)
-        elif method == 'delete':
-            response = requests.delete(url, headers=headers)
-        elif method == 'patch':
-            response = requests.patch(url, json=payload, headers=headers)
+        response = requests.request(method, url, json=payload, headers=headers)
 
         response.raise_for_status()
     except requests.exceptions.HTTPError:
