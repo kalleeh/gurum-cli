@@ -131,7 +131,7 @@ gurum --help
 * login
 * signout
 * up
-* down
+* destroy
 * apps
   * describe
   * logs
