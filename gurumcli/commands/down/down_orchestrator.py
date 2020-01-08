@@ -9,8 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import json
-
 from gurumcommon.exceptions import UnknownError
 from gurumcommon.logger import configure_logger
 
