@@ -10,12 +10,14 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import json
 
 import gurumcommon.connection_handler as connection_handler
+from gurumcommon.clients.pipeline_actions import PipelineActions
 
 
 class ApiClient():
     def __init__(self, api_uri, id_token):
         self._api_uri = api_uri
         self._headers = {'Authorization': id_token}
+        self.pipelines = PipelineActions(self._api_uri, self._headers)
 
     def list(self, resource):
         uri = '{0}{1}'.format(self._api_uri, resource)
