@@ -22,7 +22,7 @@ from .command import BaseCommand
 
 LOGGER = configure_logger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
+logging.getLogger('keyring').setLevel(logging.WARNING)
 
 pass_context = click.make_pass_decorator(Context)
 

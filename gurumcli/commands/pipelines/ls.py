@@ -25,7 +25,7 @@ def cli(ctx):
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
-    resp = api_client.list('pipelines')
+    resp = api_client.pipelines.list()
     pipelines = resp['pipelines']
 
     click.echo("=== Pipelines:")

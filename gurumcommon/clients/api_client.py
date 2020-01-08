@@ -7,67 +7,17 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import json
-
-import gurumcommon.connection_handler as connection_handler
+from gurumcommon.clients.app_actions import AppActions
+from gurumcommon.clients.event_actions import EventActions
 from gurumcommon.clients.pipeline_actions import PipelineActions
+from gurumcommon.clients.service_actions import ServiceActions
 
 
 class ApiClient():
     def __init__(self, api_uri, id_token):
         self._api_uri = api_uri
         self._headers = {'Authorization': id_token}
+        self.apps = AppActions(self._api_uri, self._headers)
+        self.events = EventActions(self._api_uri, self._headers)
         self.pipelines = PipelineActions(self._api_uri, self._headers)
-
-    def list(self, resource):
-        uri = '{0}{1}'.format(self._api_uri, resource)
-
-        resp = connection_handler.request('get', uri, self._headers)
-
-        return json.loads(resp['body'])
-
-    def list(self, resource):
-        uri = '{0}{1}'.format(self._api_uri, resource)
-
-        resp = connection_handler.request('get', uri, self._headers)
-
-        return json.loads(resp['body'])
-
-    def create(self, resource, payload):
-        uri = '{0}{1}'.format(self._api_uri, resource)
-
-        resp = connection_handler.request('post', uri, self._headers, payload)
-
-        return json.loads(resp['body'])[resource]
-
-    def describe(self, resource, payload, custom_uri=''):
-        data = json.loads(payload)
-        uri = '{0}{1}/{2}{3}'.format(self._api_uri, resource, data['name'], custom_uri)
-
-        resp = connection_handler.request('get', uri, self._headers)
-
-        return json.loads(resp['body'])
-
-    def put(self, resource, payload, custom_uri=''):
-        data = json.loads(payload)
-        uri = '{0}{1}/{2}{3}'.format(self._api_uri, resource, data['name'], custom_uri)
-
-        resp = connection_handler.request('put', uri, self._headers, payload)
-
-        return json.loads(resp['body'])
-
-    def update(self, resource, payload):
-        data = json.loads(payload)
-        uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
-
-        resp = connection_handler.request('patch', uri, self._headers, payload)
-
-        return json.loads(resp['body'])
-
-    def delete(self, resource, payload):
-        data = json.loads(payload)
-        uri = '{0}{1}/{2}'.format(self._api_uri, resource, data['name'])
-
-        connection_handler.request('delete', uri, self._headers)
-
-        return {}
+        self.services = ServiceActions(self._api_uri, self._headers)

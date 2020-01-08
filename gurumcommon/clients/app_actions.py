@@ -16,48 +16,32 @@ import gurumcommon.connection_handler as connection_handler
 
 LOGGER = configure_logger(__name__)
 
-class PipelineActions():
+class AppActions():
     def __init__(self, api_uri, headers):
         self._api_uri = api_uri
         self._headers = headers
 
     def list(self):
-        uri = '{0}/pipelines/'.format(self._api_uri)
+        uri = '{0}/apps/'.format(self._api_uri)
         resp = connection_handler.request('get', uri, self._headers)
         return json.loads(resp['body'])
 
     def create(self, payload):
-        uri = '{0}/pipelines/'.format(self._api_uri)
+        uri = '{0}/apps/'.format(self._api_uri)
         resp = connection_handler.request('post', uri, self._headers, payload)
-        return json.loads(resp['body'])['pipelines']
+        return json.loads(resp['body'])['apps']
 
     def describe(self, name):
-        uri = '{0}/pipelines/{1}'.format(self._api_uri, name)
+        uri = '{0}/apps/{1}'.format(self._api_uri, name)
         resp = connection_handler.request('get', uri, self._headers)
         return json.loads(resp['body'])
 
     def update(self, name, payload):
-        uri = '{0}/pipelines/{1}'.format(self._api_uri, name)
+        uri = '{0}/apps/{1}'.format(self._api_uri, name)
         resp = connection_handler.request('patch', uri, self._headers, payload)
         return json.loads(resp['body'])
 
     def delete(self, name):
-        uri = '{0}/pipelines/{1}'.format(self._api_uri, name)
+        uri = '{0}/apps/{1}'.format(self._api_uri, name)
         connection_handler.request('delete', uri, self._headers)
         return {}
-
-    def get_states(self, name):
-        uri = '{0}/pipelines/{1}/states'.format(self._api_uri, name)
-        resp = connection_handler.request('get', uri, self._headers)
-        return json.loads(resp['body'])
-
-    def put_approval(self, name, approval_response, approval_message):
-        uri = '{0}/pipelines/{1}/states'.format(self._api_uri, name)
-
-        payload = {
-            'status': approval_response,
-            'summary': approval_message
-        }
-
-        resp = connection_handler.request('put', uri, self._headers, json.dumps(payload))
-        return json.loads(resp['body'])
