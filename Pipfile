@@ -22,9 +22,11 @@ keyring = "*"
 gurum-cli = {editable = true,path = "."}
 
 [dev-packages]
+pytest = "*"
 pylint = "*"
 pep8 = "*"
 tox = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.7"

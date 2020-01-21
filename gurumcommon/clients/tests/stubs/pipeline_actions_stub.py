@@ -1,12 +1,14 @@
 # Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
 
+import json
+
 """
 Stubs for testing transform_utils.py
 """
 
-pipeline_states_response = {
-    "body": {
+valid_connection_handler_raw_response = {
+    "body": json.dumps({
         "states": [
             {
                 "stage_name": "Source",
@@ -57,10 +59,10 @@ pipeline_states_response = {
                 "error_details": "N/A"
             }
         ]
-    }, "statusCode": 200
+    }), "statusCode": 200
 }
 
-get_states_response = {
+valid_pipeline_actions_get_states_response = {
     "states": [
         {
             "stage_name": "Source",
