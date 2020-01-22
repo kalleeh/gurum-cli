@@ -9,7 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import json
 import click
 
 from gurumcli.cli.main import pass_context
@@ -18,25 +17,18 @@ from gurumcommon.clients.api_client import ApiClient
 
 @click.command('put-approval', short_help='Displays status about your pipeline')
 @click.argument('name')
-@click.option('--summary', prompt=True, help="Approve update message.")
 @click.option('--status', prompt=True, type=click.Choice(['Approved', 'Rejected']), help="String giving the Approved or Rejected status")
+@click.option('--summary', prompt=True, help="Approve update message.")
 @pass_context
-def cli(ctx, name, **kwargs):
+def cli(ctx, name, status, summary):
     """Approve or reject an application deployment."""
-    payload = {}
-    payload['name'] = name
-    states = []
-
     api_client = ApiClient(
         api_uri=ctx.config.get(ctx.profile, 'api_uri'),
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
+    states = []
 
-    # Dynamically get options and remove undefined options
-    args = json.dumps({k: v for k, v in kwargs.items() if v is not None})
-    payload.update(json.loads(args))
-
-    resp = api_client.put(resource='pipelines', payload=json.dumps(payload), custom_uri='/states')
+    resp = api_client.pipelines.put_approval(name, status, summary)
     states = resp['states']
 
     click.secho("=== " + name + ' status', fg='blue')

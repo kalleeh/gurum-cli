@@ -42,7 +42,7 @@ def do_cli(ctx):
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
-    resp = api_client.list('apps')
+    resp = api_client.apps.list()
     apps = resp['apps']
 
     click.echo("=== Apps:")

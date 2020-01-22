@@ -22,7 +22,7 @@ from gurumcommon.exceptions import InvalidGurumManifestError
 from gurumcommon.clients.api_client import ApiClient
 from gurumcommon.logger import configure_logger
 
-from .destroy_orchestrator import DestroyOrchestrator
+from .down_orchestrator import DownOrchestrator
 
 LOGGER = configure_logger(__name__)
 
@@ -41,7 +41,7 @@ def cli(ctx):
         \b
         Deploy application.
         \b
-        $ gurum destroy
+        $ gurum down
     """
     # All logic must be implemented in the `do_cli` method. This helps ease unit tests
     do_cli(ctx)  # pragma: no cover
@@ -60,19 +60,19 @@ def do_cli(ctx):
         LOGGER.debug(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
-        destroy_pipeline_resources(api_client, ctx.config, manifest)
+        down_pipeline_resources(api_client, ctx.config, manifest)
 
-def destroy_pipeline_resources(api_client, config, manifest):
-    orchestrator = DestroyOrchestrator(api_client, config, manifest.project())
+def down_pipeline_resources(api_client, config, manifest):
+    orchestrator = DownOrchestrator(api_client, config, manifest.project())
 
     environment_names = []
     for environment in manifest.environments():
-        environment_names.append(orchestrator.destroy_environment(environment))
+        environment_names.append(orchestrator.down_environment(environment))
 
     for service in manifest.services():
-        orchestrator.destroy_service(service)
+        orchestrator.down_service(service)
 
-    orchestrator.destroy_pipeline()
+    orchestrator.down_pipeline()
 
 #TODO: Make this a helper.
 def read_manifest():

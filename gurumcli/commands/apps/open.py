@@ -9,7 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import json
 import webbrowser
 import click
 
@@ -48,7 +47,7 @@ def do_cli(ctx, name):
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
-    resp = api_client.describe(resource='apps', payload=json.dumps(payload))
+    resp = api_client.apps.describe(name)
     apps = resp['apps'][0]
 
     click.secho("=== " + apps['name'], fg='blue')

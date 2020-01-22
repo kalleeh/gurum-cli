@@ -9,49 +9,42 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import json
-
 from gurumcommon.exceptions import UnknownError
 from gurumcommon.logger import configure_logger
 
 LOGGER = configure_logger(__name__)
 
-class DestroyOrchestrator:
+class DownOrchestrator:
 
     def __init__(self, api_client, config, project):
         self.cfg = config
         self.project = project
         self.api_client = api_client
 
-    def destroy_environment(self, environment):
+    def down_environment(self, environment):
         LOGGER.info('Destroying Environment: %s', environment['name'])
-        payload = {}
 
-        payload['name'] = '{0}-{1}'.format(self.project['name'], environment['name'])
+        name = '{0}-{1}'.format(self.project['name'], environment['name'])
 
         try:
-            self.api_client.delete(resource='apps', payload=json.dumps(payload))
+            self.api_client.apps.delete(name)
         except Exception:
             raise UnknownError
 
-    def destroy_pipeline(self):
+    def down_pipeline(self):
         LOGGER.info('Destroying %s Pipeline.', format(self.project['source']['provider']))
-        payload = {}
-
-        payload['name'] = self.project['name']
 
         try:
-            self.api_client.delete(resource='pipelines', payload=json.dumps(payload))
+            self.api_client.pipelines.delete(self.project['name'])
         except Exception:
             raise UnknownError
 
-    def destroy_service(self, service):
+    def down_service(self, service):
         LOGGER.info('Destroying Service: %s', service['name'])
-        payload = {}
 
-        payload['name'] = '{0}-{1}'.format(self.project['name'], service['name'])
+        name = '{0}-{1}'.format(self.project['name'], service['name'])
 
         try:
-            self.api_client.delete(resource='services', payload=json.dumps(payload))
+            self.api_client.services.delete(name)
         except Exception:
             raise UnknownError

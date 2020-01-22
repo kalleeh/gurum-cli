@@ -10,7 +10,6 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import time
-import json
 import click
 import click_spinner
 
@@ -55,10 +54,10 @@ def do_cli(ctx, name, watch):
     with click_spinner.spinner():
         while True:
 
-            resp = api_client.describe(resource='apps', payload=json.dumps(payload))
+            resp = api_client.apps.describe(name)
             apps = resp['apps'][0]
 
-            resp = api_client.describe(resource='events', payload=json.dumps(payload))
+            resp = api_client.events.list(name)
             events = resp['events']
 
             if watch:

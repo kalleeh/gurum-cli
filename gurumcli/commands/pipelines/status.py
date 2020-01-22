@@ -10,7 +10,6 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import time
-import json
 
 import click
 import click_spinner
@@ -37,7 +36,7 @@ def cli(ctx, name, watch):
     # Start a loop that checks for stack creation status
     with click_spinner.spinner():
         while True:
-            resp = api_client.describe(resource='pipelines', payload=json.dumps(payload), custom_uri='/states')
+            resp = api_client.pipelines.get_states(name)
             states = resp['states']
 
             if watch:

@@ -9,7 +9,6 @@ or other written agreement between Customer and either
 Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
-import json
 import click
 
 from gurumcli.cli.main import pass_context
@@ -31,10 +30,10 @@ def cli(ctx, name):
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
-    resp = api_client.describe(resource='services', payload=json.dumps(payload))
+    resp = api_client.services.describe(name)
     services = resp['services'][0]
 
-    resp = api_client.describe(resource='events', payload=json.dumps(payload))
+    resp = api_client.events.list(name)
     events = resp['events']
 
     prettyprint(services)

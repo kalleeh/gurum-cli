@@ -35,12 +35,12 @@ class UpOrchestrator:
         payload['env_vars'] = environment['env_vars']
 
         try:
-            self.api_client.create(resource='apps', payload=json.dumps(payload))
+            self.api_client.apps.create(payload=json.dumps(payload))
         except AlreadyExistsError:
             LOGGER.info('%s already exists. Updating...', environment['name'])
             payload['upgrade_version'] = 'False'
             try:
-                self.api_client.update(resource='apps', payload=json.dumps(payload))
+                self.api_client.apps.update(name=payload['name'], payload=json.dumps(payload))
             except UnknownParameterError as ex:
                 LOGGER.warning(ex)
 
@@ -64,12 +64,12 @@ class UpOrchestrator:
         payload['source']['GitHubRepo'] = source_details['repo']
 
         try:
-            self.api_client.create(resource='pipelines', payload=json.dumps(payload))
+            self.api_client.pipelines.create(payload=json.dumps(payload))
         except AlreadyExistsError:
             LOGGER.info('Pipeline already exists. Updating...')
             payload['upgrade_version'] = 'False'
             try:
-                self.api_client.update(resource='pipelines', payload=json.dumps(payload))
+                self.api_client.pipelines.update(name=self.project['name'], payload=json.dumps(payload))
             except UnknownParameterError as ex:
                 LOGGER.warning(ex)
 
@@ -83,12 +83,12 @@ class UpOrchestrator:
             payload['config'] = service['config']
 
         try:
-            self.api_client.create(resource='services', payload=json.dumps(payload))
+            self.api_client.services.create(payload=json.dumps(payload))
         except AlreadyExistsError:
             LOGGER.info('%s already exists. Updating...', service['name'])
             payload['upgrade_version'] = 'False'
             try:
-                self.api_client.update(resource='services', payload=json.dumps(payload))
+                self.api_client.services.update(name=payload['name'], payload=json.dumps(payload))
             except UnknownParameterError as ex:
                 LOGGER.warning(ex)
 
