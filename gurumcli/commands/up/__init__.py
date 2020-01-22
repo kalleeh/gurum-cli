@@ -18,7 +18,7 @@ from gurumcli.cli.main import pass_context, common_options
 import gurumcommon.gurum_manifest as gurum_manifest
 from gurumcommon.github_api import validate_pat, split_user_repo
 from gurumcommon.keyring_api import get_github_secret, set_github_secret
-from gurumcommon.exceptions import InvalidGurumManifestError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
+from gurumcommon.exceptions import InvalidGurumManifestError, GurumManifestNotFoundError, InvalidPersonalAccessTokenError, RepositoryNotFoundError
 from gurumcommon.clients.api_client import ApiClient
 from gurumcommon.logger import configure_logger
 
@@ -57,7 +57,10 @@ def do_cli(ctx):
     try:
         manifest = read_manifest()
     except InvalidGurumManifestError as e:
-        LOGGER.debug(e)
+        LOGGER.error(e)
+        click.echo("Invalid configuration file.")
+    except GurumManifestNotFoundError as e:
+        LOGGER.error(e)
         click.echo("Missing or invalid configuration file. Please run 'gurum init'.")
     else:
         provision_pipeline_resources(api_client, ctx.config, manifest)

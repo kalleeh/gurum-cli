@@ -17,6 +17,10 @@ class InvalidGurumManifestError(BaseGurumException):
     code = 400
     message = "Invalid Service Manifest."
 
+class GurumManifestNotFoundError(BaseGurumException):
+    code = 400
+    message = "Service Manifest file not found."
+
 
 class UnknownError(BaseGurumException):
     code = 0

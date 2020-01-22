@@ -8,7 +8,7 @@ Module used for working with the Service Manifest file.
 import yaml
 import yamale
 
-from gurumcommon.exceptions import InvalidGurumManifestError
+from gurumcommon.exceptions import InvalidGurumManifestError, GurumManifestNotFoundError
 from gurumcommon.logger import configure_logger
 
 LOGGER = configure_logger(__name__)
@@ -50,15 +50,15 @@ class GurumManifest:
             yamale.validate(schema, data)
         except ValueError:
             raise InvalidGurumManifestError(
-                "Deployment Map specification is invalid (ValueError)"
+                "Gurum Manifest is invalid (ValueError)"
             )
         except KeyError:
             raise InvalidGurumManifestError(
-                "Deployment Map specification is invalid (KeyError)"
+                "Gurum Manifest is invalid (KeyError)"
             )
         except FileNotFoundError:
-            raise InvalidGurumManifestError(
-                "No Service Map files found, create a gurum.yaml file."
+            raise GurumManifestNotFoundError(
+                "No Gurum Manifest found, create a gurum.yaml file."
             )
 
     def _contents(self):
@@ -67,7 +67,9 @@ class GurumManifest:
         try:
             manifest_contents = self._read(GURUM_FILE)
         except Exception as ex:
-            print(ex) #TODO raise UnableToReadManifestException()
+            raise InvalidGurumManifestError(
+                "Unable to read manifest file: {}".format(ex)
+            )
 
         return manifest_contents
 
