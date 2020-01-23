@@ -18,30 +18,42 @@ class TestGurumManifest(TestCase):
         self.manifest = GurumManifest()
 
     @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.valid_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
     @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
     def test_it_loads(self):
-        mock_open = mock.mock_open(read_data="dummydata")
-
-        with mock.patch('builtins.open', mock_open):
-            loaded = self.manifest.load()
+        loaded = self.manifest.load()
 
     @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.valid_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
     @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
     def test_load_project(self):
-        mock_open = mock.mock_open(read_data="dummydata")
+        loaded = self.manifest.load()
+        self.assertEqual(loaded.project(), gurum_manifest_stub.valid_project)
 
-        with mock.patch('builtins.open', mock_open):
-            loaded = self.manifest.load()
-            self.assertEqual(loaded.project(), gurum_manifest_stub.valid_project)
+    @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.invalid_missing_project_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
+    @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
+    def test_it_throws_when_missing_the_project(self):
+        loaded = self.manifest.load()
+
+        with self.assertRaises(KeyError):
+            loaded.project()
 
     @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.valid_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
     @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
     def test_load_environments(self):
-        mock_open = mock.mock_open(read_data="dummydata")
+        loaded = self.manifest.load()
+        self.assertEqual(loaded.environments(), gurum_manifest_stub.valid_environments)
 
-        with mock.patch('builtins.open', mock_open):
-            loaded = self.manifest.load()
-            self.assertEqual(loaded.environments(), gurum_manifest_stub.valid_environments)
+    @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.invalid_missing_environments_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
+    @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
+    def test_it_throws_when_missing_environments(self):
+        loaded = self.manifest.load()
+
+        with self.assertRaises(KeyError):
+            loaded.environments()
 
     @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.valid_manifest))
     @mock.patch('builtins.open', mock.MagicMock())

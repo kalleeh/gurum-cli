@@ -56,15 +56,7 @@ valid_manifest = {
     ]
 }
 
-valid_missing_services_manifest = {
-    'project': {
-        'name': 'game',
-        'source': {
-            'provider': 'github/cfn',
-            'repo': 'kalleeh/2048'
-        },
-        'type': 'ecs-fargate'
-    },
+invalid_missing_project_manifest = {
     'environments': [
         {
             'name': 'dev',
@@ -84,6 +76,60 @@ valid_missing_services_manifest = {
             },
             'env_vars': {
                 'environment': 'prod'
+            }
+        }
+    ],
+    'services': [
+        {
+            'name': 'block_storage',
+            'type': 's3',
+            'config': {
+                'BucketName': 'my-block-storage-bucket',
+                'LoggingPrefix': 'log-prefix'
+            }
+        }
+    ]
+}
+
+invalid_missing_environments_manifest = {
+    'project': {
+        'name': 'game',
+        'source': {
+            'provider': 'github/cfn',
+            'repo': 'kalleeh/2048'
+        },
+        'type': 'ecs-fargate'
+    },
+    'services': [
+        {
+            'name': 'block_storage',
+            'type': 's3',
+            'config': {
+                'BucketName': 'my-block-storage-bucket',
+                'LoggingPrefix': 'log-prefix'
+            }
+        }
+    ]
+}
+
+valid_missing_services_manifest = {
+    'project': {
+        'name': 'game',
+        'source': {
+            'provider': 'github/cfn',
+            'repo': 'kalleeh/2048'
+        },
+        'type': 'ecs-fargate'
+    },
+    'environments': [
+        {
+            'name': 'dev',
+            'config': {
+                'HealthCheckPath': '/',
+                'DesiredCount': '2'
+            },
+            'env_vars': {
+                'environment': 'dev'
             }
         }
     ]
