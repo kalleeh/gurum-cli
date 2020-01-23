@@ -10,9 +10,10 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import os
-import configparser
 import logging
 import click
+
+from gurumcli.libs.config_manager import ConfigManager, ConfigValidationException
 from gurumcommon.logger import configure_logger
 
 LOGGER = configure_logger(__name__)
@@ -100,12 +101,14 @@ class Context():
             os.makedirs(self._cfg_path)
         self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
         if not os.path.exists(self.cfg_name):
+            click.echo('No config file present. Run gurum login to configure.')
+            # TODO: Move file initializaiton to Login command
             with open(self.cfg_name, 'a') as f:
                 f.write(DEFAULT_CONFIG_CONTENTS)
+            raise SystemExit(0)
 
-        self._config = configparser.ConfigParser()
         try:
-            self._config.read(self.cfg_name)
-        except configparser.NoSectionError as e:
-            LOGGER.error('No profiles found. %s', e)
-            raise
+            self._config = ConfigManager(self.cfg_name)
+        except ConfigValidationException as ex:
+            click.echo('Invalid configuration in {}: {}'.format(self._cfg_path, ex))
+            raise SystemExit(0)

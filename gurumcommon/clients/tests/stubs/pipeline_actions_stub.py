@@ -1,11 +1,11 @@
 # Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
 
-import json
-
 """
 Stubs for testing transform_utils.py
 """
+
+import json
 
 valid_connection_handler_raw_response = {
     "body": json.dumps({

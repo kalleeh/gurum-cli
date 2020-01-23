@@ -5,38 +5,38 @@
 Module used for working with the Service Manifest file.
 """
 
+import os
 import yaml
 import yamale
 
-from gurumcommon.exceptions import InvalidGurumManifestError
+from gurumcommon.exceptions import InvalidGurumManifestError, GurumManifestNotFoundError
 from gurumcommon.logger import configure_logger
 
 LOGGER = configure_logger(__name__)
 
-GURUM_SCHEMA_FILE = "gurum_manifest_schema.yaml"
 GURUM_FILE = "gurum.yaml"
+GURUM_SCHEMA_FILE = "gurum_manifest_schema.yaml"
 
 class GurumManifest:
     def __init__(
-            self,
-            manifest_schema_path,
-            manifest_path=None
+            self
     ):
-        self.manifest_path = manifest_path or GURUM_FILE
-        self.manifest_dir_path = manifest_path or 'gurum_manifest'
-        self.manifest_schema_path = manifest_schema_path or GURUM_SCHEMA_FILE
+        base_dir = os.path.abspath(__file__ + "../../../gurumcommon")
+        self.manifest_path = os.path.join(os.getcwd(), GURUM_FILE)
+        self.manifest_schema_path = os.path.join(base_dir, GURUM_SCHEMA_FILE)
+
+    def load(self):
         self.manifest_contents = self._contents()
         self._validate()
+        return self
 
-    def _read(self, file_path=None):
-        if file_path is None:
-            file_path = self.manifest_path
+    def _read(self):
         try:
-            LOGGER.info('Loading service_manifest file %s', file_path)
-            with open(file_path, 'r') as stream:
-                return yaml.load(stream, Loader=yaml.FullLoader)
+            LOGGER.info('Loading service_manifest file %s', self.manifest_path)
+            with open(self.manifest_path, 'r') as stream:
+                return yaml.safe_load(stream)
         except FileNotFoundError:
-            LOGGER.info('No manifest file found at %s, continuing', file_path)
+            LOGGER.info('No manifest file found at %s, continuing', self.manifest_path)
             return {}
 
     def _validate(self):
@@ -50,24 +50,26 @@ class GurumManifest:
             yamale.validate(schema, data)
         except ValueError:
             raise InvalidGurumManifestError(
-                "Deployment Map specification is invalid (ValueError)"
+                "Gurum Manifest is invalid (ValueError)"
             )
         except KeyError:
             raise InvalidGurumManifestError(
-                "Deployment Map specification is invalid (KeyError)"
+                "Gurum Manifest is invalid (KeyError)"
             )
         except FileNotFoundError:
-            raise InvalidGurumManifestError(
-                "No Service Map files found, create a gurum.yaml file."
+            raise GurumManifestNotFoundError(
+                "No Gurum Manifest found, create a gurum.yaml file."
             )
 
     def _contents(self):
         manifest_contents = {}
 
         try:
-            manifest_contents = self._read(GURUM_FILE)
+            manifest_contents = self._read()
         except Exception as ex:
-            print(ex) #TODO raise UnableToReadManifestException()
+            raise InvalidGurumManifestError(
+                "Unable to read manifest file: {}".format(ex)
+            )
 
         return manifest_contents
 
