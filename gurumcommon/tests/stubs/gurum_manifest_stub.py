@@ -56,6 +56,39 @@ valid_manifest = {
     ]
 }
 
+valid_missing_services_manifest = {
+    'project': {
+        'name': 'game',
+        'source': {
+            'provider': 'github/cfn',
+            'repo': 'kalleeh/2048'
+        },
+        'type': 'ecs-fargate'
+    },
+    'environments': [
+        {
+            'name': 'dev',
+            'config': {
+                'HealthCheckPath': '/',
+                'DesiredCount': '2'
+            },
+            'env_vars': {
+                'environment': 'dev'
+            }
+        },
+        {
+            'name': 'prod',
+            'config': {
+                'HealthCheckPath': '/',
+                'DesiredCount': '2'
+            },
+            'env_vars': {
+                'environment': 'prod'
+            }
+        }
+    ]
+}
+
 valid_project = {
     'name': 'game',
     'source': {

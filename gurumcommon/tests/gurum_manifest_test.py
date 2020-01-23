@@ -44,10 +44,16 @@ class TestGurumManifest(TestCase):
             self.assertEqual(loaded.environments(), gurum_manifest_stub.valid_environments)
 
     @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.valid_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
     @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
-    def test_load_services(self):
-        mock_open = mock.mock_open(read_data="dummydata")
+    def test_it_loads_services(self):
+        loaded = self.manifest.load()
+        self.assertEqual(loaded.services(), gurum_manifest_stub.valid_services)
 
-        with mock.patch('builtins.open', mock_open):
-            loaded = self.manifest.load()
-            self.assertEqual(loaded.services(), gurum_manifest_stub.valid_services)
+    @mock.patch('yaml.safe_load', mock.MagicMock(return_value=gurum_manifest_stub.valid_missing_services_manifest))
+    @mock.patch('builtins.open', mock.MagicMock())
+    @mock.patch('gurumcommon.gurum_manifest.GurumManifest._validate', mock.MagicMock())
+    def test_it_works_with_no_services(self):
+        expected_services = {}
+        loaded = self.manifest.load()
+        self.assertEqual(loaded.services(), expected_services)
