@@ -67,9 +67,6 @@ def do_cli(ctx):
         click.echo("Initialised from skeleton!")
 
     # validate schema
-    gurum_manifest.GurumManifest(
-        manifest_schema_path=gurum_schema_file,
-        manifest_path=gurum_init_file
-    )
+    gurum_manifest.GurumManifest()
 
     click.echo('Initialised!')

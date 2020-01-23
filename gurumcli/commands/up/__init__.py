@@ -26,8 +26,6 @@ from .up_orchestrator import UpOrchestrator
 
 LOGGER = configure_logger(__name__)
 
-GURUM_SKELETON_FILE = "gurum_manifest_skeleton.yaml"
-
 @click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @pass_context
 def cli(ctx):
@@ -53,9 +51,8 @@ def do_cli(ctx):
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
-    # TODO: We need to look at handling errors when there is no ~/Library/Application Support/gurum/.gurum file
     try:
-        manifest = read_manifest()
+        manifest = gurum_manifest.GurumManifest().load()
     except InvalidGurumManifestError as e:
         LOGGER.error(e)
         click.echo("Invalid configuration file.")
@@ -80,13 +77,6 @@ def provision_pipeline_resources(api_client, config, manifest):
     if get_provider(manifest).startswith('github'):
         github_token = get_github_requirements(repository)
         orchestrator.provision_pipeline(environment_names, github_token)
-
-#TODO: Make this a helper.
-def read_manifest():
-    base_dir = os.path.abspath(__file__ + "../../../../../gurumcommon")
-    gurum_schema_file = os.path.join(base_dir, gurum_manifest.GURUM_SCHEMA_FILE)
-    gurum_init_file = os.path.join(os.getcwd(), gurum_manifest.GURUM_FILE)
-    return gurum_manifest.GurumManifest(manifest_schema_path=gurum_schema_file, manifest_path=gurum_init_file)
 
 def get_provider(manifest):
     return manifest.project()['source']['provider'].lower()

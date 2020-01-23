@@ -102,11 +102,13 @@ class Context():
         self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
         if not os.path.exists(self.cfg_name):
             click.echo('No config file present. Run gurum login to configure.')
+            # TODO: Move file initializaiton to Login command
             with open(self.cfg_name, 'a') as f:
                 f.write(DEFAULT_CONFIG_CONTENTS)
+            raise SystemExit(0)
 
         try:
             self._config = ConfigManager(self.cfg_name)
         except ConfigValidationException as ex:
-            click.echo('Invalid configuration: {}'.format(ex))
+            click.echo('Invalid configuration in {}: {}'.format(self._cfg_path, ex))
             raise SystemExit(0)
