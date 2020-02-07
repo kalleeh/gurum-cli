@@ -3,7 +3,7 @@
 import io
 import re
 import os
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 
 def read(*filenames, **kwargs):
@@ -29,23 +29,23 @@ setup(
     author_email='wallbomk@amazon.com',
     url='https://github.com/kalleeh/gurum-cli',
     license=read('LICENSE'),
-    packages=find_packages(exclude=('tests', 'docs')),
+    packages=find_namespace_packages(exclude=('tests', 'docs')),
     keywords="Gurum CLI",
     # Support Python 2.7 and 3.6 or greater
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*',
+    python_requires='!=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*',
     entry_points={
         'console_scripts': [
             'gurum=gurumcli.cli.main:cli'
         ]
     },
     install_requires=[
+        'awslogs',
         'boto3',
         'botocore',
         'click',
         'click-spinner',
         'colorama',
         'gitpython',
-        'haikunator',
         'keyring',
         'prettytable',
         'termcolor',

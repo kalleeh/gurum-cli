@@ -4,29 +4,29 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
-click = "*"
+aws-xray-sdk = "*"
+awslogs = "*"
+boto3 = "*"
 botocore = "*"
-"boto3" = "*"
-warrant = "*"
+click = "*"
 click-spinner = "*"
 gitpython = "*"
-termcolor = "*"
-prettytable = "*"
-haikunator = "*"
-awslogs = "*"
-aws-xray-sdk = "*"
-pyyaml = "*"
-yamale = "*"
-keyring = "*"
 gurum-cli = {editable = true,path = "."}
+haikunator = "*"
+keyring = "*"
+prettytable = "*"
+pyyaml = "*"
+requests = "*"
+termcolor = "*"
+warrant = "*"
+yamale = "*"
 
 [dev-packages]
+autopep8 = "*"
+pep8 = "*"
 pytest = "*"
 pylint = "*"
-pep8 = "*"
 tox = "*"
-autopep8 = "*"
 
 [requires]
 python_version = "3.7"
