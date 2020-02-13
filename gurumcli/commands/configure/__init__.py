@@ -10,13 +10,8 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import logging
-import os
 import click
-import requests
-import boto3
-import botocore
 
-from warrant import Cognito, exceptions
 from gurumcli.cli.main import pass_context, common_options
 from gurumcommon.logger import configure_logger
 
@@ -50,10 +45,8 @@ def do_cli(ctx):
     api_uri = click.prompt('API URI', default='https://api.gurum.cloud')
     region = click.prompt('API Region', default='eu-west-1')
     user_pool_id = click.prompt('Cognito User Pool ID')
-
     identity_pool_id = click.prompt('Cognito Identity Pool ID')
-    # clean out eventual region and colon at start of string
-    identity_pool_id = identity_pool_id.rpartition(':')[2]
+    identity_pool_id = identity_pool_id.rpartition(':')[2] # clean out eventual region and colon at start of string
     app_client_id = click.prompt('Cognito App Client ID')
 
     try:
@@ -67,9 +60,8 @@ def store_credentials_file(ctx, api_uri, region, user_pool_id, identity_pool_id,
         ctx.config.add_section(ctx.profile)
     ctx.config.set(ctx.profile, 'api_uri', api_uri)
     ctx.config.set(ctx.profile, 'region', region)
-    ctx.config.set(ctx.profile, 'user_pool_id', user_pool_id)
-    ctx.config.set(ctx.profile, 'identity_pool_id', identity_pool_id)
-    ctx.config.set(ctx.profile, 'app_client_id', app_client_id)
-    cfgfile = open(ctx.cfg_name, 'w+')
-    ctx.config.write(cfgfile)
-    cfgfile.close()
+    ctx.config.set(ctx.profile, 'cognito_user_pool_id', user_pool_id)
+    ctx.config.set(ctx.profile, 'cognito_identity_pool_id', identity_pool_id)
+    ctx.config.set(ctx.profile, 'cognito_app_client_id', app_client_id)
+    with click.open_file(ctx.cfg_name, 'w+') as f:
+        ctx.config.write(f)
