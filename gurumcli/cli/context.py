@@ -18,10 +18,6 @@ from gurumcommon.logger import configure_logger
 
 LOGGER = configure_logger(__name__)
 
-DEFAULT_CONFIG_CONTENTS = ' \
-    [default] \
-    user = '
-
 class Context():
     """
     Top level context object for the CLI. Exposes common functionality required by a CLI, including logging,
@@ -102,9 +98,6 @@ class Context():
         self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
         if not os.path.exists(self.cfg_name):
             click.echo('No config file present. Run gurum login to configure.')
-            # TODO: Move file initializaiton to Login command
-            with open(self.cfg_name, 'a') as f:
-                f.write(DEFAULT_CONFIG_CONTENTS)
             raise SystemExit(0)
 
         try:
