@@ -10,8 +10,10 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 """
 
 import importlib
+from configparser import NoSectionError, NoOptionError
 import click
 from gurumcommon.logger import configure_logger
+from gurumcli.libs.config_manager import ConfigNotFoundException
 
 LOGGER = configure_logger(__name__)
 
@@ -66,6 +68,26 @@ class BaseCommand(click.MultiCommand):
 
         self._commands = {}
         self._commands = BaseCommand._set_commands(cmd_packages)
+
+    def __call__(self, *args, **kwargs):
+        """
+        General exception handling for all commands. Useful for things in the Context object
+        or exceptions that might be thrown across all commands.
+        """
+        try:
+            return self.main(*args, **kwargs)
+        except AttributeError as exc:
+            if "'NoneType' object has no attribute 'get'" in exc.args:
+                click.echo('Configuration file failed to load. Run "gurum configure".')
+        except ConfigNotFoundException:
+            click.echo('No config file found. Run "gurum configure" to set up a profile.')
+        except NoSectionError as exc:
+            click.echo('Profile not set up. Run "gurum configure (--profile)".')
+        except NoOptionError as exc:
+            if "id_token'" in exc.message:
+                click.echo('Profile configured but no credentials present. Did you run "gurum login"?')
+        except Exception as exc:
+            click.echo('Unknown Error: %s' % exc)
 
     @staticmethod
     def _set_commands(package_names):

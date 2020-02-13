@@ -13,10 +13,12 @@ import os
 import logging
 import click
 
-from gurumcli.libs.config_manager import ConfigManager, ConfigValidationException
+from gurumcli.libs.config_manager import ConfigManager, ConfigValidationException, ConfigNotFoundException
 from gurumcommon.logger import configure_logger
 
 LOGGER = configure_logger(__name__)
+
+DEFAULT_CONFIG_CONTENTS = '[default]'
 
 class Context():
     """
@@ -97,11 +99,11 @@ class Context():
             os.makedirs(self._cfg_path)
         self.cfg_name = os.path.join(self._cfg_path, '.' + self._app_name)
         if not os.path.exists(self.cfg_name):
-            click.echo('No config file present. Run gurum login to configure.')
-            raise SystemExit(0)
+            with open(self.cfg_name, 'a') as f:
+                f.write(DEFAULT_CONFIG_CONTENTS)
+            raise ConfigNotFoundException
 
         try:
             self._config = ConfigManager(self.cfg_name)
         except ConfigValidationException as ex:
-            click.echo('Invalid configuration in {}: {}'.format(self._cfg_path, ex))
-            raise SystemExit(0)
+            raise ConfigValidationException

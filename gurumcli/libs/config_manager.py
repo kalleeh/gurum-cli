@@ -26,13 +26,15 @@ REQUIRED_VALUES = {
 class ConfigValidationException(Exception):
     pass
 
+class ConfigNotFoundException(Exception):
+    pass
+
 
 class ConfigManager(ConfigParser):
     def __init__(self, config_file):
         super(ConfigManager, self).__init__()
 
         self.read(config_file)
-        self.validate_config()
 
     def validate_config(self):
         for section, keys in REQUIRED_VALUES.items():
