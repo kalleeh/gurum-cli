@@ -18,6 +18,7 @@ LOGGER = configure_logger(__name__)
 # Commands that are bundled with the CLI by default
 _GURUM_CLI_COMMAND_PACKAGES = {
     "gurumcli.commands.apps.apps",
+    "gurumcli.commands.configure",
     "gurumcli.commands.down",
     "gurumcli.commands.init",
     "gurumcli.commands.login",

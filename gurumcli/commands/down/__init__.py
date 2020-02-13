@@ -30,14 +30,15 @@ LOGGER = configure_logger(__name__)
 @pass_context
 def cli(ctx):
     """ \b
-        Deploy Gurum application.
+        Destroy Gurum application.
         The gurum.yaml file will be read from the directory you are executing the command.
 
     \b
     Common usage:
 
         \b
-        Deploy application.
+        Destroy application.
+        WARNING: This is a irreversible destructive operation.
         \b
         $ gurum down
     """

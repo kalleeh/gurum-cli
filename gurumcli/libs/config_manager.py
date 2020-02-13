@@ -16,7 +16,6 @@ LOGGER = configure_logger(__name__)
 REQUIRED_VALUES = {
     'default': {
         'api_uri': None,
-        'user': None,
         'region': None,
         'cognito_user_pool_id': None,
         'cognito_identity_pool_id': None,
