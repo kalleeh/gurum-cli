@@ -1,8 +1,8 @@
 # Gurum CLI
 
-This CLI provides the main developer interface for the Gurum Container Platform.
+This CLI provides the main developer interface for the Gurum Application Platform.
 It provides capabilities for basic app management, creation of pipelines and user management.
-Basic log viewing and filtering can exist for troubleshooting.
+Basic log viewing and filtering exist for troubleshooting.
 
 ## What's Here
 
@@ -10,6 +10,7 @@ Basic log viewing and filtering can exist for troubleshooting.
 * Pipfile - requrements file for usage with Pipenv
 * setup.py - module/package definition for Distutils
 * gurumcli/ - this directory contains the Click CLI files and entrypoint referenced from setup.py
+* gurumcommon/ - this directory contains a shared library/module for common Gurum functions. (to be moved to separate repo)
 * tests/ - this directory contains unit tests for your application
 
 ## Installation
