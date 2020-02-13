@@ -52,6 +52,9 @@ def do_cli(ctx):
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
 
+    click.confirm('Destroy the application and all its environments (including CI/CD)? \
+        (WARNING: This is a irreversible destructive operation)', abort=True)
+
     try:
         manifest = gurum_manifest.GurumManifest().load()
     except InvalidGurumManifestError as e:
