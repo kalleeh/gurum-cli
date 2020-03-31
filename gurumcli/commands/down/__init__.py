@@ -30,14 +30,15 @@ LOGGER = configure_logger(__name__)
 @pass_context
 def cli(ctx):
     """ \b
-        Deploy Gurum application.
+        Destroy Gurum application.
         The gurum.yaml file will be read from the directory you are executing the command.
 
     \b
     Common usage:
 
         \b
-        Deploy application.
+        Destroy application.
+        WARNING: This is a irreversible destructive operation.
         \b
         $ gurum down
     """
@@ -50,6 +51,9 @@ def do_cli(ctx):
         api_uri=ctx.config.get(ctx.profile, 'api_uri'),
         id_token=ctx.config.get(ctx.profile, 'id_token')
     )
+
+    click.confirm('Destroy the application and all its environments (including CI/CD)? \
+        (WARNING: This is a irreversible destructive operation)', abort=True)
 
     try:
         manifest = gurum_manifest.GurumManifest().load()

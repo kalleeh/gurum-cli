@@ -33,24 +33,6 @@ def debug_option(f):
                         callback=callback)(f)
 
 
-def config_option(f):
-    """
-    Configures --config option for CLI
-
-    :param f: Callback Function to be passed to Click
-    """
-    def callback(ctx, _param, value):
-        state = ctx.ensure_object(Context)
-        state.config = value
-        return value
-
-    return click.option('--config',
-                        expose_value=False,
-                        envvar="GURUM_CONFIG",
-                        help='Specify configuration file to be used for the GURUM CLI.',
-                        callback=callback)(f)
-
-
 def profile_option(f):
     """
     Configures --profile option for CLI

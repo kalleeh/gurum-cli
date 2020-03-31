@@ -16,7 +16,7 @@ import click
 
 from gurumcommon.logger import configure_logger
 from gurumcli import __version__
-from .options import debug_option, config_option, profile_option
+from .options import debug_option, profile_option
 from .context import Context
 from .command import BaseCommand
 
@@ -34,7 +34,6 @@ def common_options(f):
     :return: Callback function
     """
     f = debug_option(f)
-    f = config_option(f)
     f = profile_option(f)
     return f
 

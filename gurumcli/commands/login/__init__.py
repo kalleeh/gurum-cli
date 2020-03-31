@@ -27,7 +27,7 @@ LOGGER = configure_logger(__name__)
 @click.option('--password', prompt=True, hide_input=True)
 @common_options
 @pass_context
-def cli(ctx, user, password, profile='default'):
+def cli(ctx, user, password):
     """ \b
         Login to the GURUM platform using your Cognito credentials.
         This will populate your temporary session tokens in your configuration file.
@@ -46,39 +46,10 @@ def cli(ctx, user, password, profile='default'):
 
 
 def do_cli(ctx, user, password):
-    if not ctx.config.has_option(ctx.profile, 'api_uri'):
-        api_uri = click.prompt('API URI', default='https://api.gurum.cloud')
-        ctx.config.set(ctx.profile, 'api_uri', api_uri)
-    else:
-        api_uri = ctx.config.get(ctx.profile, 'api_uri')
-
-    if not ctx.config.has_option(ctx.profile, 'region'):
-        region = click.prompt('API Region', default='eu-west-1')
-        ctx.config.set(ctx.profile, 'region', region)
-    else:
-        region = ctx.config.get(ctx.profile, 'region')
-
-    if not ctx.config.has_option(ctx.profile, 'cognito_user_pool_id'):
-        user_pool_id = click.prompt('Cognito User Pool ID')
-        ctx.config.set(ctx.profile, 'cognito_user_pool_id', user_pool_id)
-    else:
-        user_pool_id = ctx.config.get(ctx.profile, 'cognito_user_pool_id')
-
-    if not ctx.config.has_option(ctx.profile, 'cognito_identity_pool_id'):
-        identity_pool_id = click.prompt('Cognito Identity Pool ID')
-
-        # clean out eventual region and colon at start of string
-        identity_pool_id = identity_pool_id.rpartition(':')[2]
-
-        ctx.config.set(ctx.profile, 'cognito_identity_pool_id', identity_pool_id)
-    else:
-        identity_pool_id = ctx.config.get(ctx.profile, 'cognito_identity_pool_id')
-
-    if not ctx.config.has_option(ctx.profile, 'cognito_app_client_id'):
-        app_client_id = click.prompt('Cognito App Client ID')
-        ctx.config.set(ctx.profile, 'cognito_app_client_id', app_client_id)
-    else:
-        app_client_id = ctx.config.get(ctx.profile, 'cognito_app_client_id')
+    region = ctx.config.get(ctx.profile, 'region')
+    user_pool_id = ctx.config.get(ctx.profile, 'cognito_user_pool_id')
+    identity_pool_id = ctx.config.get(ctx.profile, 'cognito_identity_pool_id')
+    app_client_id = ctx.config.get(ctx.profile, 'cognito_app_client_id')
 
     click.echo('Logging in {}...'.format(user), nl=True)
     client = boto3.client('cognito-identity', region_name=region)
@@ -108,7 +79,7 @@ def do_cli(ctx, user, password):
         except Exception as ex:
             click.echo(ex)
         else:
-            click.echo('Password has been set. Please login again.')
+            click.echo('Password has been set. Please login.')
 
             # Update config file with Cognito properies if it's not set
             cfgfile = open(ctx.cfg_name, 'w+')
