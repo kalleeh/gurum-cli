@@ -42,6 +42,11 @@ class AuthenticationError(BaseGurumException):
     message = "Authentication Failed. Please login first."
 
 
+class ForbiddenError(BaseGurumException):
+    code = 403
+    message = "Forbidden."
+
+
 class BadRequestError(BaseGurumException):
     code = 400
     message = "Bad Request."

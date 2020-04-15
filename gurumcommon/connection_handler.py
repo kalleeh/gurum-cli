@@ -11,7 +11,7 @@ Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import json
 import requests
 
-from gurumcommon.exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, AlreadyExistsError, BadRequestError, UnexpectedRedirectError
+from gurumcommon.exceptions import UnknownError, ServerError, UrlNotFoundError, AuthenticationError, ForbiddenError, AlreadyExistsError, BadRequestError, UnexpectedRedirectError
 
 
 def request(method, url, headers, *payload):
@@ -26,17 +26,19 @@ def request(method, url, headers, *payload):
             raise AlreadyExistsError(response.text)
         if response.status_code == 404:
             raise UrlNotFoundError(response.text)
+        if response.status_code == 403:
+            raise ForbiddenError(response.text)
         if response.status_code == 401:
             raise AuthenticationError(response.text)
         if response.status_code == 400:
             raise BadRequestError(response.text)
         if response.status_code >= 300:
             raise UnexpectedRedirectError(response.text)
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.ConnectionError as e:
+        raise UnknownError(e)
+    except requests.exceptions.Timeout as e:
         raise UnknownError(response.text)
-    except requests.exceptions.Timeout:
-        raise UnknownError(response.text)
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
         raise UnknownError(response.text)
     else:
         response = json.loads(response.text)
