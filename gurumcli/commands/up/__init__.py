@@ -58,7 +58,7 @@ def provision_pipeline_resources(api_client, config, manifest):
     environment_names = []
     for environment in manifest.environments():
         orchestrator.provision_environment(environment)
-        environment_names.append(environment['name'])
+        environment_names.append('{}-{}'.format(manifest.project()['name'], environment['name']))
 
     for service in manifest.services():
         orchestrator.provision_service(service)
